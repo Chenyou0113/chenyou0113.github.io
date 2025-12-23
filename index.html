@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的個人網站</title>
+    <style>
+        /* 基本樣式設定 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* 主內容區塊 */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            flex: 1;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 20px;
+            border: 5px solid #ecf0f1;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #555;
+            text-align: center;
+        }
+
+        /* 按鈕樣式 */
+        .links {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 10px 25px;
+            margin: 10px;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* 手機版調整 */
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>歡迎來到我的網頁</h2>
+    </header>
+
+    <div class="container">
+        <!-- 這裡可以放你的頭像或照片 -->
+        <img src="https://avatars.githubusercontent.com/u/120460986?s=400&u=fb754141f80325cc4076c59f0c48e764615173ba&v=4" alt="個人頭像" class="profile-img">
+        
+        <h1>你好，我是 C. Y.</h1>
+        <p>這是我利用 GitHub Pages 建立的第一個網站！</p>
+        <p>我熱衷於學習網頁開發、技術分享以及探索新事物。這裡將會是我記錄成長與展示作品的地方。</p>
+
+        <div class="links">
+            <a href="https://github.com/Chenyou0113" class="btn" target="_blank">我的 GitHub</a>
+            <a href="xiaoyouwu5@gmail.com" class="btn">聯繫我</a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 C. Y. Built on GitHub Pages.
+    </footer>
+
+</body>
+</html>
