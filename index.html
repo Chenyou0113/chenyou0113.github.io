@@ -3,120 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的個人網站</title>
+    <title>C. Y. | 個人作品集</title>
     <style>
-        /* 基本樣式設定 */
+        /* 全域設定 */
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
             line-height: 1.6;
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
 
-        /* 導覽列 */
+        /* 進場動畫 */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
         header {
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             color: white;
-            padding: 1rem 0;
+            padding: 3rem 1rem;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* 主內容區塊 */
         .container {
-            max-width: 800px;
-            margin: 50px auto;
+            max-width: 900px;
+            margin: -50px auto 50px;
             padding: 20px;
+        }
+
+        .main-card {
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            flex: 1;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
         }
 
         .profile-img {
-            width: 150px;
-            height: 150px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            display: block;
-            margin: 0 auto 20px;
-            border: 5px solid #ecf0f1;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: -110px;
+            background-color: white;
         }
 
-        h1 {
-            color: #2c3e50;
-            text-align: center;
+        h1 { margin: 20px 0 10px; color: var(--primary-color); }
+        
+        /* 技能標籤樣式 */
+        .skills {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .skill-tag {
+            background: #e1f5fe;
+            color: #0288d1;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
         }
 
-        p {
-            font-size: 1.1rem;
-            color: #555;
+        /* 專案卡片佈局 */
+        .section-title {
+            margin: 40px 0 20px;
             text-align: center;
+            color: var(--primary-color);
         }
 
-        /* 按鈕樣式 */
-        .links {
-            text-align: center;
-            margin-top: 30px;
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
         }
 
         .btn {
             display: inline-block;
-            background: #3498db;
+            background: var(--accent-color);
             color: white;
-            padding: 10px 25px;
+            padding: 12px 30px;
             margin: 10px;
             text-decoration: none;
-            border-radius: 25px;
-            transition: background 0.3s;
+            border-radius: 30px;
+            transition: 0.3s;
+            font-weight: bold;
         }
 
-        .btn:hover {
-            background: #2980b9;
-        }
+        .btn:hover { background: #2980b9; box-shadow: 0 5px 15px rgba(52,152,219,0.4); }
 
-        /* 頁尾 */
-        footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 0.9rem;
-            color: #888;
-        }
+        footer { text-align: center; padding: 40px; color: #888; }
 
-        /* 手機版調整 */
         @media (max-width: 600px) {
-            .container {
-                margin: 20px;
-            }
+            .container { margin-top: 20px; }
+            .profile-img { margin-top: 0; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h2>歡迎來到我的網頁</h2>
+        <h1>Welcome to My Workspace</h1>
     </header>
 
     <div class="container">
-        <!-- 這裡可以放你的頭像或照片 -->
-        <img src="https://avatars.githubusercontent.com/u/120460986?s=400&u=fb754141f80325cc4076c59f0c48e764615173ba&v=4" alt="個人頭像" class="profile-img">
-        
-        <h1>你好，我是 C. Y.</h1>
-        <p>這是我利用 GitHub Pages 建立的第一個網站！</p>
-        <p>我熱衷於學習網頁開發、技術分享以及探索新事物。這裡將會是我記錄成長與展示作品的地方。</p>
+        <!-- 個人資訊卡片 -->
+        <div class="main-card animate">
+            <img src="https://avatars.githubusercontent.com/u/120460986?s=400&v=4" alt="C. Y." class="profile-img">
+            <h1>C. Y.</h1>
+            <p>👋 你好！我是一位對技術充滿好奇的探索者。</p>
+            
+            <div class="skills">
+                <span class="skill-tag">HTML / CSS</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">Git / GitHub</span>
+                <span class="skill-tag">Python</span>
+            </div>
 
-        <div class="links">
-            <a href="https://github.com/Chenyou0113" class="btn" target="_blank">我的 GitHub</a>
-            <a href="xiaoyouwu5@gmail.com" class="btn">聯繫我</a>
+            <div class="links">
+                <a href="https://github.com/Chenyou0113" class="btn" target="_blank">我的 GitHub</a>
+                <!-- 修正了 Email 連結，加上了 mailto: -->
+                <a href="mailto:xiaoyouwu5@gmail.com" class="btn">發送郵件</a>
+            </div>
+        </div>
+
+        <!-- 專案展示區 -->
+        <h2 class="section-title animate">精選專案</h2>
+        <div class="project-grid animate">
+            <div class="project-card">
+                <h3>📁 我的第一個網頁</h3>
+                <p>利用 GitHub Pages 建立的個人簡介首頁，展示基礎前端開發能力。</p>
+            </div>
+            <div class="project-card">
+                <h3>🔍 待辦清單</h3>
+                <p>練習 JavaScript DOM 操作與資料儲存的小工具。（預留位置）</p>
+            </div>
+            <div class="project-card">
+                <h3>📊 數據爬蟲</h3>
+                <p>使用 Python 進行網頁數據抓取與初步分析。（預留位置）</p>
+            </div>
         </div>
     </div>
 
     <footer>
-        &copy; 2026 C. Y. Built on GitHub Pages.
+        &copy; 2024 C. Y. Built with ❤️ on GitHub Pages.
     </footer>
 
 </body>
