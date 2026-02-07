@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聯絡我 | C. Y.</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            margin-left: 220px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+
+        nav {
+            background: var(--primary-color);
+            padding: 0;
+            margin: 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 220px;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav li {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            transition: 0.3s;
+            font-weight: 500;
+            border-left: 4px solid transparent;
+        }
+
+        nav a:hover {
+            background: var(--accent-color);
+            border-left-color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+        }
+
+        .contact-intro {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .contact-method {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            transition: 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .contact-method:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(52,152,219,0.2);
+        }
+
+        .contact-method .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .contact-method h3 {
+            margin: 10px 0;
+            color: var(--accent-color);
+        }
+
+        .contact-method a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-method a:hover {
+            color: var(--accent-color);
+        }
+
+        .form-section {
+            margin-top: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: 0 4px 10px rgba(52,152,219,0.3);
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(52,152,219,0.4);
+        }
+
+        .btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5em;
+            transition: 0.3s;
+        }
+
+        .social-link:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 5px 15px rgba(52,152,219,0.4);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            background: white;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 900px) {
+            body { margin-left: 0; }
+            nav {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+            nav ul {
+                flex-direction: row;
+                flex-wrap: wrap;
+                padding: 0;
+            }
+            nav a {
+                border-left: none;
+                border-bottom: 4px solid transparent;
+                padding: 10px 15px;
+            }
+            nav a:hover {
+                border-left: none;
+                border-bottom-color: white;
+            }
+            .container { padding: 15px; }
+            .content-card { padding: 25px; }
+            .contact-methods { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📮 聯絡我</h1>
+        <p>有任何問題或合作機會，歡迎與我聯繫！</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">首頁</a></li>
+            <li><a href="about.html">關於我</a></li>
+            <li><a href="projects.html">專案</a></li>
+            <li><a href="friends.html">朋友友站</a></li>
+            <li><a href="contact.html">聯絡我</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="content-card animate">
+            <div class="contact-intro">
+                <h2>讓我們保持聯繫！</h2>
+                <p>無論是技術交流、專案合作，還是只是想打個招呼，我都很樂意收到您的訊息。</p>
+            </div>
+
+            <!-- 聯絡方式 -->
+            <div class="contact-methods">
+                <div class="contact-method">
+                    <div class="icon">📧</div>
+                    <h3>電子郵件</h3>
+                    <p>最快速的聯絡方式</p>
+                    <a href="mailto:xiaoyouwu5@gmail.com">xiaoyouwu5@gmail.com</a>
+                </div>
+
+                <div class="contact-method">
+                    <div class="icon">💻</div>
+                    <h3>GitHub</h3>
+                    <p>查看我的開源項目</p>
+                    <a href="https://github.com/Chenyou0113" target="_blank">@Chenyou0113</a>
+                </div>
+
+                <div class="contact-method">
+                    <div class="icon">🌐</div>
+                    <h3>個人網站</h3>
+                    <p>了解更多關於我</p>
+                    <a href="https://chenyou0113.github.io">chenyou0113.github.io</a>
+                </div>
+            </div>
+
+            <!-- 聯絡表單 -->
+            <div class="form-section">
+                <h2>📝 發送訊息</h2>
+                <p>填寫下方表單，我會盡快回覆您：</p>
+
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="name">您的姓名 *</label>
+                        <input type="text" id="name" name="name" required placeholder="請輸入您的姓名">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">電子郵件 *</label>
+                        <input type="email" id="email" name="email" required placeholder="your@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">主旨 *</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">請選擇主旨</option>
+                            <option value="general">一般詢問</option>
+                            <option value="collaboration">合作提案</option>
+                            <option value="technical">技術交流</option>
+                            <option value="feedback">意見回饋</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">訊息內容 *</label>
+                        <textarea id="message" name="message" required placeholder="請輸入您想說的話..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn">📤 發送訊息</button>
+                </form>
+            </div>
+
+            <!-- 社交媒體連結 -->
+            <div class="social-links">
+                <a href="https://github.com/Chenyou0113" class="social-link" target="_blank" title="GitHub">
+                    <span>💻</span>
+                </a>
+                <a href="mailto:xiaoyouwu5@gmail.com" class="social-link" title="Email">
+                    <span>📧</span>
+                </a>
+            </div>
+
+            <div style="margin-top: 40px; padding: 20px; background: #e3f2fd; border-radius: 10px; text-align: center;">
+                <h3 style="color: var(--accent-color); margin-top: 0;">⏰ 回覆時間</h3>
+                <p>我通常會在 24-48 小時內回覆您的訊息。如果是緊急事項，請直接發送電子郵件。</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 C. Y. Built with ❤️ on GitHub Pages.
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
