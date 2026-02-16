@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣公車動態 (Google Maps 版)</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans TC', sans-serif; display: flex; flex-direction: column; height: 100vh; background: #f1f2f6; }
+        
+        #controls { padding: 15px 20px; background: #2f3542; color: white; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; z-index: 1001; }
+        #main { display: flex; flex: 1; overflow: hidden; }
+        #sidebar { width: 380px; background: white; overflow-y: auto; border-right: 1px solid #ced4da; padding: 10px; }
+        #map { flex: 1; }
+
+        /* 站牌列表樣式 */
+        .stop-item { display: flex; justify-content: space-between; align-items: center; padding: 14px; background: #fff; margin-bottom: 8px; border-radius: 10px; border-left: 6px solid #dfe4ea; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; transition: background 0.2s; }
+        .stop-item:hover { background: #f1f2f6; }
+        .stop-item.in-buffer { border-left-color: #f1c40f; background: #fffdf0; }
+        .seq-num { background: #57606f; color: white; width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; margin-right: 10px; font-weight: bold; }
+        .arrival-time { padding: 6px 12px; border-radius: 6px; font-weight: 900; font-size: 14px; min-width: 75px; text-align: center; color: white; }
+        
+        .time-now { background: #ff4757; animation: blink 1s infinite; }
+        .time-soon { background: #ffa502; }
+        .time-wait { background: #2ed573; }
+        .time-none { background: #a4b0be; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        /* 票價資訊 */
+        .fare-banner { background: #f1c40f; color: #2f3542; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-weight: bold; font-size: 13px; text-align: center; border: 2px solid #eab000; }
+        .buffer-label { font-size: 10px; background: #2f3542; color: #f1c40f; padding: 2px 5px; border-radius: 3px; margin-left: 5px; }
+
+        /* 搜尋建議選單 */
+        #suggestions { position: absolute; top: 100%; left: 0; right: 0; background: white; border-radius: 0 0 8px 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: none; max-height: 350px; overflow-y: auto; z-index: 2000; }
+        .suggest-item { padding: 12px; border-bottom: 1px solid #f1f2f6; cursor: pointer; color: #333; }
+        .suggest-item:hover { background: #f1f2f6; }
+
+        input, select, button { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-family: inherit; }
+        button { background: #1e90ff; color: white; border: none; font-weight: bold; cursor: pointer; }
+        button:hover { background: #0077ed; }
+
+        /* Google Maps 自訂公車圖標樣式 */
+        .gm-bus-label {
+            position: absolute;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border: 3px solid white;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+        .gm-plate-text {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 10px;
+            white-space: nowrap;
+            font-weight: bold;
+        }
+        /* Popup 內容樣式 */
+        .bus-popup-content { font-family: 'Noto Sans TC'; line-height: 1.5; min-width: 200px; }
+        .bus-popup-title { font-weight: 900; font-size: 16px; color: #2f3542; border-bottom: 2px solid #ff4757; padding-bottom: 5px; margin-bottom: 5px; }
+        .tag-wifi { background: #f1c40f; color: black; padding: 2px 5px; font-size: 10px; border-radius: 3px; margin-right: 3px; }
+        .tag-low { background: #1e90ff; color: white; padding: 2px 5px; font-size: 10px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+<div id="controls">
+    <strong>🚍 全台公車動態 (Google Maps)</strong>
+    <div style="position: relative; flex: 1;">
+        <input type="text" id="routeSearch" placeholder="🔍 輸入路線或站名..." oninput="handleSearch()">
+        <div id="suggestions"></div>
+    </div>
+    <select id="direction" onchange="startTracking()">
+        <option value="0">去程</option>
+        <option value="1">返程</option>
+    </select>
+    <button onclick="startTracking()">追蹤</button>
+    <span id="update-status" style="font-size: 12px; opacity: 0.7;"></span>
+    <input type="hidden" id="routeNum" value="307">
+    <input type="hidden" id="city" value="Taipei">
+    <input type="hidden" id="category" value="CityBus">
+</div>
+
+<div id="main">
+    <div id="sidebar">
+        <div id="fare-banner-container"></div>
+        <div id="stop-list-container">
+            <div style="text-align:center; margin-top:50px; color:#a4b0be;">
+                <p>地圖載入中...</p>
+            </div>
+        </div>
+    </div>
+    <div id="map"></div>
+</div>
+
+<script>
+    const WORKER_URL = "https://bus-worker.weacamm.org/";
+    let map;
+    let stopMarkers = [];
+    let busOverlays = [];
+    let routePolyline = null;
+    let pollingTimer = null;
+    let bufferStops = [];
+    let searchTimer = null;
+    let infoWindow = null;
+
+    // Google Maps 初始化 Callback
+    function initMap() {
+        const taipei = { lat: 25.0475, lng: 121.5173 };
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: taipei,
+            mapId: "DEMO_MAP_ID",
+            streetViewControl: false,
+            mapTypeControl: false,
+            fullscreenControl: false
+        });
+        
+        infoWindow = new google.maps.InfoWindow();
+
+        // 定義自訂公車圖層類別 (CustomOverlay)
+        class BusOverlay extends google.maps.OverlayView {
+            constructor(bus) {
+                super();
+                this.bus = bus;
+                this.div = null;
+            }
+
+            onAdd() {
+                this.div = document.createElement("div");
+                this.div.style.position = "absolute";
+                this.div.style.cursor = "pointer";
+                
+                this.div.innerHTML = `
+                    <div class="gm-bus-label">
+                        <div style="transform: rotate(${this.bus.azi - 45}deg); font-size: 20px;">
+                            <i class="fas fa-location-arrow"></i>
+                        </div>
+                    </div>
+                    <div class="gm-plate-text">${this.bus.plate}</div>
+                `;
+
+                this.div.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showBusDetail(this.bus, this.getPosition());
+                });
+
+                const panes = this.getPanes();
+                panes.overlayMouseTarget.appendChild(this.div);
+            }
+
+            draw() {
+                const overlayProjection = this.getProjection();
+                const pos = new google.maps.LatLng(this.bus.lat, this.bus.lon);
+                const point = overlayProjection.fromLatLngToDivPixel(pos);
+
+                if (point) {
+                    this.div.style.left = point.x + "px";
+                    this.div.style.top = point.y + "px";
+                }
+            }
+
+            onRemove() {
+                if (this.div) {
+                    this.div.parentNode.removeChild(this.div);
+                    this.div = null;
+                }
+            }
+
+            getPosition() {
+                return new google.maps.LatLng(this.bus.lat, this.bus.lon);
+            }
+        }
+        
+        window.BusOverlay = BusOverlay;
+        document.getElementById('stop-list-container').innerHTML = '<div style="text-align:center;margin-top:50px;color:#a4b0be;">請搜尋路線開始監控</div>';
+    }
+
+    // 顯示車輛詳細資料
+    async function showBusDetail(bus, latLng) {
+        infoWindow.setContent(`<div style="padding:10px;">讀取規格中...</div>`);
+        infoWindow.setPosition(latLng);
+        infoWindow.open(map);
+
+        try {
+            const vRes = await fetch(`${WORKER_URL}?action=vehicle&plate=${bus.plate}`);
+            const vData = await vRes.json();
+            
+            let content = `<div class="bus-popup-content"><div class="bus-popup-title">🚌 ${bus.plate}</div>`;
+            content += `<div>方向：${bus.dir == 0 ? '去程' : '返程'}</div>`;
+            content += `<div>狀態：${bus.status == 0 ? '正常' : '異常'}</div>`;
+            
+            if (vData.length > 0) {
+                const v = vData[0];
+                const buyYear = v.PurchaseTime ? new Date(v.PurchaseTime).getFullYear() : '未知';
+                content += `<hr style="margin:5px 0; border:0; border-top:1px solid #ddd;">`;
+                content += `<div>業者：${v.OperatorCode}</div>`;
+                content += `<div>出廠：${buyYear} 年</div>`;
+                content += `<div style="margin-top:5px;">`;
+                if (v.IsLowFloor) content += `<span class="tag-low">♿ 低地板</span>`;
+                if (v.HasWifi) content += `<span class="tag-wifi">📶 WiFi</span>`;
+                content += `</div>`;
+            }
+            content += `</div>`;
+            
+            infoWindow.setContent(content);
+        } catch (e) {
+            infoWindow.setContent(`<div>無法讀取資料</div>`);
+        }
+    }
+
+    // 搜尋建議
+    async function handleSearch() {
+        const keyword = document.getElementById('routeSearch').value.trim();
+        const box = document.getElementById('suggestions');
+        if (keyword.length < 1) return box.style.display = 'none';
+
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(async () => {
+            const res = await fetch(`${WORKER_URL}?action=list_all&search=${encodeURIComponent(keyword)}`);
+            const routes = await res.json();
+            if (routes.length > 0) {
+                box.innerHTML = routes.map(r => `
+                    <div class="suggest-item" onclick="selectRoute('${r.name}', '${r.city}', '${r.type}')">
+                        <div style="display:flex; justify-content:space-between;">
+                            <strong>${r.name}</strong>
+                            <span style="font-size:0.7rem; background:#1e90ff; color:white; padding:1px 6px; border-radius:10px;">${r.city}</span>
+                        </div>
+                        <div style="font-size:0.8rem; color:#747d8c; margin-top:3px;">${r.departure} ➔ ${r.destination}</div>
+                    </div>
+                `).join('');
+                box.style.display = 'block';
+            }
+        }, 300);
+    }
+
+    function selectRoute(name, city, category) {
+        document.getElementById('routeNum').value = name;
+        document.getElementById('city').value = city;
+        document.getElementById('category').value = category;
+        document.getElementById('routeSearch').value = name;
+        document.getElementById('suggestions').style.display = 'none';
+        startTracking();
+    }
+
+    async function startTracking() {
+        const cat = document.getElementById('category').value;
+        const city = document.getElementById('city').value;
+        const route = document.getElementById('routeNum').value;
+        const dir = document.getElementById('direction').value;
+
+        try {
+            document.getElementById('update-status').innerText = "📡 載入中...";
+            
+            await Promise.all([
+                initFare(cat, city, route, dir),
+                initStops(cat, city, route, dir),
+                drawShape(cat, city, route, dir)
+            ]);
+
+            if (pollingTimer) clearInterval(pollingTimer);
+            updateLive();
+            pollingTimer = setInterval(updateLive, 20000);
+        } catch (e) { console.error(e); }
+    }
+
+    // 初始化票價與緩衝區
+    async function initFare(cat, city, route, dir) {
+        const res = await fetch(`${WORKER_URL}?action=fare&category=${cat}&city=${city}&route=${route}`);
+        const data = await res.json();
+        const container = document.getElementById('fare-banner-container');
+        container.innerHTML = "";
+        bufferStops = [];
+
+        if (data.length > 0 && data[0].SectionFares) {
+            const zones = data[0].SectionFares.BufferZones || [];
+            const zone = zones.find(z => z.Direction == dir);
+            if (zone) {
+                const start = zone.FareBufferZoneOrigin.OriginStopName.Zh_tw;
+                const end = zone.FareBufferZoneDestination.DestinationStopName.Zh_tw;
+                bufferStops = [zone.FareBufferZoneOrigin.OriginStopUID, zone.FareBufferZoneDestination.DestinationStopUID];
+                container.innerHTML = `<div class="fare-banner"><i class="fas fa-coins"></i> 緩衝區：${start} ↔ ${end}</div>`;
+            }
+        }
+    }
+
+    // 初始化站牌
+    async function initStops(cat, city, route, dir) {
+        const res = await fetch(`${WORKER_URL}?action=info&category=${cat}&city=${city}&route=${route}`);
+        const data = await res.json();
+        const routeInfo = data.find(r => r.Direction == dir) || data[0];
+        
+        const container = document.getElementById('stop-list-container');
+        container.innerHTML = "";
+        
+        stopMarkers.forEach(m => m.setMap(null));
+        stopMarkers = [];
+
+        let isInsideBuffer = false;
+        const bounds = new google.maps.LatLngBounds();
+
+        routeInfo.Stops.forEach((stop, index) => {
+            if (stop.StopUID === bufferStops[0]) isInsideBuffer = true;
+            
+            const div = document.createElement('div');
+            div.className = `stop-item ${isInsideBuffer ? 'in-buffer' : ''}`;
+            div.id = `stop-${stop.StopUID}`;
+            div.innerHTML = `
+                <div><span class="seq-num">${index+1}</span><span class="stop-name">${stop.StopName.Zh_tw}</span></div>
+                <span class="arrival-time time-none">--分</span>`;
+            
+            div.onclick = () => {
+                const pos = new google.maps.LatLng(stop.StopPosition.PositionLat, stop.StopPosition.PositionLon);
+                map.panTo(pos);
+                map.setZoom(16);
+            };
+            container.appendChild(div);
+
+            const markerColor = isInsideBuffer ? '#f1c40f' : '#57606f';
+            
+            const marker = new google.maps.Marker({
+                position: { lat: stop.StopPosition.PositionLat, lng: stop.StopPosition.PositionLon },
+                map: map,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 6,
+                    fillColor: markerColor,
+                    fillOpacity: 1,
+                    strokeColor: "white",
+                    strokeWeight: 2
+                },
+                title: stop.StopName.Zh_tw
+            });
+
+            marker.addListener("click", async () => {
+                infoWindow.setContent(`查詢路線中...`);
+                infoWindow.open(map, marker);
+                const sRes = await fetch(`${WORKER_URL}?action=stop_info&category=${cat}&city=${city}&name=${stop.StopName.Zh_tw}`);
+                const sData = await sRes.json();
+                let html = `<b>${stop.StopName.Zh_tw}</b><br>經過路線：<br>`;
+                sData.routes.forEach(r => html += `<span style="background:#eee;padding:2px;margin:2px;font-size:10px;">${r}</span> `);
+                infoWindow.setContent(html);
+            });
+
+            stopMarkers.push(marker);
+            bounds.extend(marker.getPosition());
+
+            if (stop.StopUID === bufferStops[1]) isInsideBuffer = false;
+        });
+
+        map.fitBounds(bounds);
+    }
+
+    // 繪製線型
+    async function drawShape(cat, city, route, dir) {
+        if (routePolyline) routePolyline.setMap(null);
+
+        const res = await fetch(`${WORKER_URL}?action=shape&category=${cat}&city=${city}&route=${route}`);
+        const data = await res.json();
+        const shape = data.find(s => s.Direction == dir) || data[0];
+        
+        if (shape && shape.Geometry) {
+            const raw = shape.Geometry.replace("LINESTRING (", "").replace(")", "");
+            const path = raw.split(", ").map(p => {
+                const [lon, lat] = p.split(" ");
+                return { lat: parseFloat(lat), lng: parseFloat(lon) };
+            });
+
+            routePolyline = new google.maps.Polyline({
+                path: path,
+                geodesic: true,
+                strokeColor: "#1e90ff",
+                strokeOpacity: 0.7,
+                strokeWeight: 5,
+                map: map
+            });
+        }
+    }
+
+    // 更新動態資料
+    async function updateLive() {
+        const cat = document.getElementById('category').value;
+        const city = document.getElementById('city').value;
+        const route = document.getElementById('routeNum').value;
+        const dir = document.getElementById('direction').value;
+
+        const res = await fetch(`${WORKER_URL}?category=${cat}&city=${city}&route=${route}`);
+        const data = await res.json();
+
+        for (const [key, val] of Object.entries(data.estimates)) {
+            const [eDir, stopUID] = key.split('_');
+            if (eDir !== dir) continue;
+            const el = document.querySelector(`#stop-${stopUID} .arrival-time`);
+            if (el) {
+                let text = "--分", cls = "time-none";
+                if (val.sec !== null && val.sec !== undefined) {
+                    if (val.sec < 60) { text = "進站中"; cls = "time-now"; }
+                    else if (val.sec < 180) { text = "將到站"; cls = "time-soon"; }
+                    else { text = Math.floor(val.sec/60) + "分"; cls = "time-wait"; }
+                } else if (val.status === 1) { text = "未發車"; }
+                el.innerText = text; el.className = `arrival-time ${cls}`;
+            }
+        }
+
+        busOverlays.forEach(o => o.setMap(null));
+        busOverlays = [];
+
+        if (window.BusOverlay) {
+            data.buses.filter(b => b.dir == dir).forEach(bus => {
+                const overlay = new window.BusOverlay(bus);
+                overlay.setMap(map);
+                busOverlays.push(overlay);
+            });
+        }
+        
+        document.getElementById('update-status').innerText = "更新: " + new Date().toLocaleTimeString();
+    }
+
+</script>
+
+<!-- Google Maps 載入錯誤處理 -->
+<script>
+    // 載入超時處理
+    window.initMapTimeout = setTimeout(() => {
+        console.error('❌ Google Maps 載入超時');
+        document.getElementById('map').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#f8f9fa;color:#666;"><div style="text-align:center;"><i class="fas fa-exclamation-triangle" style="font-size:2rem;margin-bottom:10px;"></i><br>Google Maps 載入失敗<br><small>請檢查網路連接或稍後重試</small></div></div>';
+    }, 10000);
+    
+    // Google Maps 初始化成功後清除超時
+    window.originalInitMap = window.initMap;
+    window.initMap = function() {
+        clearTimeout(window.initMapTimeout);
+        console.log('✅ Google Maps 初始化成功');
+        window.originalInitMap();
+    };
+    
+    // API 載入錯誤處理
+    window.gm_authFailure = function() {
+        console.error('❌ Google Maps API Key 驗證失敗');
+        alert('❌ Google Maps API Key 無效，請聯絡管理員');
+    };
+</script>
+
+<!-- Google Maps API -->
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvpcEA4hfvIg9ddt0UadRLibxwsORPVe4&callback=initMap&loading=async&libraries=marker&v=3.55"></script>
+
+</body>
+</html>
