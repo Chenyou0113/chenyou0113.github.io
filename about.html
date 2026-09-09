@@ -4,209 +4,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>關於我 | C. Y.</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --accent-color: #3498db;
-            --bg-color: #f8f9fa;
-            --text-color: #333;
-        }
-
-        body {
-            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            margin-left: 220px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate {
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 3rem 1rem;
-            text-align: center;
-        }
-
-        nav {
-            background: var(--primary-color);
-            padding: 0;
-            margin: 0;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 220px;
-            height: 100vh;
-            overflow-y: auto;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-        }
-
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        nav li {
-            margin: 0;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 15px 20px;
-            display: block;
-            transition: 0.3s;
-            font-weight: 500;
-            border-left: 4px solid transparent;
-        }
-
-        nav a:hover {
-            background: var(--accent-color);
-            border-left-color: white;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-
-        .content-card {
-            background: white;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-
-        h1, h2 {
-            color: var(--primary-color);
-        }
-
-        h2 {
-            margin-top: 30px;
-            border-bottom: 3px solid var(--accent-color);
-            padding-bottom: 10px;
-        }
-
-        .timeline {
-            position: relative;
-            padding: 20px 0;
-        }
-
-        .timeline-item {
-            padding: 20px;
-            border-left: 4px solid var(--accent-color);
-            margin-left: 20px;
-            margin-bottom: 20px;
-            background: #f0f8ff;
-            border-radius: 5px;
-        }
-
-        .timeline-item h3 {
-            margin: 0 0 5px 0;
-            color: var(--accent-color);
-        }
-
-        .timeline-item p {
-            margin: 5px 0;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: #888;
-            background: white;
-            margin-top: 50px;
-        }
-
-        @media (max-width: 600px) {
-            .container { margin-top: 20px; }
-            nav ul { flex-direction: column; }
-            nav a { padding: 10px; }
-        }
-    </style>
+    <meta name="description" content="了解 C.Y. 的背景歷程、技術技能樹與核心理念。">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <header>
-        <h1>關於我</h1>
+    <!-- 極光環境光暈與網格背景 -->
+    <div class="aurora-bg">
+        <div class="aurora-blob aurora-blob-1"></div>
+        <div class="aurora-blob aurora-blob-2"></div>
+        <div class="aurora-blob aurora-blob-3"></div>
+    </div>
+    <div class="grid-overlay"></div>
+
+    <!-- 頂部浮動膠囊導覽列 -->
+    <header class="nav-header">
+        <nav class="nav-capsule">
+            <a href="index.html" class="nav-brand">
+                <span class="nav-brand-dot"></span>
+                <span>C. Y.</span>
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="nav-link">首頁</a></li>
+                <li><a href="about.html" class="nav-link active">關於我</a></li>
+                <li><a href="projects.html" class="nav-link">專案作品</a></li>
+                <li><a href="bus-liveboard.html" class="nav-link">公車看板</a></li>
+                <li><a href="friends.html" class="nav-link">友站連結</a></li>
+                <li><a href="contact.html" class="nav-link">聯絡我</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="切換主題" title="切換深淺模式">
+                </button>
+                <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="開啟選單">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </nav>
     </header>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">首頁</a></li>
-            <li><a href="about.html">關於我</a></li>
-            <li><a href="projects.html">專案</a></li>
-            <li><a href="friends.html">朋友友站</a></li>
-            <li><a href="contact.html">聯絡我</a></li>
-        </ul>
-    </nav>
+    <main class="app-container">
 
-    <div class="container">
-        <div class="content-card animate">
-            <h1>👋 Hi there! 我是 C. Y.</h1>
-            <p>歡迎來到我的個人頁面！我是一位對科技充滿熱情的探索者，喜歡通過代碼創造有趣的東西。</p>
-
-            <h2>📚 我的背景</h2>
-            <p>我對編程和網頁開發有著濃厚的興趣。從最初接觸 HTML/CSS 開始，我不斷學習新的技術棧，包括 JavaScript、Python 等。我相信實踐是最好的老師，因此我不斷通過實際項目來提升自己的技能。</p>
-
-            <h2>🎯 我的興趣</h2>
-            <ul>
-                <li><strong>前端開發：</strong> 創建美觀且易用的網頁界面</li>
-                <li><strong>Python 編程：</strong> 解決實際問題，進行數據分析</li>
-                <li><strong>開源貢獻：</strong> 與社區共同進步</li>
-                <li><strong>自我學習：</strong> 持續探索新技術和最佳實踐</li>
-            </ul>
-
-            <h2>💡 我的技能</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h3>前端開發</h3>
-                    <p>HTML5, CSS3, JavaScript, 響應式設計</p>
+        <!-- 1. 關於我標題區 -->
+        <section class="glass-card hero-card reveal">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    <span>探索者 · 開發者 · 終身學習者</span>
                 </div>
-                <div class="timeline-item">
-                    <h3>後端技術</h3>
-                    <p>Python, 基本的數據爬蟲和處理</p>
+                <h1 class="hero-title">
+                    熱愛透過程式碼<br>
+                    將 <span class="text-gradient">想像化為現實</span>
+                </h1>
+                <p class="hero-description">
+                    嗨！我是 C.Y.，一位對現代網頁技術與自動化充滿熱忱的開發者。我喜歡研究簡潔俐落的 UI 設計、探索前端互動細節，並透過寫程式來解決日常中的實際問題。
+                </p>
+                <div class="tag-list" style="margin-top: 8px;">
+                    <span class="tag">💡 追求極簡代碼</span>
+                    <span class="tag">🚀 專注使用者體驗</span>
+                    <span class="tag">🔍 自主探索與實作</span>
                 </div>
-                <div class="timeline-item">
-                    <h3>版本控制</h3>
-                    <p>Git, GitHub, 日常開發工作流</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>其他工具</h3>
-                    <p>VS Code, 命令行, Markdown 文檔</p>
+            </div>
+            <div class="hero-avatar-wrapper">
+                <div class="hero-avatar-glow"></div>
+                <img src="https://avatars.githubusercontent.com/u/120460986?s=400&v=4" alt="C. Y. Avatar" class="hero-avatar">
+            </div>
+        </section>
+
+        <!-- 2. 技能樹模組分類 -->
+        <section>
+            <div class="section-header reveal">
+                <div class="section-title-wrap">
+                    <span class="section-subtitle">Skills & Technologies</span>
+                    <h2 class="section-title">技能領域分佈</h2>
                 </div>
             </div>
 
-            <h2>🌟 座右銘</h2>
-            <p><em>"Keep learning, keep coding, keep improving!"</em></p>
-            <p>我相信沒有人生來就是天才，但通過持續學習和練習，任何人都可以成為專家。</p>
+            <div class="bento-grid">
+                <!-- 前端技術 -->
+                <div class="col-6 reveal">
+                    <div class="glass-card" style="height: 100%;">
+                        <div class="project-icon-box" style="margin-bottom: 16px;">🌐</div>
+                        <h3 class="project-title" style="margin-bottom: 8px;">前端開發 (Frontend)</h3>
+                        <p class="project-desc" style="margin-bottom: 16px;">打造語意化、高性能且具備流暢互動的現代網頁介面：</p>
+                        <div class="tag-list">
+                            <span class="tag">HTML5 (語義化)</span>
+                            <span class="tag">CSS3 / Flexbox / Grid</span>
+                            <span class="tag">CSS Custom Properties</span>
+                            <span class="tag">JavaScript (ES6+)</span>
+                            <span class="tag">DOM API / Fetch API</span>
+                            <span class="tag">響應式設計 (RWD)</span>
+                            <span class="tag">Glassmorphism / Micro-motion</span>
+                        </div>
+                    </div>
+                </div>
 
-            <h2>📞 聯繫我</h2>
-            <p>如果你想與我交流、合作或只是打個招呼，歡迎通過以下方式聯繫：</p>
-            <ul>
-                <li>📧 Email: <a href="mailto:xiaoyouwu5@gmail.com">xiaoyouwu5@gmail.com</a></li>
-                <li>🔗 GitHub: <a href="https://github.com/Chenyou0113" target="_blank">Chenyou0113</a></li>
-            </ul>
+                <!-- 後端與腳本 -->
+                <div class="col-6 reveal">
+                    <div class="glass-card" style="height: 100%;">
+                        <div class="project-icon-box" style="margin-bottom: 16px;">🐍</div>
+                        <h3 class="project-title" style="margin-bottom: 8px;">後端與自動化 (Backend & Scripting)</h3>
+                        <p class="project-desc" style="margin-bottom: 16px;">自動化流程、資料擷取與 API 整合：</p>
+                        <div class="tag-list">
+                            <span class="tag">Python 基礎與腳本</span>
+                            <span class="tag">BeautifulSoup 網頁爬蟲</span>
+                            <span class="tag">Requests / 資料處理</span>
+                            <span class="tag">RESTful API 串接</span>
+                            <span class="tag">JSON 數據結構解析</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 工具與環境 -->
+                <div class="col-6 reveal">
+                    <div class="glass-card" style="height: 100%;">
+                        <div class="project-icon-box" style="margin-bottom: 16px;">🛠️</div>
+                        <h3 class="project-title" style="margin-bottom: 8px;">開發工具 (Tools & Workflow)</h3>
+                        <p class="project-desc" style="margin-bottom: 16px;">現代化開發流程與版本控制：</p>
+                        <div class="tag-list">
+                            <span class="tag">Git 版本控制</span>
+                            <span class="tag">GitHub / GitHub Pages</span>
+                            <span class="tag">VS Code / 終端環境</span>
+                            <span class="tag">Chrome DevTools 調校</span>
+                            <span class="tag">Markdown 文件撰寫</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 理念與座右銘 -->
+                <div class="col-6 reveal">
+                    <div class="glass-card" style="height: 100%;">
+                        <div class="project-icon-box" style="margin-bottom: 16px;">✨</div>
+                        <h3 class="project-title" style="margin-bottom: 8px;">座右銘與核心理念</h3>
+                        <p class="project-desc" style="margin-bottom: 16px; font-style: italic; color: var(--color-primary); font-size: 1.05rem;">
+                            「簡約是最高級的精緻（Simplicity is the ultimate sophistication）。」
+                        </p>
+                        <p class="project-desc">
+                            每一行代碼都應該有其存在的價值，每一個介面細節都應該為使用者的直覺感受而服務。在不斷變化的技術世界中，保持熱忱與好奇心。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 學習與成長時間軸 -->
+        <section>
+            <div class="section-header reveal">
+                <div class="section-title-wrap">
+                    <span class="section-subtitle">Roadmap & Journey</span>
+                    <h2 class="section-title">學習與歷程里程碑</h2>
+                </div>
+            </div>
+
+            <div class="glass-card reveal">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <span class="timeline-date">2024 — 現在</span>
+                        <h3 class="timeline-title">全端技術探索與個人網站重構</h3>
+                        <p class="timeline-desc">升級個人作品集至現代極簡與毛玻璃設計系統；開發公車即時動態看板與探索進階前後端整合技術。</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <span class="timeline-date">2023 — 2024</span>
+                        <h3 class="timeline-title">Python 自動化與數據擷取實踐</h3>
+                        <p class="timeline-desc">學習使用 Python 進行爬蟲、自動化小工具開發與資料分析，提升實務問題解決能力。</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <span class="timeline-date">起步階段</span>
+                        <h3 class="timeline-title">踏入程式設計與網頁開發領域</h3>
+                        <p class="timeline-desc">掌握 HTML、CSS 與 JavaScript 核心基礎，建立第一個部署於 GitHub Pages 的線上網站。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="site-footer">
+        <div>
+            &copy; 2026 C. Y. · Designed with Modern Editorial & Glassmorphism.
         </div>
-    </div>
-
-    <footer>
-        &copy; 2024 C. Y. Built with ❤️ on GitHub Pages.
+        <div class="footer-links">
+            <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+            <a href="projects.html" class="footer-link">專案</a>
+            <a href="contact.html" class="footer-link">聯絡</a>
+        </div>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>

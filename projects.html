@@ -3,314 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>專案 | C. Y.</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --accent-color: #3498db;
-            --bg-color: #f8f9fa;
-            --text-color: #333;
-        }
-
-        body {
-            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            margin-left: 220px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate {
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 3rem 1rem;
-            text-align: center;
-        }
-
-        nav {
-            background: var(--primary-color);
-            padding: 0;
-            margin: 0;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 220px;
-            height: 100vh;
-            overflow-y: auto;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-        }
-
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        nav li {
-            margin: 0;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 15px 20px;
-            display: block;
-            transition: 0.3s;
-            font-weight: 500;
-            border-left: 4px solid transparent;
-        }
-
-        nav a:hover {
-            background: var(--accent-color);
-            border-left-color: white;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-
-        h1, h2 {
-            color: var(--primary-color);
-        }
-
-        .section-title {
-            margin: 40px 0 20px;
-            text-align: center;
-            color: var(--primary-color);
-            font-size: 2em;
-            border-bottom: 3px solid var(--accent-color);
-            padding-bottom: 10px;
-        }
-
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border-top: 4px solid var(--accent-color);
-        }
-
-        .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-        }
-
-        .project-card h3 {
-            margin-top: 0;
-            color: var(--accent-color);
-            font-size: 1.3em;
-        }
-
-        .project-card .meta {
-            font-size: 0.85em;
-            color: #888;
-            margin-bottom: 10px;
-        }
-
-        .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 15px 0;
-        }
-
-        .tech-tag {
-            background: #e3f2fd;
-            color: #1976d2;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: 500;
-        }
-
-        .btn {
-            display: inline-block;
-            background: var(--accent-color);
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: 0.3s;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        .btn:hover {
-            background: #2980b9;
-            text-decoration: none;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: #888;
-            background: white;
-            margin-top: 50px;
-        }
-
-        @media (max-width: 900px) {
-            body { margin-left: 0; }
-            nav {
-                position: relative;
-                width: 100%;
-                height: auto;
-            }
-            nav ul {
-                flex-direction: row;
-                flex-wrap: wrap;
-                padding: 0;
-            }
-            nav a {
-                border-left: none;
-                border-bottom: 4px solid transparent;
-                padding: 10px 15px;
-            }
-            nav a:hover {
-                border-left: none;
-                border-bottom-color: white;
-            }
-            .container { margin-left: 0; }
-            .project-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    <title>專案作品 | C. Y.</title>
+    <meta name="description" content="瀏覽 C.Y. 的各項精選開發專案，包含前端應用、公車動態看板與 Python 數據工具。">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <header>
-        <h1>📁 我的專案</h1>
+    <!-- 極光環境光暈與網格背景 -->
+    <div class="aurora-bg">
+        <div class="aurora-blob aurora-blob-1"></div>
+        <div class="aurora-blob aurora-blob-2"></div>
+        <div class="aurora-blob aurora-blob-3"></div>
+    </div>
+    <div class="grid-overlay"></div>
+
+    <!-- 頂部浮動膠囊導覽列 -->
+    <header class="nav-header">
+        <nav class="nav-capsule">
+            <a href="index.html" class="nav-brand">
+                <span class="nav-brand-dot"></span>
+                <span>C. Y.</span>
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="nav-link">首頁</a></li>
+                <li><a href="about.html" class="nav-link">關於我</a></li>
+                <li><a href="projects.html" class="nav-link active">專案作品</a></li>
+                <li><a href="bus-liveboard.html" class="nav-link">公車看板</a></li>
+                <li><a href="friends.html" class="nav-link">友站連結</a></li>
+                <li><a href="contact.html" class="nav-link">聯絡我</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="切換主題" title="切換深淺模式">
+                </button>
+                <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="開啟選單">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </nav>
     </header>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">首頁</a></li>
-            <li><a href="about.html">關於我</a></li>
-            <li><a href="projects.html">專案</a></li>
-            <li><a href="friends.html">朋友友站</a></li>
-            <li><a href="contact.html">聯絡我</a></li>
-        </ul>
-    </nav>
+    <main class="app-container">
 
-    <div class="container">
-        <h2 class="section-title animate">我的開發專案</h2>
-
-        <div class="project-grid animate">
-            <!-- 項目 1 -->
-            <div class="project-card">
-                <h3>🌐 個人作品集網站</h3>
-                <div class="meta">2024年 | 個人項目</div>
-                <p>使用 HTML5 和 CSS3 構建的個人簡介網站，部署在 GitHub Pages 上。展示基礎前端開發能力。</p>
-                <div class="tech-tags">
-                    <span class="tech-tag">HTML5</span>
-                    <span class="tech-tag">CSS3</span>
-                    <span class="tech-tag">GitHub Pages</span>
-                </div>
-                <p>✨ 特點：響應式設計 | 現代 UI/UX | 動畫效果</p>
-                <a href="https://github.com/Chenyou0113" class="btn" target="_blank">查看代碼</a>
+        <!-- 1. 頁面標題 -->
+        <section class="reveal">
+            <div class="section-title-wrap" style="text-align: center; margin-bottom: 24px;">
+                <span class="section-subtitle">Portfolio & Works</span>
+                <h1 class="hero-title" style="font-size: 2.6rem;">專案作品展示</h1>
+                <p class="hero-description" style="margin: 8px auto 0;">
+                    這裡收錄了我開發與維護的網頁應用、實用工具及探索性項目。
+                </p>
             </div>
 
-            <!-- 項目 2 -->
-            <div class="project-card">
-                <h3>✅ 待辦清單應用</h3>
-                <div class="meta">開發中 | 學習項目</div>
-                <p>使用 JavaScript 構建的交互式待辦清單，支持本地存儲和實時更新。用於練習 DOM 操作和事件處理。</p>
-                <div class="tech-tags">
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">DOM API</span>
-                    <span class="tech-tag">LocalStorage</span>
+            <!-- 分類篩選 Tab -->
+            <div class="filter-container" style="justify-content: center;">
+                <button class="filter-btn active" data-filter="all">全部專案 (All)</button>
+                <button class="filter-btn" data-filter="frontend">前端應用 (Frontend)</button>
+                <button class="filter-btn" data-filter="tools">實用小品 (Tools)</button>
+                <button class="filter-btn" data-filter="python">Python 數據 (Python)</button>
+            </div>
+        </section>
+
+        <!-- 2. 專案網格 -->
+        <section class="bento-grid">
+
+            <!-- 專案 1：公車即時看板 -->
+            <div class="col-6 filterable-project reveal" data-category="frontend">
+                <div class="glass-card project-card">
+                    <div>
+                        <div class="project-card-header">
+                            <div class="project-icon-box">🚌</div>
+                            <span class="project-status">Live Demo</span>
+                        </div>
+                        <h3 class="project-title">公車動態即時看板 (Bus Liveboard)</h3>
+                        <p class="project-desc">
+                            即時查詢雙北公車與公路客運預估到站時間、發車時刻表與路線圖。採用低延遲資料更新與高對比資訊看板排版。
+                        </p>
+                        <div class="tag-list" style="margin-top: 14px;">
+                            <span class="tag tag-mono">HTML5 / CSS3</span>
+                            <span class="tag tag-mono">Vanilla JS</span>
+                            <span class="tag tag-mono">Open API</span>
+                        </div>
+                    </div>
+                    <div class="project-footer">
+                        <div class="project-links">
+                            <a href="bus-liveboard.html" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.85rem;">
+                                <span>立即體驗</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--color-text-muted);">2024 更新</span>
+                    </div>
                 </div>
-                <p>✨ 特點：添加/刪除任務 | 標記完成 | 數據持久化</p>
-                <a href="#" class="btn" style="opacity: 0.6; cursor: not-allowed;">敬請期待</a>
             </div>
 
-            <!-- 項目 3 -->
-            <div class="project-card">
-                <h3>🔍 網頁數據爬蟲</h3>
-                <div class="meta">開發中 | 學習項目</div>
-                <p>使用 Python 進行網頁爬蟲的實踐項目，學習數據提取和基本分析，了解網絡請求和數據處理。</p>
-                <div class="tech-tags">
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">BeautifulSoup</span>
-                    <span class="tech-tag">Pandas</span>
+            <!-- 專案 2：個人作品集網站 -->
+            <div class="col-6 filterable-project reveal" data-category="frontend">
+                <div class="glass-card project-card">
+                    <div>
+                        <div class="project-card-header">
+                            <div class="project-icon-box">✨</div>
+                            <span class="project-status">已發布</span>
+                        </div>
+                        <h3 class="project-title">個人作品集網站 (Portfolio V2)</h3>
+                        <p class="project-desc">
+                            融合瑞士極簡編排（Editorial Layout）與輕奢毛玻璃微光（Glassmorphism）的現代化個人網站，支援深淺色雙模式切換。
+                        </p>
+                        <div class="tag-list" style="margin-top: 14px;">
+                            <span class="tag tag-mono">Design System</span>
+                            <span class="tag tag-mono">CSS Variables</span>
+                            <span class="tag tag-mono">GitHub Pages</span>
+                        </div>
+                    </div>
+                    <div class="project-footer">
+                        <div class="project-links">
+                            <a href="index.html" class="project-link-btn">
+                                <span>首頁檢視</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                            <a href="https://github.com/Chenyou0113/chenyou0113.github.io" target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                                <span>GitHub 倉庫</span>
+                            </a>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--color-text-muted);">2026 全新重構</span>
+                    </div>
                 </div>
-                <p>✨ 特點：數據提取 | 清洗 | 基本分析</p>
-                <a href="#" class="btn" style="opacity: 0.6; cursor: not-allowed;">敬請期待</a>
             </div>
 
-            <!-- 項目 4 -->
-            <div class="project-card">
-                <h3>🛠️ 計算器工具</h3>
-                <div class="meta">計劃中 | 學習項目</div>
-                <p>構建一個功能完整的 Web 計算器，支持基本運算和高級函數計算，展示 JavaScript 的數值運算能力。</p>
-                <div class="tech-tags">
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">CSS Grid</span>
-                    <span class="tech-tag">Responsive</span>
+            <!-- 專案 3：待辦任務管理清單 -->
+            <div class="col-6 filterable-project reveal" data-category="tools">
+                <div class="glass-card project-card">
+                    <div>
+                        <div class="project-card-header">
+                            <div class="project-icon-box">📝</div>
+                            <span class="project-status">實用工具</span>
+                        </div>
+                        <h3 class="project-title">待辦清單小工具 (Todo Master)</h3>
+                        <p class="project-desc">
+                            輕量高效的每日待辦管理工具，具備分類標籤、優先級排序、打勾完成動畫與本機資料持久化。
+                        </p>
+                        <div class="tag-list" style="margin-top: 14px;">
+                            <span class="tag tag-mono">JavaScript DOM</span>
+                            <span class="tag tag-mono">LocalStorage</span>
+                            <span class="tag tag-mono">Micro-interactions</span>
+                        </div>
+                    </div>
+                    <div class="project-footer">
+                        <div class="project-links">
+                            <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                                <span>查看代碼</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--color-text-muted);">前端練手</span>
+                    </div>
                 </div>
-                <p>✨ 特點：實時計算 | 歷史記錄 | 響應式設計</p>
-                <a href="#" class="btn" style="opacity: 0.6; cursor: not-allowed;">敬請期待</a>
             </div>
 
-            <!-- 項目 5 -->
-            <div class="project-card">
-                <h3>🎨 配色方案生成器</h3>
-                <div class="meta">計劃中 | 工具項目</div>
-                <p>一個幫助設計師快速生成配色方案的工具，支持隨機生成、色系推薦和導出功能。</p>
-                <div class="tech-tags">
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">Color API</span>
-                    <span class="tech-tag">UI Design</span>
+            <!-- 專案 4：Python 數據爬蟲 -->
+            <div class="col-6 filterable-project reveal" data-category="python">
+                <div class="glass-card project-card">
+                    <div>
+                        <div class="project-card-header">
+                            <div class="project-icon-box">📊</div>
+                            <span class="project-status wip">進行中</span>
+                        </div>
+                        <h3 class="project-title">Python 網路數據採集器 (Data Scraper)</h3>
+                        <p class="project-desc">
+                            針對特定公開資訊站點進行自動化爬取、資料清洗與結構化輸出（JSON / CSV），用於分析趨勢。
+                        </p>
+                        <div class="tag-list" style="margin-top: 14px;">
+                            <span class="tag tag-mono">Python 3</span>
+                            <span class="tag tag-mono">BeautifulSoup4</span>
+                            <span class="tag tag-mono">Requests</span>
+                        </div>
+                    </div>
+                    <div class="project-footer">
+                        <div class="project-links">
+                            <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                                <span>GitHub 追蹤</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--color-text-muted);">後端腳本</span>
+                    </div>
                 </div>
-                <p>✨ 特點：隨機生成 | 導出支持 | 配色建議</p>
-                <a href="#" class="btn" style="opacity: 0.6; cursor: not-allowed;">敬請期待</a>
             </div>
 
-            <!-- 項目 6 -->
-            <div class="project-card">
-                <h3>📚 學習筆記系統</h3>
-                <div class="meta">計劃中 | 個人工具</div>
-                <p>一個簡單的筆記管理系統，支持分類、搜索和標籤功能。用於個人學習和知識管理。</p>
-                <div class="tech-tags">
-                    <span class="tech-tag">HTML/CSS</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">Storage</span>
-                </div>
-                <p>✨ 特點：分類管理 | 全文搜索 | 數據同步</p>
-                <a href="#" class="btn" style="opacity: 0.6; cursor: not-allowed;">敬請期待</a>
-            </div>
+        </section>
+
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="site-footer">
+        <div>
+            &copy; 2026 C. Y. · Designed with Modern Editorial & Glassmorphism.
         </div>
-
-        <div style="background: white; padding: 30px; border-radius: 12px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-            <h3>🚀 更多項目開發中...</h3>
-            <p>我正在持續學習新技術，並不斷創造有趣的項目。敬請期待！</p>
-            <a href="https://github.com/Chenyou0113" class="btn" target="_blank">訪問我的 GitHub</a>
+        <div class="footer-links">
+            <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+            <a href="about.html" class="footer-link">關於</a>
+            <a href="contact.html" class="footer-link">聯絡</a>
         </div>
-    </div>
-
-    <footer>
-        &copy; 2024 C. Y. Built with ❤️ on GitHub Pages.
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>

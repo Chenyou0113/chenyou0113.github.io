@@ -3,429 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>朋友友站 | C. Y.</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --accent-color: #3498db;
-            --bg-color: #f8f9fa;
-            --text-color: #333;
-        }
-
-        body {
-            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            margin-left: 220px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate {
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 3rem 1rem;
-            text-align: center;
-        }
-
-        nav {
-            background: var(--primary-color);
-            padding: 0;
-            margin: 0;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 220px;
-            height: 100vh;
-            overflow-y: auto;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-        }
-
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        nav li {
-            margin: 0;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 15px 20px;
-            display: block;
-            transition: 0.3s;
-            font-weight: 500;
-            border-left: 4px solid transparent;
-        }
-
-        nav a:hover {
-            background: var(--accent-color);
-            border-left-color: white;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-
-        h1, h2 {
-            color: var(--primary-color);
-        }
-
-        .intro-card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        .section-title {
-            margin: 40px 0 20px;
-            text-align: center;
-            color: var(--primary-color);
-            font-size: 2em;
-            border-bottom: 3px solid var(--accent-color);
-            padding-bottom: 10px;
-        }
-
-        .friends-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-
-        .friend-card {
-            background: white;
-            border-radius: 12px;
-            padding: 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            overflow: hidden;
-            border-top: 4px solid var(--accent-color);
-        }
-
-        .friend-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-        }
-
-        .friend-header {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .friend-name {
-            font-size: 1.4em;
-            margin: 0;
-            font-weight: bold;
-        }
-
-        .friend-title {
-            margin: 5px 0 0 0;
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-
-        .friend-content {
-            padding: 20px;
-        }
-
-        .friend-content p {
-            margin: 10px 0;
-            font-size: 0.95em;
-            line-height: 1.5;
-        }
-
-        .friend-skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 15px 0;
-        }
-
-        .skill-badge {
-            background: #f0f0f0;
-            color: #333;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            font-weight: 500;
-        }
-
-        .friend-links {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .friend-link {
-            display: inline-block;
-            background: var(--accent-color);
-            color: white;
-            padding: 8px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: 0.3s;
-            font-weight: 500;
-            font-size: 0.9em;
-        }
-
-        .friend-link:hover {
-            background: #2980b9;
-            text-decoration: none;
-        }
-
-        .add-friend {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border: 2px dashed var(--accent-color);
-        }
-
-        .add-friend h3 {
-            color: var(--accent-color);
-            margin-top: 0;
-        }
-
-        .add-friend p {
-            color: #666;
-            margin: 15px 0;
-        }
-
-        .add-btn {
-            background: var(--accent-color);
-            color: white;
-            padding: 12px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: 0.3s;
-            font-weight: bold;
-            display: inline-block;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        .add-btn:hover {
-            background: #2980b9;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: #888;
-            background: white;
-            margin-top: 50px;
-        }
-
-        @media (max-width: 900px) {
-            body { margin-left: 0; }
-            nav {
-                position: relative;
-                width: 100%;
-                height: auto;
-            }
-            nav ul {
-                flex-direction: row;
-                flex-wrap: wrap;
-                padding: 0;
-            }
-            nav a {
-                border-left: none;
-                border-bottom: 4px solid transparent;
-                padding: 10px 15px;
-            }
-            nav a:hover {
-                border-left: none;
-                border-bottom-color: white;
-            }
-            .container { margin-left: 0; }
-            .friends-grid { grid-template-columns: 1fr; }
-            .friend-links { flex-direction: column; }
-            .friend-link { width: 100%; text-align: center; }
-        }
-    </style>
+    <title>友站連結 | C. Y.</title>
+    <meta name="description" content="C.Y. 的朋友與優秀開發者、創作者的友站連結牆。">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <header>
-        <h1>🤝 朋友友站</h1>
+    <!-- 極光環境光暈與網格背景 -->
+    <div class="aurora-bg">
+        <div class="aurora-blob aurora-blob-1"></div>
+        <div class="aurora-blob aurora-blob-2"></div>
+        <div class="aurora-blob aurora-blob-3"></div>
+    </div>
+    <div class="grid-overlay"></div>
+
+    <!-- 頂部浮動膠囊導覽列 -->
+    <header class="nav-header">
+        <nav class="nav-capsule">
+            <a href="index.html" class="nav-brand">
+                <span class="nav-brand-dot"></span>
+                <span>C. Y.</span>
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="nav-link">首頁</a></li>
+                <li><a href="about.html" class="nav-link">關於我</a></li>
+                <li><a href="projects.html" class="nav-link">專案作品</a></li>
+                <li><a href="bus-liveboard.html" class="nav-link">公車看板</a></li>
+                <li><a href="friends.html" class="nav-link active">友站連結</a></li>
+                <li><a href="contact.html" class="nav-link">聯絡我</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="切換主題" title="切換深淺模式">
+                </button>
+                <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="開啟選單">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </nav>
     </header>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">首頁</a></li>
-            <li><a href="about.html">關於我</a></li>
-            <li><a href="projects.html">專案</a></li>
-            <li><a href="friends.html">朋友友站</a></li>
-            <li><a href="contact.html">聯絡我</a></li>
-        </ul>
-    </nav>
+    <main class="app-container">
 
-    <div class="container">
-        <div class="intro-card animate">
-            <h2>我的朋友們</h2>
-            <p>這是一個展示我認識的優秀開發者、創意人和志同道合朋友的頁面。如果你是我的朋友，也歡迎在這裡推薦你的網站或作品！</p>
+        <!-- 1. 頁面標題區 -->
+        <section class="reveal">
+            <div class="section-title-wrap" style="text-align: center; margin-bottom: 24px;">
+                <span class="section-subtitle">Community & Friends</span>
+                <h1 class="hero-title" style="font-size: 2.6rem;">同行夥伴與友站</h1>
+                <p class="hero-description" style="margin: 8px auto 0;">
+                    這裡收錄了志同道合的開發者、設計師與創意創作者的個人作品與網站。
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. 友站卡片 Bento Grid -->
+        <section class="bento-grid">
+
+            <!-- 友站 1 -->
+            <div class="col-4 reveal">
+                <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+                            <div class="project-icon-box" style="font-size: 1.2rem;">👨‍💻</div>
+                            <div>
+                                <h3 class="project-title" style="margin: 0; font-size: 1.15rem;">Alex Zhang</h3>
+                                <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">全端開發者</span>
+                            </div>
+                        </div>
+                        <p class="project-desc">專注於 React 與 Node.js 全端架構開發，熱衷參與開源社群與系統設計。</p>
+                        <div class="tag-list" style="margin-top: 14px;">
+                            <span class="tag tag-mono">React</span>
+                            <span class="tag tag-mono">Node.js</span>
+                            <span class="tag tag-mono">Python</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle); display: flex; gap: 12px;">
+                        <a href="#" class="project-link-btn">訪問站點 →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 友站 2 -->
+            <div class="col-4 reveal">
+                <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+                            <div class="project-icon-box" style="font-size: 1.2rem;">🎨</div>
+                            <div>
+                                <h3 class="project-title" style="margin: 0; font-size: 1.15rem;">Lisa Wang</h3>
+                                <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">UI/UX 設計師</span>
+                            </div>
+                        </div>
+                        <p class="project-desc">致力於創造精緻細膩的用戶界面與品牌識別，兼具美學思維與工程互動理解。</p>
+                        <div class="tag-list" style="margin-top: 14px;">
+                            <span class="tag tag-mono">Figma</span>
+                            <span class="tag tag-mono">Design System</span>
+                            <span class="tag tag-mono">Branding</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle); display: flex; gap: 12px;">
+                        <a href="#" class="project-link-btn">作品集 →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 友站 3 -->
+            <div class="col-4 reveal">
+                <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+                            <div class="project-icon-box" style="font-size: 1.2rem;">🤖</div>
+                            <div>
+                                <h3 class="project-title" style="margin: 0; font-size: 1.15rem;">Chen Ming</h3>
+                                <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">數據科學家</span>
+                            </div>
+                        </div>
+                        <p class="project-desc">專注於機器學習模型實踐與數據可視化，致力於將 AI 轉化為實務應用價值。</p>
+                        <div class="tag-list" style="margin-top: 14px;">
+                            <span class="tag tag-mono">Python</span>
+                            <span class="tag tag-mono">TensorFlow</span>
+                            <span class="tag tag-mono">Data AI</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle); display: flex; gap: 12px;">
+                        <a href="#" class="project-link-btn">技術博客 →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 友站 4 -->
+            <div class="col-4 reveal">
+                <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+                            <div class="project-icon-box" style="font-size: 1.2rem;">☁️</div>
+                            <div>
+                                <h3 class="project-title" style="margin: 0; font-size: 1.15rem;">Emma Davis</h3>
+                                <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">DevOps 工程師</span>
+                            </div>
+                        </div>
+                        <p class="project-desc">擅長雲端架構、自動化 CI/CD 管道與容器化部署，打造高可用系統。</p>
+                        <div class="tag-list" style="margin-top: 14px;">
+                            <span class="tag tag-mono">Docker</span>
+                            <span class="tag tag-mono">Kubernetes</span>
+                            <span class="tag tag-mono">AWS</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle); display: flex; gap: 12px;">
+                        <a href="#" class="project-link-btn">訪問站點 →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 友站 5 -->
+            <div class="col-4 reveal">
+                <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+                            <div class="project-icon-box" style="font-size: 1.2rem;">📱</div>
+                            <div>
+                                <h3 class="project-title" style="margin: 0; font-size: 1.15rem;">James Johnson</h3>
+                                <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">移動端開發者</span>
+                            </div>
+                        </div>
+                        <p class="project-desc">熱愛 Flutter 與原生應用開發，對行動端使用者體驗有著極致的追求。</p>
+                        <div class="tag-list" style="margin-top: 14px;">
+                            <span class="tag tag-mono">Flutter</span>
+                            <span class="tag tag-mono">Dart</span>
+                            <span class="tag tag-mono">iOS / Android</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle); display: flex; gap: 12px;">
+                        <a href="#" class="project-link-btn">App 展示 →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 友站 6 -->
+            <div class="col-4 reveal">
+                <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+                            <div class="project-icon-box" style="font-size: 1.2rem;">✍️</div>
+                            <div>
+                                <h3 class="project-title" style="margin: 0; font-size: 1.15rem;">Sarah Chen</h3>
+                                <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">技術寫作者</span>
+                            </div>
+                        </div>
+                        <p class="project-desc">透過淺顯易懂的文字與實戰教學幫助開發者快速上手新技術，熱愛分享。</p>
+                        <div class="tag-list" style="margin-top: 14px;">
+                            <span class="tag tag-mono">Technical Writing</span>
+                            <span class="tag tag-mono">Tutorials</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle); display: flex; gap: 12px;">
+                        <a href="#" class="project-link-btn">訪問專欄 →</a>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 3. 申請加入友站卡片 -->
+        <section class="glass-card reveal" style="text-align: center; padding: 48px 24px;">
+            <div style="max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px;">
+                <span class="section-subtitle">Join the Network</span>
+                <h2 class="section-title">想要交換友鏈或加入友站牆？</h2>
+                <p class="hero-description">如果你也有自己的個人網站、技術部落格或作品集，非常歡迎與我聯繫交換友鏈！</p>
+                <div style="display: flex; gap: 14px; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
+                    <a href="mailto:xiaoyouwu5@gmail.com" class="btn btn-primary">
+                        <span>📧 寄信申請友鏈</span>
+                    </a>
+                    <button class="btn btn-secondary" data-copy="xiaoyouwu5@gmail.com">
+                        <span>複製 Email</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="site-footer">
+        <div>
+            &copy; 2026 C. Y. · Designed with Modern Editorial & Glassmorphism.
         </div>
-
-        <h2 class="section-title animate">友站列表</h2>
-
-        <div class="friends-grid animate">
-            <!-- 友站示例 1 -->
-            <div class="friend-card">
-                <div class="friend-header">
-                    <h3 class="friend-name">Alex Zhang</h3>
-                    <p class="friend-title">全棧開發者 | 開源愛好者</p>
-                </div>
-                <div class="friend-content">
-                    <p>專注於 React 和 Node.js 開發，對開源社區有著深厚的貢獻。</p>
-                    <div class="friend-skills">
-                        <span class="skill-badge">React</span>
-                        <span class="skill-badge">Node.js</span>
-                        <span class="skill-badge">Python</span>
-                    </div>
-                    <div class="friend-links">
-                        <a href="#" class="friend-link">訪問網站</a>
-                        <a href="#" class="friend-link">GitHub</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 友站示例 2 -->
-            <div class="friend-card">
-                <div class="friend-header">
-                    <h3 class="friend-name">Lisa Wang</h3>
-                    <p class="friend-title">UI/UX 設計師 | 創意工作者</p>
-                </div>
-                <div class="friend-content">
-                    <p>設計精美的用戶界面，熱愛創意設計和品牌建設。</p>
-                    <div class="friend-skills">
-                        <span class="skill-badge">Figma</span>
-                        <span class="skill-badge">UI Design</span>
-                        <span class="skill-badge">Branding</span>
-                    </div>
-                    <div class="friend-links">
-                        <a href="#" class="friend-link">訪問網站</a>
-                        <a href="#" class="friend-link">作品集</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 友站示例 3 -->
-            <div class="friend-card">
-                <div class="friend-header">
-                    <h3 class="friend-name">Chen Ming</h3>
-                    <p class="friend-title">數據科學家 | AI 愛好者</p>
-                </div>
-                <div class="friend-content">
-                    <p>專注於機器學習和數據分析，致力於將 AI 應用到實際問題。</p>
-                    <div class="friend-skills">
-                        <span class="skill-badge">Python</span>
-                        <span class="skill-badge">TensorFlow</span>
-                        <span class="skill-badge">Data Science</span>
-                    </div>
-                    <div class="friend-links">
-                        <a href="#" class="friend-link">訪問網站</a>
-                        <a href="#" class="friend-link">GitHub</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 友站示例 4 -->
-            <div class="friend-card">
-                <div class="friend-header">
-                    <h3 class="friend-name">Emma Davis</h3>
-                    <p class="friend-title">DevOps 工程師 | 系統設計師</p>
-                </div>
-                <div class="friend-content">
-                    <p>擅長雲計算和系統架構，幫助團隊構建高效的基礎設施。</p>
-                    <div class="friend-skills">
-                        <span class="skill-badge">Docker</span>
-                        <span class="skill-badge">Kubernetes</span>
-                        <span class="skill-badge">AWS</span>
-                    </div>
-                    <div class="friend-links">
-                        <a href="#" class="friend-link">訪問網站</a>
-                        <a href="#" class="friend-link">技術博客</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 友站示例 5 -->
-            <div class="friend-card">
-                <div class="friend-header">
-                    <h3 class="friend-name">James Johnson</h3>
-                    <p class="friend-title">移動開發者 | Flutter 專家</p>
-                </div>
-                <div class="friend-content">
-                    <p>開發高效的跨平台移動應用，對用戶體驗有著執著的追求。</p>
-                    <div class="friend-skills">
-                        <span class="skill-badge">Flutter</span>
-                        <span class="skill-badge">Dart</span>
-                        <span class="skill-badge">Mobile Dev</span>
-                    </div>
-                    <div class="friend-links">
-                        <a href="#" class="friend-link">訪問網站</a>
-                        <a href="#" class="friend-link">App Showcase</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 友站示例 6 -->
-            <div class="friend-card">
-                <div class="friend-header">
-                    <h3 class="friend-name">Sarah Chen</h3>
-                    <p class="friend-title">技術寫手 | 教育家</p>
-                </div>
-                <div class="friend-content">
-                    <p>通過文字和教程幫助人們學習技術，熱愛分享知識。</p>
-                    <div class="friend-skills">
-                        <span class="skill-badge">技術寫作</span>
-                        <span class="skill-badge">教學</span>
-                        <span class="skill-badge">GitHub</span>
-                    </div>
-                    <div class="friend-links">
-                        <a href="#" class="friend-link">訪問博客</a>
-                        <a href="#" class="friend-link">課程</a>
-                    </div>
-                </div>
-            </div>
+        <div class="footer-links">
+            <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+            <a href="projects.html" class="footer-link">專案</a>
+            <a href="contact.html" class="footer-link">聯絡</a>
         </div>
-
-        <div class="add-friend animate">
-            <h3>🌟 想要加入我的友站列表？</h3>
-            <p>如果你有自己的網站、博客或作品集，歡迎與我分享！</p>
-            <p>你可以通過 Email 或 GitHub 聯繫我，告訴我你的項目信息，我很樂意加入你的友站。</p>
-            <a href="mailto:xiaoyouwu5@gmail.com" class="add-btn">📧 發送郵件</a>
-        </div>
-    </div>
-
-    <footer>
-        &copy; 2024 C. Y. Built with ❤️ on GitHub Pages.
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
