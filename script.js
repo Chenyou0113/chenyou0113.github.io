@@ -18,21 +18,12 @@ function initThemeToggle() {
     const toggleBtn = document.getElementById('theme-toggle');
     if (!toggleBtn) return;
 
-    // 檢查 LocalStorage 或系統設定
+    // 檢查 LocalStorage（若無儲存，一律預設為淺色模式）
     const savedTheme = localStorage.getItem('cy_theme');
-    const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || 'light';
     
-    // 設定初始主題
-    if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateToggleIcon(savedTheme);
-    } else if (systemPrefersDark) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        updateToggleIcon('dark');
-    } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        updateToggleIcon('light');
-    }
+    document.documentElement.setAttribute('data-theme', initialTheme);
+    updateToggleIcon(initialTheme);
 
     // 點擊切換
     toggleBtn.addEventListener('click', () => {

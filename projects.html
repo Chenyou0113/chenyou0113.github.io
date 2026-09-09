@@ -28,7 +28,7 @@
                 <li><a href="index.html" class="nav-link">首頁</a></li>
                 <li><a href="about.html" class="nav-link">關於我</a></li>
                 <li><a href="projects.html" class="nav-link active">專案作品</a></li>
-                <li><a href="bus-liveboard.html" class="nav-link">公車看板</a></li>
+                <li><a href="https://www.weacamm.org/bus-liveboard" target="_blank" rel="noopener noreferrer" class="nav-link">公車看板 ↗</a></li>
                 <li><a href="friends.html" class="nav-link">友站連結</a></li>
                 <li><a href="contact.html" class="nav-link">聯絡我</a></li>
             </ul>
@@ -58,9 +58,10 @@
                 </p>
             </div>
 
-            <!-- 分類篩選 Tab -->
+            <!-- 篩選分類增加 -->
             <div class="filter-container" style="justify-content: center;">
                 <button class="filter-btn active" data-filter="all">全部專案 (All)</button>
+                <button class="filter-btn" data-filter="flagship">旗艦監控 (Flagship)</button>
                 <button class="filter-btn" data-filter="frontend">前端應用 (Frontend)</button>
                 <button class="filter-btn" data-filter="tools">實用小品 (Tools)</button>
                 <button class="filter-btn" data-filter="python">Python 數據 (Python)</button>
@@ -69,6 +70,66 @@
 
         <!-- 2. 專案網格 -->
         <section class="bento-grid">
+
+            <!-- 旗艦專案 0：Road-Camera 台灣智慧交通與環境防災全方位監控系統 (col-12 全寬卡片) -->
+            <div class="col-12 filterable-project reveal" data-category="flagship">
+                <div class="glass-card project-card" style="background: linear-gradient(135deg, var(--color-surface-glass), rgba(var(--color-primary-rgb), 0.08)); border: 1.5px solid rgba(var(--color-primary-rgb), 0.35);">
+                    <div>
+                        <div class="project-card-header">
+                            <div style="display: flex; align-items: center; gap: 14px;">
+                                <div class="project-icon-box" style="width: 54px; height: 54px; font-size: 1.6rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(6, 182, 212, 0.25));">
+                                    🇹🇼
+                                </div>
+                                <div>
+                                    <h3 class="project-title" style="font-size: 1.45rem; margin: 0;">台灣智慧交通與環境防災全方位監控系統</h3>
+                                    <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-primary); font-weight: 600;">Taiwan Intelligent Traffic & Environment Monitor (Flagship Edition)</span>
+                                </div>
+                            </div>
+                            <span class="project-status" style="background: rgba(99, 102, 241, 0.2); color: var(--color-primary); border-color: rgba(99, 102, 241, 0.4); font-size: 0.82rem; padding: 6px 14px;">
+                                🌟 旗艦巨型系統
+                            </span>
+                        </div>
+
+                        <p class="project-desc" style="font-size: 1rem; margin-top: 14px; line-height: 1.7;">
+                            整合全台灣多源開放資料（TDX、高公局、公路局、中央氣象署 CWA、水利署 WRA）的一站式智慧交通、軌道運輸、海空航運與環境防災即時監控平台。全站採用現代高質感響應式架構，後端搭載 Cloudflare Workers 邊緣微服務與 D1 分散式資料庫快取聚合。
+                        </p>
+
+                        <!-- 六大模組一覽 -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 18px 0; padding: 16px; background: rgba(var(--color-primary-rgb), 0.04); border-radius: var(--radius-md); border: 1px solid var(--color-border-subtle);">
+                            <div style="font-size: 0.88rem;">🚄 <strong>軌道運輸</strong>：台鐵/高鐵/六大捷運 PIDS & 即時看板</div>
+                            <div style="font-size: 0.88rem;">📹 <strong>路況影像</strong>：國道/省道/17縣市道路即時 CCTV</div>
+                            <div style="font-size: 0.88rem;">🚌 <strong>公路與市區</strong>：全台公車即時動態 & YouBike 2.0</div>
+                            <div style="font-size: 0.88rem;">✈️ <strong>海空航運</strong>：全台機場 FIDS 航班 & 船舶 AIS 軌跡</div>
+                            <div style="font-size: 0.88rem;">⛈️ <strong>氣象防災</strong>：雷達雲圖、地震速報、水庫與淹水感測</div>
+                            <div style="font-size: 0.88rem;">⚡ <strong>邊緣運算</strong>：14+ 個 Cloudflare Workers 微服務模組</div>
+                        </div>
+
+                        <div class="tag-list">
+                            <span class="tag tag-mono">Cloudflare Workers</span>
+                            <span class="tag tag-mono">Cloudflare D1</span>
+                            <span class="tag tag-mono">TDX Open Data</span>
+                            <span class="tag tag-mono">CWA Weather API</span>
+                            <span class="tag tag-mono">CCTV Streaming</span>
+                            <span class="tag tag-mono">GIS / Leaflet</span>
+                            <span class="tag tag-mono">Vanilla JS ES6+</span>
+                            <span class="tag tag-mono">PIDS Simulation</span>
+                        </div>
+                    </div>
+
+                    <div class="project-footer" style="margin-top: 20px; padding-top: 16px;">
+                        <div class="project-links" style="gap: 16px; flex-wrap: wrap;">
+                            <a href="https://www.weacamm.org/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                                <span>🌐 立即造訪正式站點 (www.weacamm.org)</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </a>
+                            <a href="https://github.com/Chenyou0113/Road-Camera" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                                <span>GitHub 開源倉庫</span>
+                            </a>
+                        </div>
+                        <span style="font-size: 0.85rem; color: var(--color-primary); font-weight: 600;">50+ 監控子頁面 · 正式上線中</span>
+                    </div>
+                </div>
+            </div>
 
             <!-- 專案 1：公車即時看板 -->
             <div class="col-6 filterable-project reveal" data-category="frontend">
@@ -90,12 +151,15 @@
                     </div>
                     <div class="project-footer">
                         <div class="project-links">
-                            <a href="bus-liveboard.html" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.85rem;">
-                                <span>立即體驗</span>
+                            <a href="https://www.weacamm.org/bus-liveboard" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.85rem;">
+                                <span>🌐 線上即時體驗</span>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                             </a>
+                            <a href="bus-liveboard.html" class="project-link-btn" style="font-size: 0.82rem;">
+                                <span>本地預覽</span>
+                            </a>
                         </div>
-                        <span style="font-size: 0.8rem; color: var(--color-text-muted);">2024 更新</span>
+                        <span style="font-size: 0.8rem; color: var(--color-text-muted);">www.weacamm.org</span>
                     </div>
                 </div>
             </div>
