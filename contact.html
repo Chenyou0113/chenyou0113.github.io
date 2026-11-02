@@ -1,171 +1,144 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>聯絡我 | C. Y.</title>
-    <meta name="description" content="與 C.Y. 取得聯繫，展開技術交流或專案合作。">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>聯絡 — C. Y.</title>
+  <meta name="description" content="寫信給承祐。交通資料、前端、合作或只是打招呼都可以。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="paper.css">
 </head>
 <body>
 
-    <!-- 極光環境光暈與網格背景 -->
-    <div class="aurora-bg">
-        <div class="aurora-blob aurora-blob-1"></div>
-        <div class="aurora-blob aurora-blob-2"></div>
-        <div class="aurora-blob aurora-blob-3"></div>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">C. Y.</span>
+        <span class="brand-name">承祐</span>
+      </a>
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="index.html" class="nav-link">首頁</a>
+        <a href="about.html" class="nav-link">關於</a>
+        <a href="projects.html" class="nav-link">專案</a>
+        <a href="blog.html" class="nav-link">文章</a>
+        <a href="friends.html" class="nav-link">友站</a>
+        <a href="contact.html" class="nav-link active">聯絡</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
     </div>
-    <div class="grid-overlay"></div>
+  </header>
 
-    <!-- 頂部浮動膠囊導覽列 -->
-    <header class="nav-header">
-        <nav class="nav-capsule">
-            <a href="index.html" class="nav-brand">
-                <span class="nav-brand-dot"></span>
-                <span>C. Y.</span>
-            </a>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="index.html" class="nav-link">首頁</a></li>
-                <li><a href="about.html" class="nav-link">關於我</a></li>
-                <li><a href="projects.html" class="nav-link">專案作品</a></li>
-                <li><a href="https://www.weacamm.org/bus-liveboard" target="_blank" rel="noopener noreferrer" class="nav-link">公車看板 ↗</a></li>
-                <li><a href="friends.html" class="nav-link">友站連結</a></li>
-                <li><a href="contact.html" class="nav-link active">聯絡我</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button id="theme-toggle" class="theme-toggle-btn" aria-label="切換主題" title="切換深淺模式">
-                </button>
-                <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="開啟選單">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-        </nav>
-    </header>
+  <main class="page">
 
-    <main class="app-container">
+    <div class="blog-head reveal">
+      <p class="eyebrow">聯絡</p>
+      <h1 class="blog-title">寫信給我</h1>
+      <p class="blog-sub">
+        交通資料、前端實作、合作提案，或者只是想聊火車，都歡迎。
+        我通常兩三天內回，忙的時候會晚一點。
+      </p>
+    </div>
 
-        <!-- 1. 頁面標題區 -->
-        <section class="reveal">
-            <div class="section-title-wrap" style="text-align: center; margin-bottom: 24px;">
-                <span class="section-subtitle">Get in Touch</span>
-                <h1 class="hero-title" style="font-size: 2.6rem;">保持聯繫與合作交流</h1>
-                <p class="hero-description" style="margin: 8px auto 0;">
-                    無論是有趣的技術探討、專案合作提議或只是打個招呼，都非常歡迎與我聯繫！
-                </p>
-            </div>
-        </section>
+    <div style="display: grid; grid-template-columns: 1.6fr 1fr; gap: 1px; background: var(--rule); border-top: 1px solid var(--rule);" class="contact-grid">
 
-        <!-- 2. 聯絡表單與資訊 Bento Grid -->
-        <section class="bento-grid">
+      <!-- 表單 -->
+      <div style="background: var(--paper); padding: 48px 0 60px; padding-right: 40px;" class="contact-form-wrap">
+        <p class="mono" style="color: var(--ink-faint); margin: 0 0 28px;">FORM</p>
 
-            <!-- 聯絡表單 (col-7) -->
-            <div class="col-7 reveal">
-                <div class="glass-card">
-                    <h3 class="project-title" style="margin-bottom: 20px;">發送即時訊息</h3>
-                    <form id="contact-form">
-                        <div class="form-group">
-                            <label for="name" class="form-label">您的稱呼 / 姓名</label>
-                            <input type="text" id="name" class="form-input" placeholder="例如：Alex Lin" required>
-                        </div>
+        <form id="contact-form">
+          <div class="field">
+            <label for="name" class="field-label">怎麼稱呼</label>
+            <input type="text" id="name" name="name" class="field-input" placeholder="你的名字" required>
+          </div>
 
-                        <div class="form-group">
-                            <label for="email" class="form-label">電子郵件信箱</label>
-                            <input type="email" id="email" class="form-input" placeholder="例如：your-email@example.com" required>
-                        </div>
+          <div class="field">
+            <label for="email" class="field-label">電子郵件</label>
+            <input type="email" id="email" name="email" class="field-input" placeholder="you@example.com" required>
+            <p class="field-help">只會用來回覆這封信。</p>
+          </div>
 
-                        <div class="form-group">
-                            <label for="subject" class="form-label">主題</label>
-                            <input type="text" id="subject" class="form-input" placeholder="例如：關於網站專案合作洽詢" required>
-                        </div>
+          <div class="field">
+            <label for="subject" class="field-label">主題</label>
+            <input type="text" id="subject" name="subject" class="field-input" placeholder="例如：想聊聊 TDX 資料的處理方式" required>
+          </div>
 
-                        <div class="form-group">
-                            <label for="message" class="form-label">訊息內容</label>
-                            <textarea id="message" class="form-textarea" placeholder="請填寫您想說的話或專案需求..." required></textarea>
-                        </div>
+          <div class="field">
+            <label for="message" class="field-label">內容</label>
+            <textarea id="message" name="message" class="field-textarea" rows="7" placeholder="想說的話…" required></textarea>
+          </div>
 
-                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
-                            <span>送出訊息</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                        </button>
-                    </form>
-                </div>
-            </div>
+          <button type="submit" class="btn btn-primary">送出</button>
 
-            <!-- 快速聯絡方式卡片 (col-5) -->
-            <div class="col-5 reveal" style="display: flex; flex-direction: column; gap: 24px;">
+          <p class="field-help" style="margin-top: 16px;">
+            這個表單目前是示範模式，不會真的寄出。要確保收到訊息，請直接用右邊的信箱。
+          </p>
+        </form>
+      </div>
 
-                <!-- Email 卡片 -->
-                <div class="glass-card" style="display: flex; flex-direction: column; gap: 14px;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="project-icon-box" style="font-size: 1.2rem;">📧</div>
-                        <div>
-                            <h4 style="font-size: 1.05rem; margin: 0;">電子郵件</h4>
-                            <span style="font-size: 0.85rem; color: var(--color-text-muted);">最快的回覆管道</span>
-                        </div>
-                    </div>
-                    <p style="font-family: var(--font-mono); font-size: 0.95rem; color: var(--color-primary); font-weight: 600;">
-                        xiaoyouwu5@gmail.com
-                    </p>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn btn-secondary" style="flex: 1; padding: 8px 14px; font-size: 0.85rem;" data-copy="xiaoyouwu5@gmail.com">
-                            複製 Email
-                        </button>
-                        <a href="mailto:xiaoyouwu5@gmail.com" class="btn btn-primary" style="flex: 1; padding: 8px 14px; font-size: 0.85rem;">
-                            直接寄信
-                        </a>
-                    </div>
-                </div>
+      <!-- 聯絡資訊 -->
+      <div style="background: var(--paper); padding: 48px 0 60px; padding-left: 40px;" class="contact-info">
+        <div style="margin-bottom: 48px;">
+          <p class="mono" style="color: var(--ink-faint); margin: 0 0 10px;">EMAIL</p>
+          <a href="mailto:xiaoyouwu5@gmail.com" style="font-size: 1.05rem; color: var(--accent); border-bottom: 1px solid var(--rule-strong); padding-bottom: 2px;">
+            xiaoyouwu5@gmail.com
+          </a>
+          <div style="margin-top: 16px;">
+            <button class="btn btn-secondary" data-copy="xiaoyouwu5@gmail.com" style="padding: 9px 16px; font-size: 13px;">複製</button>
+          </div>
+        </div>
 
-                <!-- GitHub 卡片 -->
-                <div class="glass-card" style="display: flex; flex-direction: column; gap: 14px;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="project-icon-box" style="font-size: 1.2rem;">🐙</div>
-                        <div>
-                            <h4 style="font-size: 1.05rem; margin: 0;">GitHub 程式碼倉庫</h4>
-                            <span style="font-size: 0.85rem; color: var(--color-text-muted);">查看開源專案與代碼</span>
-                        </div>
-                    </div>
-                    <p style="font-family: var(--font-mono); font-size: 0.95rem; color: var(--color-text-main);">
-                        @Chenyou0113
-                    </p>
-                    <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="width: 100%; padding: 8px 14px; font-size: 0.85rem;">
-                        瀏覽 GitHub Profile →
-                    </a>
-                </div>
+        <div style="margin-bottom: 48px;">
+          <p class="mono" style="color: var(--ink-faint); margin: 0 0 10px;">GITHUB</p>
+          <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" style="font-size: 1.05rem; color: var(--accent); border-bottom: 1px solid var(--rule-strong); padding-bottom: 2px;">
+            @Chenyou0113
+          </a>
+          <p style="font-size: 0.9rem; color: var(--ink-muted); margin: 12px 0 0;">
+            開源專案與程式碼都在這裡。
+          </p>
+        </div>
 
-                <!-- 回覆時間承諾卡片 -->
-                <div class="glass-card" style="background: rgba(var(--color-primary-rgb), 0.05); border-color: rgba(var(--color-primary-rgb), 0.2);">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                        <span style="font-size: 1.2rem;">⏱️</span>
-                        <h4 style="font-size: 0.95rem; margin: 0;">回覆時間</h4>
-                    </div>
-                    <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6;">
-                        通常在 24 ~ 48 小時內回覆所有來自郵件與表單的訊息。感謝您的耐心等候！
-                    </p>
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-    <!-- 頁尾 -->
-    <footer class="site-footer">
         <div>
-            &copy; 2026 C. Y. · Designed with Modern Editorial & Glassmorphism.
+          <p class="mono" style="color: var(--ink-faint); margin: 0 0 10px;">回覆時間</p>
+          <p style="font-size: 0.95rem; color: var(--ink-soft); margin: 0;">
+            通常 2–3 天。如果是急事，主旨寫清楚，我會優先看。
+          </p>
         </div>
-        <div class="footer-links">
-            <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
-            <a href="about.html" class="footer-link">關於</a>
-            <a href="projects.html" class="footer-link">專案</a>
-        </div>
-    </footer>
+      </div>
 
-    <script src="script.js"></script>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 C. Y.</span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="blog.html" class="footer-link">文章</a>
+        <a href="friends.html" class="footer-link">友站</a>
+        <a href="index.html" class="footer-link">首頁</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

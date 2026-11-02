@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章 — C. Y.</title>
+  <meta name="description" content="網域基礎設施、交通開放資料、鐵道觀察與日常自動化的筆記。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="paper.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">C. Y.</span>
+        <span class="brand-name">承祐</span>
+      </a>
+
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="index.html" class="nav-link">首頁</a>
+        <a href="about.html" class="nav-link">關於</a>
+        <a href="projects.html" class="nav-link">專案</a>
+        <a href="blog.html" class="nav-link active">文章</a>
+        <a href="friends.html" class="nav-link">友站</a>
+        <a href="contact.html" class="nav-link">聯絡</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <div class="blog-head reveal">
+      <p class="eyebrow">文章</p>
+      <h1 class="blog-title">寫下來的東西</h1>
+      <p class="blog-sub">
+        網域基礎設施的調整、交通開放資料的整理、鐵道相關的觀察，還有一些日常自動化。
+        不定期更新，通常是有話想說的時候。
+      </p>
+    </div>
+
+    <div class="filter-bar reveal" id="filter-bar" aria-label="依標籤篩選">
+      <!-- 由 script.js 依文章標籤自動生成 -->
+    </div>
+
+    <ul class="post-list reveal" id="post-list">
+
+      <li class="post-item" data-tags="Cloudflare 網域 基礎設施">
+        <span class="post-date">2026.10.26</span>
+        <div>
+          <h2 class="post-title"><a href="posts/infra-cloudflare-weacamm.html">從零調整 weacamm.org：網域基礎設施與 Cloudflare 的日常微調</a></h2>
+          <p class="post-summary">DNS、SSL/TLS、Page Rules，還有那些文件沒寫但會咬人的細節。</p>
+          <div class="post-tags">
+            <span class="chip">Cloudflare</span>
+            <span class="chip">網域</span>
+            <span class="chip">基礎設施</span>
+          </div>
+        </div>
+        <span class="post-arrow">→</span>
+      </li>
+
+      <li class="post-item" data-tags="鐵道 開放資料">
+        <span class="post-date">2026.09.14</span>
+        <div>
+          <h2 class="post-title"><a href="posts/railway-data-observation.html">鐵道旅行與時刻資料：日常交通觀察的數位實踐</a></h2>
+          <p class="post-summary">從月台上的一張時刻表，到電腦裡的一份 JSON。</p>
+          <div class="post-tags">
+            <span class="chip">鐵道</span>
+            <span class="chip">開放資料</span>
+          </div>
+        </div>
+        <span class="post-arrow">→</span>
+      </li>
+
+      <li class="post-item" data-tags="自動化 GitHub Actions">
+        <span class="post-date">2026.08.30</span>
+        <div>
+          <h2 class="post-title"><a href="posts/lightweight-automation-daily.html">給生活加一點自動化：用輕量工具解決日常瑣事</a></h2>
+          <p class="post-summary">不求龐大系統，只用最精簡的腳本，把重複的事交給機器。</p>
+          <div class="post-tags">
+            <span class="chip">自動化</span>
+            <span class="chip">GitHub Actions</span>
+          </div>
+        </div>
+        <span class="post-arrow">→</span>
+      </li>
+
+    </ul>
+
+    <p class="empty-state" id="empty-state" hidden>這個標籤下還沒有文章。</p>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 陳佑 · 手寫 HTML，沒有框架</span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="index.html" class="footer-link">首頁</a>
+        <a href="friends.html" class="footer-link">友站</a>
+        <a href="contact.html" class="footer-link">聯絡</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

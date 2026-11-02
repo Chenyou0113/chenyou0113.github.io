@@ -1,252 +1,297 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C. Y. | 現代軟體開發 & 個人作品集</title>
-    <meta name="description" content="C.Y. 的個人作品集網站，探索前端開發、Python 數據工具與現代化軟體設計。">
-    <!-- 引入核心設計系統 -->
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C. Y. — 網域、交通資料與一些雜記</title>
+  <meta name="description" content="C. Y. 的個人網站。在花蓮唸書，維護無聊買來的網域基礎設施，整理交通開放資料，寫一些自動化腳本。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="paper.css">
 </head>
 <body>
 
-    <!-- 極光環境光暈與網格背景 -->
-    <div class="aurora-bg">
-        <div class="aurora-blob aurora-blob-1"></div>
-        <div class="aurora-blob aurora-blob-2"></div>
-        <div class="aurora-blob aurora-blob-3"></div>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">C. Y.</span>
+        <span class="brand-name">承祐</span>
+      </a>
+
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="index.html" class="nav-link active">首頁</a>
+        <a href="about.html" class="nav-link">關於</a>
+        <a href="projects.html" class="nav-link">專案</a>
+        <a href="blog.html" class="nav-link">文章</a>
+        <a href="friends.html" class="nav-link">友站</a>
+        <a href="contact.html" class="nav-link">聯絡</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
     </div>
-    <div class="grid-overlay"></div>
+  </header>
 
-    <!-- 頂部浮動膠囊導覽列 -->
-    <header class="nav-header">
-        <nav class="nav-capsule">
-            <a href="index.html" class="nav-brand">
-                <span class="nav-brand-dot"></span>
-                <span>C. Y.</span>
-            </a>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="index.html" class="nav-link active">首頁</a></li>
-                <li><a href="about.html" class="nav-link">關於我</a></li>
-                <li><a href="projects.html" class="nav-link">專案作品</a></li>
-                <li><a href="https://www.weacamm.org/bus-liveboard" target="_blank" rel="noopener noreferrer" class="nav-link">公車看板 ↗</a></li>
-                <li><a href="friends.html" class="nav-link">友站連結</a></li>
-                <li><a href="contact.html" class="nav-link">聯絡我</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button id="theme-toggle" class="theme-toggle-btn" aria-label="切換主題" title="切換深淺模式">
-                    <!-- 圖示由 JS 動態生成 -->
-                </button>
-                <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="開啟選單">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-        </nav>
-    </header>
+  <main class="page">
 
-    <!-- 主要內容區 -->
-    <main class="app-container">
+    <!-- 開場 -->
+    <section class="lede reveal">
+      <p class="eyebrow">花蓮 · 台灣</p>
 
-        <!-- 1. Hero 區塊 -->
-        <section class="glass-card hero-card reveal">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <span class="hero-badge-dot"></span>
-                    <span>持續探索與建構中 · Open to Learn</span>
-                </div>
-                <h1 class="hero-title">
-                    你好，我是 <span class="text-gradient">C. Y.</span><br>
-                    熱衷於打造優雅且實用的數位體驗。
-                </h1>
-                <p class="hero-description">
-                    專注於前端現代化介面開發、Python 自動化工具與探索技術邊界。秉持極簡、流暢與以人為本的設計理念，將想法轉化為高品質的程式作品。
-                </p>
-                <div class="hero-actions">
-                    <a href="projects.html" class="btn btn-primary">
-                        <span>瀏覽作品集</span>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
-                    <button class="btn btn-secondary" data-copy="xiaoyouwu5@gmail.com" title="點擊複製 Email">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        <span>複製 Email</span>
-                    </button>
-                    <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-icon" title="查看 GitHub 檔案">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                    </a>
-                </div>
-            </div>
-            <div class="hero-avatar-wrapper">
-                <div class="hero-avatar-glow"></div>
-                <img src="https://avatars.githubusercontent.com/u/120460986?s=400&v=4" alt="C. Y. Avatar" class="hero-avatar">
-            </div>
-        </section>
+      <h1 class="lede-title">
+        在花蓮唸書，課餘時間<em>整理網域、讀時刻表、寫點自動化</em>。
+      </h1>
 
-        <!-- 2. Bento Grid 展區 -->
-        <section>
-            <div class="section-header reveal">
-                <div class="section-title-wrap">
-                    <span class="section-subtitle">Highlights</span>
-                    <h2 class="section-title">精選專案與技術矩陣</h2>
-                </div>
-                <a href="projects.html" class="section-more-link">
-                    <span>查看所有專案</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </a>
-            </div>
+      <p class="lede-text">
+        維護無聊買來的網域與 Cloudflare 基礎設施，也在 GitHub 上放一些開源專案與自動化腳本。
+        對鐵道與大眾運輸的資料特別有興趣，喜歡把散亂的時刻與路線整理成看得懂的樣子。
+      </p>
 
-            <div class="bento-grid">
-                <!-- 旗艦專案 (Road-Camera 全方位監控系統) -->
-                <div class="col-8 reveal">
-                    <div class="glass-card project-card" style="background: linear-gradient(135deg, var(--color-surface-glass), rgba(var(--color-primary-rgb), 0.05)); border-color: rgba(var(--color-primary-rgb), 0.3);">
-                        <div class="project-card-header">
-                            <div class="project-icon-box" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(6, 182, 212, 0.2));">🇹🇼</div>
-                            <span class="project-status" style="background: rgba(99, 102, 241, 0.15); color: var(--color-primary); border-color: rgba(99, 102, 241, 0.3);">旗艦專案 · Flagship</span>
-                        </div>
-                        <div>
-                            <h3 class="project-title" style="font-size: 1.4rem;">台灣智慧交通與環境防災全方位監控系統</h3>
-                            <p class="project-desc">
-                                整合全台多源 Open Data 的一站式監控平台：涵蓋軌道運輸（台鐵/高鐵/捷運 PIDS）、全台 17 縣市道路 CCTV、公車客運、YouBike、航空航運與氣象地震水情防災中心。後端搭載 Cloudflare Workers 邊緣微服務。
-                            </p>
-                            <div class="tag-list" style="margin-top: 14px;">
-                                <span class="tag tag-mono">Cloudflare Workers</span>
-                                <span class="tag tag-mono">TDX / CWA API</span>
-                                <span class="tag tag-mono">CCTV Streaming</span>
-                                <span class="tag tag-mono">PIDS 看板系統</span>
-                                <span class="tag tag-mono">GIS 地圖</span>
-                            </div>
-                        </div>
-                        <div class="project-footer">
-                            <div class="project-links">
-                                <a href="https://www.weacamm.org/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.88rem;">
-                                    <span>🌐 線上即時體驗 (Live Demo)</span>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                                </a>
-                                <a href="https://github.com/Chenyou0113/Road-Camera" target="_blank" rel="noopener noreferrer" class="project-link-btn">
-                                    <span>GitHub 倉庫</span>
-                                </a>
-                                <a href="projects.html" class="project-link-btn">
-                                    <span>詳細模組</span>
-                                </a>
-                            </div>
-                            <span style="font-size: 0.8rem; color: var(--color-text-muted);">www.weacamm.org</span>
-                        </div>
-                    </div>
-                </div>
+      <p class="lede-text">
+        這裡放開發筆記、鐵道觀察，還有一些日常雜想。
+      </p>
 
-                <!-- 技能矩陣卡片 -->
-                <div class="col-4 reveal">
-                    <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div>
-                            <div class="project-icon-box" style="margin-bottom: 16px;">⚡</div>
-                            <h3 class="project-title" style="margin-bottom: 8px;">核心技術棧</h3>
-                            <p class="project-desc" style="margin-bottom: 16px;">專注即時資料架構與現代全端技術：</p>
-                            <div class="tag-list">
-                                <span class="tag">JavaScript (ES6+)</span>
-                                <span class="tag">Cloudflare Workers</span>
-                                <span class="tag">Cloudflare D1</span>
-                                <span class="tag">Open Data / TDX API</span>
-                                <span class="tag">HTML5 & CSS3 RWD</span>
-                                <span class="tag">Python 爬蟲自動化</span>
-                                <span class="tag">Git & CI/CD</span>
-                            </div>
-                        </div>
-                        <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle);">
-                            <a href="about.html" class="section-more-link" style="font-size: 0.85rem;">查看完整技術檔案 →</a>
-                        </div>
-                    </div>
-                </div>
+      <p class="lede-now">
+        <span class="mono">現在</span>
+        正在調整 weacamm.org 的 DNS 與快取規則，順便把幾條本機跑的腳本搬到 GitHub Actions。
+      </p>
 
-                <!-- 專案 2 (BusTally) -->
-                <div class="col-6 reveal">
-                    <div class="glass-card project-card">
-                        <div class="project-card-header">
-                            <div class="project-icon-box">📊</div>
-                            <span class="project-status">數據統計</span>
-                        </div>
-                        <div>
-                            <h3 class="project-title">BusTally (公車營運與旅運統計工具)</h3>
-                            <p class="project-desc">專注於公車班次記錄、乘客流量與路線營運數據統計分析的前端工具，提供視覺化圖表與明細管理。</p>
-                            <div class="tag-list" style="margin-top: 14px;">
-                                <span class="tag tag-mono">JavaScript</span>
-                                <span class="tag tag-mono">Data Analytics</span>
-                                <span class="tag tag-mono">UI/UX</span>
-                            </div>
-                        </div>
-                        <div class="project-footer">
-                            <div class="project-links">
-                                <a href="https://bustally.weacamm.org/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 6px 16px; font-size: 0.85rem;">
-                                    <span>🌐 線上使用</span>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                                </a>
-                                <a href="projects.html" class="project-link-btn">
-                                    <span>專案詳情</span>
-                                </a>
-                            </div>
-                            <span style="font-size: 0.8rem; color: var(--color-text-muted);">bustally.weacamm.org</span>
-                        </div>
-                    </div>
-                </div>
+      <div class="actions">
+        <a href="projects.html" class="btn btn-primary">
+          看專案
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <a href="blog.html" class="btn btn-secondary">讀文章</a>
+        <button class="btn btn-secondary" data-copy="xiaoyouwu5@gmail.com" title="點擊複製 Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="1"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          複製信箱
+        </button>
+      </div>
+    </section>
 
-                <!-- 專案 3 (Discord-bot / cy bot) -->
-                <div class="col-6 reveal">
-                    <div class="glass-card project-card">
-                        <div class="project-card-header">
-                            <div class="project-icon-box">🤖</div>
-                            <span class="project-status">Python Bot</span>
-                        </div>
-                        <div>
-                            <h3 class="project-title">Discord-bot (cy bot)</h3>
-                            <p class="project-desc">基於 Python 開發的 Discord 智慧互動機器人，具備社群自動化管理、實用工具指令、事件監聽與即時反饋功能。</p>
-                            <div class="tag-list" style="margin-top: 14px;">
-                                <span class="tag tag-mono">Python</span>
-                                <span class="tag tag-mono">discord.py</span>
-                                <span class="tag tag-mono">Automation</span>
-                            </div>
-                        </div>
-                        <div class="project-footer">
-                            <a href="projects.html" class="project-link-btn">
-                                <span>專案詳情</span>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                            </a>
-                            <span style="font-size: 0.8rem; color: var(--color-text-muted);">MIT License</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- 01 現在 -->
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h2 class="section-title">現在</h2>
+        <span class="section-note">Updated 2026.11</span>
+      </div>
 
-        <!-- 3. 快速聯絡 Call to Action 卡片 -->
-        <section class="glass-card reveal" style="text-align: center; padding: 48px 24px; position: relative; overflow: hidden;">
-            <div style="max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px;">
-                <span class="section-subtitle">Get in Touch</span>
-                <h2 class="section-title">想交流技術或展開合作？</h2>
-                <p class="hero-description">隨時歡迎透過電子郵件或社群平台與我聯絡，期待與同好共同探討有趣的點子！</p>
-                <div style="display: flex; gap: 14px; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
-                    <a href="contact.html" class="btn btn-primary">填寫聯絡表單</a>
-                    <a href="mailto:xiaoyouwu5@gmail.com" class="btn btn-secondary">發送郵件</a>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- 頁尾 -->
-    <footer class="site-footer">
-        <div>
-            &copy; 2026 C. Y. · Designed with Modern Editorial & Glassmorphism.
+      <div class="now-list">
+        <div class="now-item">
+          <span class="now-label">正在做</span>
+          <p class="now-value">
+            維護個人網域與基礎設施（Cloudflare、weacamm.org），並持續練習與優化 GitHub 上的開源專案與自動化腳本。
+          </p>
         </div>
-        <div class="footer-links">
-            <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
-            <a href="about.html" class="footer-link">關於</a>
-            <a href="contact.html" class="footer-link">聯絡</a>
-        </div>
-    </footer>
 
-    <!-- 引入核心腳本 -->
-    <script src="script.js"></script>
+        <div class="now-item">
+          <span class="now-label">正在讀</span>
+          <p class="now-value">
+            閱讀鐵道與交通運輸相關的技術書籍，研究大眾運輸時刻與地理資料的開放格式。
+          </p>
+        </div>
+
+        <div class="now-item">
+          <span class="now-label">最近在想</span>
+          <p class="now-value">
+            如何在日常生活的各個微小環節中，透過輕量級工具減少繁瑣流程，
+            並保留對實體世界與軌道旅行的觀察與記錄。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 精選作品 -->
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <h2 class="section-title">精選作品</h2>
+        <a href="projects.html" class="section-note">全部專案 →</a>
+      </div>
+
+      <ul class="work-list">
+        <li class="work-item work-item--lead">
+          <a href="https://www.weacamm.org/" target="_blank" rel="noopener noreferrer" class="work-link">
+            <span class="work-index">01 / 旗艦</span>
+            <h3 class="work-title">台灣智慧交通與環境防災全方位監控系統</h3>
+            <p class="work-desc">
+              把散在十幾個政府網站的即時資料收在同一個畫面。軌道運輸 PIDS、全台 17 縣市道路 CCTV、
+              公車客運、YouBike、航空航運，加上氣象、地震、水情。後端是 Cloudflare Workers
+              的邊緣微服務，各自負責一種資料源，失敗時互不影響。
+            </p>
+            <div class="work-meta">
+              <span class="chip">Cloudflare Workers</span>
+              <span class="chip">TDX API</span>
+              <span class="chip">CCTV 串流代理</span>
+              <span class="chip">GIS</span>
+            </div>
+            <span class="work-cta">weacamm.org →</span>
+          </a>
+        </li>
+
+        <li class="work-item">
+          <a href="https://bustally.weacamm.org/" target="_blank" rel="noopener noreferrer" class="work-link">
+            <span class="work-index">02</span>
+            <h3 class="work-title">BusTally</h3>
+            <p class="work-desc">
+              公車班次與客流的統計工具。原本是為了記錄自己通勤的路線才寫的。
+            </p>
+            <div class="work-meta">
+              <span class="chip">JavaScript</span>
+              <span class="chip">資料視覺化</span>
+            </div>
+            <span class="work-cta">bustally.weacamm.org →</span>
+          </a>
+        </li>
+
+        <li class="work-item">
+          <a href="projects.html" class="work-link">
+            <span class="work-index">03</span>
+            <h3 class="work-title">cy bot</h3>
+            <p class="work-desc">
+              Python 寫的 Discord 機器人。社群管理指令、事件監聽，還有幾個只有我們那群人在用的工具。
+            </p>
+            <div class="work-meta">
+              <span class="chip">Python</span>
+              <span class="chip">discord.py</span>
+            </div>
+            <span class="work-cta">看說明 →</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 03 值得一讀 -->
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">03</span>
+        <h2 class="section-title">值得一讀</h2>
+        <a href="blog.html" class="section-note">全部文章 →</a>
+      </div>
+
+      <ul class="post-list" id="home-posts">
+        <li class="post-item">
+          <span class="post-date">2026.10.26</span>
+          <div>
+            <h3 class="post-title"><a href="posts/infra-cloudflare-weacamm.html">從零調整 weacamm.org：網域基礎設施與 Cloudflare 的日常微調</a></h3>
+            <p class="post-summary">DNS、SSL/TLS、Page Rules，還有那些文件沒寫但會咬人的細節。</p>
+          </div>
+          <span class="post-arrow">→</span>
+        </li>
+        <li class="post-item">
+          <span class="post-date">2026.09.14</span>
+          <div>
+            <h3 class="post-title"><a href="posts/railway-data-observation.html">鐵道旅行與時刻資料：日常交通觀察的數位實踐</a></h3>
+            <p class="post-summary">從月台上的一張時刻表，到電腦裡的一份 JSON。</p>
+          </div>
+          <span class="post-arrow">→</span>
+        </li>
+        <li class="post-item">
+          <span class="post-date">2026.08.30</span>
+          <div>
+            <h3 class="post-title"><a href="posts/lightweight-automation-daily.html">給生活加一點自動化：用輕量工具解決日常瑣事</a></h3>
+            <p class="post-summary">不求龐大系統，只用最精簡的腳本，把重複的事交給機器。</p>
+          </div>
+          <span class="post-arrow">→</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 04 軌跡 -->
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">04</span>
+        <h2 class="section-title">軌跡</h2>
+        <span class="section-note">開發與旅行混在一起</span>
+      </div>
+
+      <ul class="trail">
+        <li class="trail-item">
+          <span class="trail-date">2026.11</span>
+          <div>
+            <h3 class="trail-title">網站改成紙張版</h3>
+            <p class="trail-text">把原本的玻璃擬態整站換掉，加了文章區。順手把舊的樣式檔清乾淨。</p>
+          </div>
+        </li>
+        <li class="trail-item">
+          <span class="trail-date">2026</span>
+          <div>
+            <h3 class="trail-title">重新整理 weacamm.org 的基礎設施</h3>
+            <p class="trail-text">DNS 記錄、憑證、快取規則全部重看一遍，把能交給 Cloudflare 的事情交出去。</p>
+          </div>
+        </li>
+        <li class="trail-item">
+          <span class="trail-date">2025</span>
+          <div>
+            <h3 class="trail-title">開始系統性地整理交通資料</h3>
+            <p class="trail-text">從單純查班次，變成會去讀開放資料的規格文件，理解每個欄位的意思。</p>
+          </div>
+        </li>
+        <li class="trail-item">
+          <span class="trail-date">2024</span>
+          <div>
+            <h3 class="trail-title">監控平台上線</h3>
+            <p class="trail-text">整合 TDX、高公局、公路局、CWA、WRA 的即時資料，從單頁地圖長成現在的樣子。</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 05 聯絡 -->
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">05</span>
+        <h2 class="section-title">聯絡</h2>
+      </div>
+
+      <p class="lede-text" style="margin-bottom: 8px;">
+        有問題、想合作，或者只是想聊交通資料，都歡迎寫信。我通常兩三天內回。
+      </p>
+
+      <div class="actions">
+        <a href="mailto:xiaoyouwu5@gmail.com" class="btn btn-primary">xiaoyouwu5@gmail.com</a>
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub</a>
+        <a href="contact.html" class="btn btn-secondary">表單</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 C.Y. </span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="blog.html" class="footer-link">文章</a>
+        <a href="friends.html" class="footer-link">友站</a>
+        <a href="contact.html" class="footer-link">聯絡</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

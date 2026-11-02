@@ -1,0 +1,139 @@
+<!--
+  文章模板使用說明
+  -----------------
+  1. 複製此檔到 posts/<slug>.html
+  2. 替換 title / description / datetime / 標題 / 內文
+  3. 更新 prev-next 的連結
+  4. 在 blog.html 加一筆 <li class="post-item" data-tags="標籤1 標籤2">
+  5. 在 posts.json 加一筆資料（給首頁與搜尋用）
+-->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章標題 — C. Y.</title>
+  <meta name="description" content="一句話摘要。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="../paper.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <span class="brand-mark">CY</span>
+        <span class="brand-name">陳佑</span>
+      </a>
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="../index.html" class="nav-link">首頁</a>
+        <a href="../about.html" class="nav-link">關於</a>
+        <a href="../projects.html" class="nav-link">專案</a>
+        <a href="../blog.html" class="nav-link active">文章</a>
+        <a href="../friends.html" class="nav-link">友站</a>
+        <a href="../contact.html" class="nav-link">聯絡</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="article">
+
+      <a href="../blog.html" class="article-back">← 回文章列表</a>
+
+      <header class="article-head">
+        <div class="article-meta">
+          <time datetime="2026-01-01">2026.01.01</time>
+          <span class="sep">/</span>
+          <span>標籤一 · 標籤二</span>
+          <span class="sep">/</span>
+          <span>約 5 分鐘</span>
+        </div>
+        <h1 class="article-title">文章標題</h1>
+        <p class="article-lede">一句話說明這篇在講什麼，讓讀者決定要不要往下讀。</p>
+      </header>
+
+      <!-- 有兩個以上 h2 時才放目錄 -->
+      <div class="toc">
+        <p class="toc-label">目錄</p>
+        <ol>
+          <li><a href="#section-1">第一節</a></li>
+          <li><a href="#section-2">第二節</a></li>
+        </ol>
+      </div>
+
+      <div class="prose">
+
+        <h2 id="section-1">第一節</h2>
+
+        <p>段落。程式碼用 <code>行內程式碼</code>，區塊用 pre + code。</p>
+
+        <pre><code>console.log('hello');</code></pre>
+
+        <blockquote>
+          <p>引言放在這裡。</p>
+        </blockquote>
+
+        <h2 id="section-2">第二節</h2>
+
+        <p>第二段內容。</p>
+
+        <ul>
+          <li>清單項目</li>
+        </ul>
+
+      </div>
+
+      <div class="prev-next">
+        <a href="#" class="prev">
+          <span class="dir">← 較新</span>
+          <span class="ttl">上一篇標題</span>
+        </a>
+        <a href="#" class="next">
+          <span class="dir">較舊 →</span>
+          <span class="ttl">下一篇標題</span>
+        </a>
+      </div>
+
+      <div class="article-foot">
+        <span class="mono" style="color: var(--ink-faint);">寫於 2026.01.01</span>
+        <a href="../blog.html" class="mono" style="color: var(--accent);">更多文章 →</a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 陳佑 · 手寫 HTML，沒有框架</span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="../index.html" class="footer-link">首頁</a>
+        <a href="../friends.html" class="footer-link">友站</a>
+        <a href="../contact.html" class="footer-link">聯絡</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>為什麼我把 CCTV 串流包了一層代理 — C. Y.</title>
+  <meta name="description" content="直接嵌政府網站的 MJPEG 串流會遇到三個問題，以及 Cloudflare Workers 怎麼解。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="../paper.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <span class="brand-mark">CY</span>
+        <span class="brand-name">陳佑</span>
+      </a>
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="../index.html" class="nav-link">首頁</a>
+        <a href="../about.html" class="nav-link">關於</a>
+        <a href="../projects.html" class="nav-link">專案</a>
+        <a href="../blog.html" class="nav-link active">文章</a>
+        <a href="../friends.html" class="nav-link">友站</a>
+        <a href="../contact.html" class="nav-link">聯絡</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="article">
+
+      <a href="../blog.html" class="article-back">← 回文章列表</a>
+
+      <header class="article-head">
+        <div class="article-meta">
+          <time datetime="2026-09-02">2026.09.02</time>
+          <span class="sep">/</span>
+          <span>Cloudflare Workers · CCTV · 架構</span>
+          <span class="sep">/</span>
+          <span>約 6 分鐘</span>
+        </div>
+        <h1 class="article-title">為什麼我把 CCTV 串流包了一層代理</h1>
+        <p class="article-lede">
+          直接嵌政府網站的 MJPEG 串流會遇到三個問題。這篇說明那三個問題，以及最後為什麼是用 Workers 而不是別的方案。
+        </p>
+      </header>
+
+      <div class="toc">
+        <p class="toc-label">目錄</p>
+        <ol>
+          <li><a href="#try">一開始想直接嵌</a></li>
+          <li><a href="#problem">三個擋路的問題</a></li>
+          <li><a href="#worker">Workers 的角色</a></li>
+          <li><a href="#cost">成本與限制</a></li>
+        </ol>
+      </div>
+
+      <div class="prose">
+
+        <h2 id="try">一開始想直接嵌</h2>
+
+        <p>
+          監控平台要放全台道路 CCTV。第一版很直覺：把政府提供的串流網址直接塞進 <code>&lt;img&gt;</code> 就好。
+        </p>
+
+        <pre><code>&lt;img src="https://example.gov.tw/cctv/12345.mjpg"&gt;</code></pre>
+
+        <p>
+          本機測試會動。部署到 GitHub Pages 之後，全部變成破圖。
+        </p>
+
+        <h2 id="problem">三個擋路的問題</h2>
+
+        <h3>1. 跨域與防盜鏈</h3>
+
+        <p>
+          部分縣市的串流會檢查 <code>Referer</code>，只允許自家網域。
+          瀏覽器送出的 <code>Referer</code> 是 <code>weacamm.org</code>，於是被擋。
+          這個問題沒辦法用前端解，因為 <code>Referer</code> 是瀏覽器決定送什麼。
+        </p>
+
+        <h3>2. 只支援 HTTP</h3>
+
+        <p>
+          有些舊的攝影機只提供 <code>http://</code>。GitHub Pages 是 HTTPS，
+          瀏覽器會直接阻擋混合內容（mixed content）。這條沒有例外。
+        </p>
+
+        <h3>3. MJPEG 的連線數</h3>
+
+        <p>
+          一頁放 12 路 MJPEG，就是 12 條長連線同時開著。
+          這些連線不會結束，會一直佔用瀏覽器的並行連線額度，
+          導致同頁其他 API 請求被排隊。
+        </p>
+
+        <blockquote>
+          <p>不是「串流很慢」，是「串流佔住了其他東西的路」。這兩個問題的解法完全不同。</p>
+        </blockquote>
+
+        <h2 id="worker">Workers 的角色</h2>
+
+        <p>
+          最後在 Cloudflare Workers 上寫了一個代理，做三件事：
+        </p>
+
+        <ol>
+          <li>代為加上正確的 <code>Referer</code> 與必要的 header，繞過防盜鏈</li>
+          <li>把 <code>http://</code> 的來源轉成 HTTPS，解決混合內容</li>
+          <li>加上快取，短時間內重複請求直接回快取，降低來源負擔</li>
+        </ol>
+
+        <pre><code>export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    const target = url.searchParams.get('src');
+    if (!target) return new Response('missing src', { status: 400 });
+
+    const upstream = await fetch(target, {
+      headers: { 'Referer': 'https://www.example.gov.tw/' }
+    });
+
+    const headers = new Headers(upstream.headers);
+    headers.set('Access-Control-Allow-Origin', '*');
+    headers.set('Cache-Control', 'public, max-age=5');
+
+    return new Response(upstream.body, {
+      status: upstream.status,
+      headers
+    });
+  }
+};</code></pre>
+
+        <p>
+          選 Workers 的原因很單純：它在邊緣執行，離來源與使用者都近，
+          而且免費方案對這種低流量的代理很夠用。不用開機器、不用管憑證。
+        </p>
+
+        <h2 id="cost">成本與限制</h2>
+
+        <p>
+          目前代理了大概 400 路攝影機，但同時在線最多十幾路。
+          Workers 免費方案的每日請求數對這個量來說綽綽有餘。
+        </p>
+
+        <p>限制也很明確：</p>
+
+        <ul>
+          <li>Workers 的執行時間有上限，不適合長時間的串流。所以只用於 MJPEG 的短連線與 HLS 的片段代理。</li>
+          <li>快取時間必須短。CCTV 的意義就是即時，設太長會看到過期畫面。</li>
+          <li>如果來源本身掛了，代理也只能回錯誤，不會變出畫面。</li>
+        </ul>
+
+        <p>
+          後來有讀者問為什麼不用現成的 CORS proxy。
+          原因是那些服務通常不保證可用性，也不適合拿來代理政府網站的流量。
+          自己包一層，至少掛掉的時候知道去哪裡看 log。
+        </p>
+
+      </div>
+
+      <div class="prev-next">
+        <a href="railway-notes.html" class="prev">
+          <span class="dir">← 較舊</span>
+          <span class="ttl">搭完縱貫線之後的一些筆記</span>
+        </a>
+        <a href="tdx-polling.html" class="next">
+          <span class="dir">較新 →</span>
+          <span class="ttl">把 30 秒輪詢改成看得見才抓</span>
+        </a>
+      </div>
+
+      <div class="article-foot">
+        <span class="mono" style="color: var(--ink-faint);">寫於 2026.09.02</span>
+        <a href="../blog.html" class="mono" style="color: var(--accent);">更多文章 →</a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 陳佑 · 手寫 HTML，沒有框架</span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="../index.html" class="footer-link">首頁</a>
+        <a href="../friends.html" class="footer-link">友站</a>
+        <a href="../contact.html" class="footer-link">聯絡</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

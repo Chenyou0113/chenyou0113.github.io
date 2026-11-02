@@ -1,206 +1,247 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>關於我 | C. Y.</title>
-    <meta name="description" content="了解 C.Y. 的背景歷程、技術技能樹與核心理念。">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>關於 — C. Y.</title>
+  <meta name="description" content="陳佑，宜蘭人，寫前端與交通開放資料。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="paper.css">
 </head>
 <body>
 
-    <!-- 極光環境光暈與網格背景 -->
-    <div class="aurora-bg">
-        <div class="aurora-blob aurora-blob-1"></div>
-        <div class="aurora-blob aurora-blob-2"></div>
-        <div class="aurora-blob aurora-blob-3"></div>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">C. Y.</span>
+        <span class="brand-name">承祐</span>
+      </a>
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="index.html" class="nav-link">首頁</a>
+        <a href="about.html" class="nav-link active">關於</a>
+        <a href="projects.html" class="nav-link">專案</a>
+        <a href="blog.html" class="nav-link">文章</a>
+        <a href="friends.html" class="nav-link">友站</a>
+        <a href="contact.html" class="nav-link">聯絡</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
     </div>
-    <div class="grid-overlay"></div>
+  </header>
 
-    <!-- 頂部浮動膠囊導覽列 -->
-    <header class="nav-header">
-        <nav class="nav-capsule">
-            <a href="index.html" class="nav-brand">
-                <span class="nav-brand-dot"></span>
-                <span>C. Y.</span>
-            </a>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="index.html" class="nav-link">首頁</a></li>
-                <li><a href="about.html" class="nav-link active">關於我</a></li>
-                <li><a href="projects.html" class="nav-link">專案作品</a></li>
-                <li><a href="https://www.weacamm.org/bus-liveboard" target="_blank" rel="noopener noreferrer" class="nav-link">公車看板 ↗</a></li>
-                <li><a href="friends.html" class="nav-link">友站連結</a></li>
-                <li><a href="contact.html" class="nav-link">聯絡我</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button id="theme-toggle" class="theme-toggle-btn" aria-label="切換主題" title="切換深淺模式">
-                </button>
-                <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="開啟選單">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-        </nav>
-    </header>
+  <main class="page">
 
-    <main class="app-container">
+    <section class="lede reveal" style="border-bottom: 1px solid var(--rule);">
+      <p class="eyebrow">關於</p>
+      <h1 class="lede-title" style="max-width: 24ch;">
+        我是承祐，宜蘭人。<em>大部分時間在跟交通資料打交道。</em>
+      </h1>
 
-        <!-- 1. 關於我標題區 -->
-        <section class="glass-card hero-card reveal">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <span class="hero-badge-dot"></span>
-                    <span>探索者 · 開發者 · 終身學習者</span>
-                </div>
-                <h1 class="hero-title">
-                    熱愛透過程式碼<br>
-                    將 <span class="text-gradient">想像化為現實</span>
-                </h1>
-                <p class="hero-description">
-                    嗨！我是 C.Y.，一位對現代網頁技術與自動化充滿熱忱的開發者。我喜歡研究簡潔俐落的 UI 設計、探索前端互動細節，並透過寫程式來解決日常中的實際問題。
-                </p>
-                <div class="tag-list" style="margin-top: 8px;">
-                    <span class="tag">💡 追求極簡代碼</span>
-                    <span class="tag">🚀 專注使用者體驗</span>
-                    <span class="tag">🔍 自主探索與實作</span>
-                </div>
-            </div>
-            <div class="hero-avatar-wrapper">
-                <div class="hero-avatar-glow"></div>
-                <img src="https://avatars.githubusercontent.com/u/120460986?s=400&v=4" alt="C. Y. Avatar" class="hero-avatar">
-            </div>
-        </section>
+      <p class="lede-text">
+        從 2025 年開始碰 TDX 的開放資料，本來只是想讓公車動態顯示得好看一點，
+        後來就一路做成了現在那個監控平台。
+      </p>
 
-        <!-- 2. 技能樹模組分類 -->
-        <section>
-            <div class="section-header reveal">
-                <div class="section-title-wrap">
-                    <span class="section-subtitle">Skills & Technologies</span>
-                    <h2 class="section-title">技能領域分佈</h2>
-                </div>
-            </div>
+      <p class="lede-text">
+        寫最多的語言是 JavaScript，需要後端就用 Cloudflare Workers，
+        要爬資料或寫小工具時用 Python。不太用框架，喜歡能直接打開就看的東西。
+      </p>
 
-            <div class="bento-grid">
-                <!-- 前端技術 -->
-                <div class="col-6 reveal">
-                    <div class="glass-card" style="height: 100%;">
-                        <div class="project-icon-box" style="margin-bottom: 16px;">🌐</div>
-                        <h3 class="project-title" style="margin-bottom: 8px;">前端開發 (Frontend)</h3>
-                        <p class="project-desc" style="margin-bottom: 16px;">打造語意化、高性能且具備流暢互動的現代網頁介面：</p>
-                        <div class="tag-list">
-                            <span class="tag">HTML5 (語義化)</span>
-                            <span class="tag">CSS3 / Flexbox / Grid</span>
-                            <span class="tag">CSS Custom Properties</span>
-                            <span class="tag">JavaScript (ES6+)</span>
-                            <span class="tag">DOM API / Fetch API</span>
-                            <span class="tag">響應式設計 (RWD)</span>
-                            <span class="tag">Glassmorphism / Micro-motion</span>
-                        </div>
-                    </div>
-                </div>
+      <p class="lede-now">
+        <span class="mono">座標</span>
+        宜蘭縣。喜歡火車，也喜歡時刻表這種「承諾式」的設計。
+      </p>
+    </section>
 
-                <!-- 後端與邊緣微服務 -->
-                <div class="col-6 reveal">
-                    <div class="glass-card" style="height: 100%;">
-                        <div class="project-icon-box" style="margin-bottom: 16px;">⚡</div>
-                        <h3 class="project-title" style="margin-bottom: 8px;">後端與邊緣運算 (Backend & Edge Services)</h3>
-                        <p class="project-desc" style="margin-bottom: 16px;">高效能邊緣運算、即時數據串流與微服務整合：</p>
-                        <div class="tag-list">
-                            <span class="tag">Cloudflare Workers 微服務</span>
-                            <span class="tag">Cloudflare D1 資料庫</span>
-                            <span class="tag">TDX 交通 / CWA 氣象 Open Data</span>
-                            <span class="tag">CCTV 影像串流代理 (MJPEG/HLS)</span>
-                            <span class="tag">Python 爬蟲 (BeautifulSoup / Requests)</span>
-                            <span class="tag">RESTful API 設計與快取聚合</span>
-                        </div>
-                    </div>
-                </div>
+    <!-- 技能 -->
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h2 class="section-title">我會什麼</h2>
+        <span class="section-note">不太列進度條</span>
+      </div>
 
-                <!-- 工具與環境 -->
-                <div class="col-6 reveal">
-                    <div class="glass-card" style="height: 100%;">
-                        <div class="project-icon-box" style="margin-bottom: 16px;">🛠️</div>
-                        <h3 class="project-title" style="margin-bottom: 8px;">開發工具 (Tools & Workflow)</h3>
-                        <p class="project-desc" style="margin-bottom: 16px;">現代化開發流程與版本控制：</p>
-                        <div class="tag-list">
-                            <span class="tag">Git 版本控制</span>
-                            <span class="tag">GitHub / GitHub Pages</span>
-                            <span class="tag">Cloudflare Pages 部署</span>
-                            <span class="tag">VS Code / 終端環境</span>
-                            <span class="tag">Chrome DevTools 調校</span>
-                            <span class="tag">Markdown 文件撰寫</span>
-                        </div>
-                    </div>
-                </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule);">
 
-                <!-- 理念與座右銘 -->
-                <div class="col-6 reveal">
-                    <div class="glass-card" style="height: 100%;">
-                        <div class="project-icon-box" style="margin-bottom: 16px;">✨</div>
-                        <h3 class="project-title" style="margin-bottom: 8px;">座右銘與核心理念</h3>
-                        <p class="project-desc" style="margin-bottom: 16px; font-style: italic; color: var(--color-primary); font-size: 1.05rem;">
-                            「簡約是最高級的精緻（Simplicity is the ultimate sophistication）。」
-                        </p>
-                        <p class="project-desc">
-                            每一行代碼都應該有其存在的價值，每一個介面細節都應該為使用者的直覺感受而服務。熱衷於將龐雜的多源數據轉化為優雅清晰的視覺化體驗。
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. 學習與成長時間軸 -->
-        <section>
-            <div class="section-header reveal">
-                <div class="section-title-wrap">
-                    <span class="section-subtitle">Roadmap & Journey</span>
-                    <h2 class="section-title">學習與歷程里程碑</h2>
-                </div>
-            </div>
-
-            <div class="glass-card reveal">
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <span class="timeline-date">2024 — 2026</span>
-                        <h3 class="timeline-title">開發「台灣智慧交通與環境防災全方位監控系統」旗艦專案</h3>
-                        <p class="timeline-desc">架構涵蓋全台軌道運輸（PIDS）、全台 CCTV 即時影像、公路公車、航空海運及氣象地震水情之巨型平台；導入 Cloudflare Workers 邊緣運算與 D1 資料庫分散式快取架構。</p>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <span class="timeline-date">2023 — 2024</span>
-                        <h3 class="timeline-title">Python 自動化、數據爬取與即時 API 整合</h3>
-                        <p class="timeline-desc">深入研究 TDX 開放資料與網路數據爬取清洗，開發公車即時看板與多項自動化效率工具。</p>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <span class="timeline-date">起步階段</span>
-                        <h3 class="timeline-title">踏入前端開發與現代網頁設計</h3>
-                        <p class="timeline-desc">精熟 HTML5、CSS3 與原生 JavaScript DOM 操作，建立 GitHub Pages 作品集並持續追求極致的 UI/UX 美感。</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- 頁尾 -->
-    <footer class="site-footer">
-        <div>
-            &copy; 2026 C. Y. · Designed with Modern Editorial & Glassmorphism.
+        <div style="background: var(--paper); padding: 32px 30px;">
+          <p class="mono" style="color: var(--accent); margin: 0 0 14px;">FRONTEND</p>
+          <p style="margin: 0 0 16px; color: var(--ink-soft); font-size: 0.95rem;">
+            原生 JavaScript 為主。寫過不少即時更新的看板、地圖介面與資料視覺化。
+          </p>
+          <div class="tag-list">
+            <span class="chip">HTML5</span>
+            <span class="chip">CSS3 / Grid / Flexbox</span>
+            <span class="chip">ES6+</span>
+            <span class="chip">Fetch / WebSocket</span>
+            <span class="chip">RWD</span>
+            <span class="chip">Leaflet</span>
+          </div>
         </div>
-        <div class="footer-links">
-            <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
-            <a href="projects.html" class="footer-link">專案</a>
-            <a href="contact.html" class="footer-link">聯絡</a>
-        </div>
-    </footer>
 
-    <script src="script.js"></script>
+        <div style="background: var(--paper); padding: 32px 30px;">
+          <p class="mono" style="color: var(--accent); margin: 0 0 14px;">EDGE / BACKEND</p>
+          <p style="margin: 0 0 16px; color: var(--ink-soft); font-size: 0.95rem;">
+            後端幾乎都放在 Cloudflare。Workers 負責代理與聚合，D1 存查詢用的資料。
+          </p>
+          <div class="tag-list">
+            <span class="chip">Cloudflare Workers</span>
+            <span class="chip">Cloudflare D1</span>
+            <span class="chip">KV / Cache API</span>
+            <span class="chip">RESTful API 設計</span>
+            <span class="chip">MJPEG / HLS 代理</span>
+          </div>
+        </div>
+
+        <div style="background: var(--paper); padding: 32px 30px;">
+          <p class="mono" style="color: var(--accent); margin: 0 0 14px;">DATA / PYTHON</p>
+          <p style="margin: 0 0 16px; color: var(--ink-soft); font-size: 0.95rem;">
+            爬蟲、資料清洗、格式轉換。開放資料最大的問題通常是格式會變。
+          </p>
+          <div class="tag-list">
+            <span class="chip">Python 3</span>
+            <span class="chip">Requests / BeautifulSoup</span>
+            <span class="chip">pandas</span>
+            <span class="chip">TDX / CWA / WRA</span>
+            <span class="chip">discord.py</span>
+          </div>
+        </div>
+
+        <div style="background: var(--paper); padding: 32px 30px;">
+          <p class="mono" style="color: var(--accent); margin: 0 0 14px;">TOOLS</p>
+          <p style="margin: 0 0 16px; color: var(--ink-soft); font-size: 0.95rem;">
+            沒有很複雜的工具鏈。能少一個依賴就少一個。
+          </p>
+          <div class="tag-list">
+            <span class="chip">Git / GitHub</span>
+            <span class="chip">GitHub Pages</span>
+            <span class="chip">Cloudflare Pages</span>
+            <span class="chip">VS Code</span>
+            <span class="chip">DevTools</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 時間軸 -->
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <h2 class="section-title">做過的事</h2>
+        <span class="section-note">按時間倒序</span>
+      </div>
+
+      <ul class="trail">
+        <li class="trail-item">
+          <span class="trail-date">2026</span>
+          <div>
+            <h3 class="trail-title">網站重做</h3>
+            <p class="trail-text">
+              把原本的玻璃擬態風格整站換掉，改成紙張質感的編輯排版。順便加了這個部落格。
+            </p>
+          </div>
+        </li>
+        <li class="trail-item">
+          <span class="trail-date">2025</span>
+          <div>
+            <h3 class="trail-title">CCTV 代理與邊緣快取</h3>
+            <p class="trail-text">
+              政府網站的串流有跨域、混合內容與連線數三個問題，最後用 Workers 包了一層代理解決。
+              目前代理約 400 路攝影機。
+            </p>
+          </div>
+        </li>
+        <li class="trail-item">
+          <span class="trail-date">2024</span>
+          <div>
+            <h3 class="trail-title">監控平台上線</h3>
+            <p class="trail-text">
+              整合 TDX、高公局、公路局、CWA、WRA 的即時資料。從第一版的單頁地圖，
+              長到現在 50 多個子頁面、14 個 Workers 微服務。
+            </p>
+          </div>
+        </li>
+        <li class="trail-item">
+          <span class="trail-date">2023</span>
+          <div>
+            <h3 class="trail-title">開始碰開放資料</h3>
+            <p class="trail-text">
+              寫了第一個公車動態看板，用 Python 爬資料、存成 JSON、前端每 30 秒抓一次。
+              後來才發現這是一個很不省電的做法。
+            </p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 想法 -->
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">03</span>
+        <h2 class="section-title">幾個想法</h2>
+      </div>
+
+      <div style="max-width: var(--measure);">
+        <p style="margin: 0 0 24px; color: var(--ink-soft);">
+          <strong style="color: var(--ink);">資訊設計比視覺設計難。</strong>
+          把東西排得好看不難，難的是讓人在兩秒內找到他要的資訊。做看板學到最多的是這件事。
+        </p>
+        <p style="margin: 0 0 24px; color: var(--ink-soft);">
+          <strong style="color: var(--ink);">簡潔不是少放東西，是每個東西都有理由。</strong>
+          這句話常被拿來當設計雞湯，但真正要做到，第一步是承認大部分東西都沒有理由。
+        </p>
+        <p style="margin: 0; color: var(--ink-soft);">
+          <strong style="color: var(--ink);">開放資料的價值在「能組合」。</strong>
+          單一資料源能做的事有限，但把公車、天氣、路況放在一起，就能回答原本回答不了的問題。
+        </p>
+      </div>
+    </section>
+
+    <!-- 連結 -->
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">04</span>
+        <h2 class="section-title">找我</h2>
+      </div>
+
+      <div class="actions" style="margin-top: 0;">
+        <a href="mailto:xiaoyouwu5@gmail.com" class="btn btn-primary">xiaoyouwu5@gmail.com</a>
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub</a>
+        <a href="contact.html" class="btn btn-secondary">表單</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 C. Y. </span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="blog.html" class="footer-link">文章</a>
+        <a href="friends.html" class="footer-link">友站</a>
+        <a href="contact.html" class="footer-link">聯絡</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

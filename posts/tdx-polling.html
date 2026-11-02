@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>把 30 秒輪詢改成看得見才抓 — C. Y.</title>
+  <meta name="description" content="手機放著不動也在燒電，問題出在輪詢策略而不是資料量。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="../paper.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <span class="brand-mark">CY</span>
+        <span class="brand-name">陳佑</span>
+      </a>
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="../index.html" class="nav-link">首頁</a>
+        <a href="../about.html" class="nav-link">關於</a>
+        <a href="../projects.html" class="nav-link">專案</a>
+        <a href="../blog.html" class="nav-link active">文章</a>
+        <a href="../friends.html" class="nav-link">友站</a>
+        <a href="../contact.html" class="nav-link">聯絡</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="article">
+
+      <a href="../blog.html" class="article-back">← 回文章列表</a>
+
+      <header class="article-head">
+        <div class="article-meta">
+          <time datetime="2026-10-18">2026.10.18</time>
+          <span class="sep">/</span>
+          <span>前端 · 效能 · TDX</span>
+          <span class="sep">/</span>
+          <span>約 8 分鐘</span>
+        </div>
+        <h1 class="article-title">把 30 秒輪詢改成看得見才抓：一次 TDX 看板的省電改版</h1>
+        <p class="article-lede">
+          手機放著不動也在燒電，問題出在輪詢策略而不是資料量。這篇記下改版前後的數字，還有中間試錯的過程。
+        </p>
+      </header>
+
+      <div class="toc">
+        <p class="toc-label">目錄</p>
+        <ol>
+          <li><a href="#problem">問題：不動也在耗電</a></li>
+          <li><a href="#measure">先量，再改</a></li>
+          <li><a href="#strategy">三層策略</a></li>
+          <li><a href="#result">結果與還沒解的</a></li>
+        </ol>
+      </div>
+
+      <div class="prose">
+
+        <h2 id="problem">問題：不動也在耗電</h2>
+
+        <p>
+          看板上線之後收到一個回報：手機放進口袋，兩個小時後電量掉了 18%。
+          那頁只有一張地圖和十幾台公車的動態，照理說不該這麼兇。
+        </p>
+
+        <p>
+          打開 DevTools 看 Network，答案很明顯：每 30 秒一次 <code>/api/bus</code>，
+          一次抓全台。而且分頁切到背景、手機螢幕關掉，它照樣在打。
+        </p>
+
+        <pre><code>setInterval(fetchAll, 30000);</code></pre>
+
+        <p>
+          這行是當初五分鐘寫完的，能動，但從來沒想過「什麼時候不需要抓」。
+        </p>
+
+        <h2 id="measure">先量，再改</h2>
+
+        <p>我沒有立刻改程式，先加了三個計數器，跑了一週：</p>
+
+        <ul>
+          <li>每小時的請求次數</li>
+          <li>每次回應的位元組大小</li>
+          <li>使用者實際盯著看板的分鐘數</li>
+        </ul>
+
+        <p>
+          結果是：平均每個工作階段 22 分鐘，但請求量相當於盯著看 4 小時。
+          也就是說 <strong>八成以上的請求，是在沒人看畫面的時候發生的</strong>。
+        </p>
+
+        <blockquote>
+          <p>直覺會以為要「減少資料量」，但真正的浪費是「在不必要的時候抓」。</p>
+        </blockquote>
+
+        <h2 id="strategy">三層策略</h2>
+
+        <p>最後定下三種狀態，各自有不同的節奏：</p>
+
+        <table>
+          <thead>
+            <tr><th>狀態</th><th>判斷方式</th><th>輪詢間隔</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>可見且聚焦</td><td><code>visibilityState === 'visible'</code> 且有 focus</td><td>15 秒</td></tr>
+            <tr><td>可見但失焦</td><td>分頁在前景，但視窗沒 focus</td><td>60 秒</td></tr>
+            <tr><td>背景</td><td>分頁隱藏或螢幕關閉</td><td>不抓</td></tr>
+          </tbody>
+        </table>
+
+        <p>
+          另外把「全台一次抓」改成依目前地圖視窗（bounding box）只抓看得到的路線。
+          這一步砍掉的資料量比調整間隔還多。
+        </p>
+
+        <pre><code>document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    stopPolling();
+  } else {
+    pollNow();
+    startPolling();
+  }
+});</code></pre>
+
+        <p>
+          要注意的是：回到前景時不能只重啟計時器，要<strong>立刻抓一次</strong>，
+          不然使用者會看著 30 秒前的舊資料。
+        </p>
+
+        <h2 id="result">結果與還沒解的</h2>
+
+        <p>
+          改版後一週，同樣的 22 分鐘使用時間，請求數從大約 2,600 次降到 190 次。
+          回報耗電的那位說「現在放口袋不會熱了」。
+        </p>
+
+        <p>還沒解的問題有兩個：</p>
+
+        <ul>
+          <li>手機鎖屏後 JS 會被凍結，回到前景時計時器行為不一致，目前是靠 <code>visibilitychange</code> 補救，但 iOS Safari 偶爾還是會漏。</li>
+          <li>離峰時段（深夜）其實可以更省，但差別已經小到不值得再複雜化。</li>
+        </ul>
+
+        <p>
+          這次學到的是：效能問題常常不是「程式寫得不好」，是「沒有問過什麼時候不該做事」。
+        </p>
+
+      </div>
+
+      <div class="prev-next">
+        <a href="cctv-proxy.html" class="prev">
+          <span class="dir">← 較新</span>
+          <span class="ttl">為什麼我把 CCTV 串流包了一層代理</span>
+        </a>
+        <a href="railway-notes.html" class="next">
+          <span class="dir">較舊 →</span>
+          <span class="ttl">搭完縱貫線之後的一些筆記</span>
+        </a>
+      </div>
+
+      <div class="article-foot">
+        <span class="mono" style="color: var(--ink-faint);">寫於 2026.10.18</span>
+        <a href="../blog.html" class="mono" style="color: var(--accent);">更多文章 →</a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 陳佑 · 手寫 HTML，沒有框架</span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="../index.html" class="footer-link">首頁</a>
+        <a href="../friends.html" class="footer-link">友站</a>
+        <a href="../contact.html" class="footer-link">聯絡</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

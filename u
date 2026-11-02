@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>友站 — C. Y.</title>
+  <meta name="description" content="友站連結。目前暫時沒有放置外部連結。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="paper.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">CY</span>
+        <span class="brand-name">陳佑</span>
+      </a>
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="index.html" class="nav-link">首頁</a>
+        <a href="about.html" class="nav-link">關於</a>
+        <a href="projects.html" class="nav-link">專案</a>
+        <a href="blog.html" class="nav-link">文章</a>
+        <a href="friends.html" class="nav-link active">友站</a>
+        <a href="contact.html" class="nav-link">聯絡</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <div class="blog-head reveal">
+      <p class="eyebrow">友站</p>
+      <h1 class="blog-title">友站連結</h1>
+      <p class="blog-sub">這裡暫時沒有放置任何外部連結。</p>
+    </div>
+
+    <section class="reveal" style="padding: 40px 0 60px; border-top: 1px solid var(--rule);">
+      <div style="max-width: var(--measure);">
+        <p style="color: var(--ink-soft); margin: 0 0 20px;">
+          我傾向放上真正認同、有相同頻率、且同樣在網路上留下真實足跡與深度內容的個人部落格或技術筆記。
+        </p>
+
+        <p style="color: var(--ink-soft); margin: 0 0 20px;">
+          如果你也有經營個人網站，且內容涵蓋技術開發、鐵道運輸、生活觀察或數位實踐，歡迎透過聯絡頁面與我交流，互相交換連結。
+        </p>
+
+        <div class="actions" style="margin-top: 0;">
+          <a href="contact.html" class="btn btn-primary">到聯絡頁面</a>
+          <a href="mailto:xiaoyouwu5@gmail.com?subject=友站交換連結" class="btn btn-secondary">直接寄信</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h2 class="section-title">我會想放的網站</h2>
+      </div>
+
+      <div style="max-width: var(--measure);">
+        <ul style="padding-left: 1.3em; color: var(--ink-soft); margin: 0;">
+          <li style="margin-bottom: 12px;">有自己的網站、部落格或作品集，不是在經營純社群帳號。</li>
+          <li style="margin-bottom: 12px;">網站有在更新。多久一次不重要，但不要是兩年前的最後一篇。</li>
+          <li style="margin-bottom: 12px;">內容跟我做的東西有交集最好：技術開發、鐵道運輸、生活觀察、數位實踐。</li>
+          <li style="margin-bottom: 12px;">你把我的站放上去，我就把你的放上來。先放後放都行。</li>
+        </ul>
+
+        <p style="color: var(--ink-muted); font-size: 0.92rem; margin: 24px 0 0;">
+          來信附上：網站名稱、網址、一句話說明你在寫什麼。不用長篇自我介紹。
+        </p>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <h2 class="section-title">已交換</h2>
+        <span class="section-note">0 個</span>
+      </div>
+
+      <p style="color: var(--ink-muted); margin: 0;">
+        還沒有。第一個名額留給你。
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 C. Y. · 手寫 HTML，沒有框架</span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="blog.html" class="footer-link">文章</a>
+        <a href="projects.html" class="footer-link">專案</a>
+        <a href="contact.html" class="footer-link">聯絡</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>

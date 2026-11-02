@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>給生活加一點自動化：用輕量工具解決日常瑣事 — C. Y.</title>
+  <meta name="description" content="不求龐大系統，只用最精簡的腳本，把重複的事交給機器。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="../paper.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <span class="brand-mark">CY</span>
+        <span class="brand-name">陳佑</span>
+      </a>
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="../index.html" class="nav-link">首頁</a>
+        <a href="../about.html" class="nav-link">關於</a>
+        <a href="../projects.html" class="nav-link">專案</a>
+        <a href="../blog.html" class="nav-link active">文章</a>
+        <a href="../friends.html" class="nav-link">友站</a>
+        <a href="../contact.html" class="nav-link">聯絡</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="article">
+
+      <a href="../blog.html" class="article-back">← 回文章列表</a>
+
+      <header class="article-head">
+        <div class="article-meta">
+          <time datetime="2026-08-30">2026.08.30</time>
+          <span class="sep">/</span>
+          <span>自動化 · GitHub Actions</span>
+          <span class="sep">/</span>
+          <span>約 6 分鐘</span>
+        </div>
+        <h1 class="article-title">給生活加一點自動化：用輕量工具解決日常瑣事</h1>
+        <p class="article-lede">
+          不求龐大系統，只用最精簡的腳本，把重複的事交給機器。這篇列出我目前有在跑的自動化，以及為什麼大部分都刻意保持很小。
+        </p>
+      </header>
+
+      <div class="toc">
+        <p class="toc-label">目錄</p>
+        <ol>
+          <li><a href="#annoying">先找出「每次都卡一下」的地方</a></li>
+          <li><a href="#cases">三個目前有在跑的例子</a></li>
+          <li><a href="#principle">刻意保持很小的理由</a></li>
+          <li><a href="#philosophy">自動化的哲學</a></li>
+        </ol>
+      </div>
+
+      <div class="prose">
+
+        <h2 id="annoying">先找出「每次都卡一下」的地方</h2>
+
+        <p>
+          自動化最容易失敗的方式，是一開始就想做一個大系統。
+          我試過兩次，兩次都做到一半就停擺——因為需求還沒穩定，系統就先變複雜了。
+        </p>
+
+        <p>
+          後來換一個方法：不先想「可以做什麼自動化」，而是記錄「這週有哪些事讓我卡了一下」。
+          連續記兩週，會發現重複出現的就那幾件。
+        </p>
+
+        <ul>
+          <li>每次改完東西，要手動確認某個頁面還活著</li>
+          <li>某些資料要定期抓下來，但常常忘記</li>
+          <li>檔案散在不同地方，每次要找都要重新想一次在哪</li>
+        </ul>
+
+        <p>
+          這些事單獨看都很小，但累積起來會吃掉專注力。而專注力比時間更難恢復。
+        </p>
+
+        <h2 id="cases">三個目前有在跑的例子</h2>
+
+        <h3>1. 定時檢查與通知</h3>
+
+        <p>
+          有些服務掛掉不會自己通知你。我目前的做法是用 GitHub Actions 的排程，
+          定時打一個檢查的請求，失敗就寄信。整個流程就是一個 YAML 檔加幾行腳本。
+        </p>
+
+        <pre><code>name: uptime-check
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check endpoint
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" https://example.com/)
+          echo "status: $code"
+          [ "$code" = "200" ] || exit 1</code></pre>
+
+        <p>
+          沒有監控服務、沒有資料庫、沒有儀表板。掛掉的時候我知道，這樣就夠了。
+        </p>
+
+        <h3>2. 資料的定期快照</h3>
+
+        <p>
+          開放資料會改版。某個欄位今天叫 <code>A</code>，明年可能叫 <code>B</code>。
+          為了在改版時還原得回去，我會定期把原始資料存一份。
+        </p>
+
+        <p>
+          這件事用 Actions 做也很合適：抓資料、壓縮、放進 repo 或物件儲存。
+          要注意的是不要讓 repo 無限長大——我只保留最近幾份，舊的直接覆蓋。
+        </p>
+
+        <h3>3. 重複的檔案整理</h3>
+
+        <p>
+          這類工作我用本機的 Python 腳本處理，沒有放到雲端。
+          原因很簡單：檔案在本機，多傳一趟只是增加出錯的機會。
+        </p>
+
+        <pre><code>from pathlib import Path
+import shutil
+
+src = Path.home() / "Downloads"
+dst = Path.home() / "Documents" / "inbox"
+
+for f in src.glob("*.pdf"):
+    target = dst / f.name
+    if target.exists():
+        continue
+    shutil.move(str(f), str(target))</code></pre>
+
+        <p>
+          這段程式很短，但它每天幫我省下一個「打開下載資料夾、判斷、拖曳」的動作。
+          大概十秒。一年下來是將近一小時，而且是不用動腦的一小時。
+        </p>
+
+        <h2 id="principle">刻意保持很小的理由</h2>
+
+        <p>
+          我對自動化有一條規則：<strong>如果它壞掉，我能在五分鐘內看懂為什麼。</strong>
+        </p>
+
+        <p>
+          這條規則排除了很多方案。用一個現成的自動化平台聽起來很方便，
+          但出問題時你要在別人的抽象層裡找原因。用一個自己寫的 30 行腳本，
+          出問題時你知道去哪裡看。
+        </p>
+
+        <p>具體來說，我盡量遵守這幾件事：</p>
+
+        <ul>
+          <li><strong>能用 cron + 一支腳本解決，就不要引入框架。</strong></li>
+          <li><strong>每個自動化只做一件事。</strong>兩件事就寫兩個，不要合併。</li>
+          <li><strong>失敗要吵。</strong>安靜失敗的自動化比沒有自動化更糟。</li>
+          <li><strong>留下日誌。</strong>至少留下一行「什麼時候跑了、結果如何」。</li>
+        </ul>
+
+        <h2 id="philosophy">自動化的哲學</h2>
+
+        <p>
+          有人覺得自動化是為了「效率」。我覺得不完全是。
+        </p>
+
+        <p>
+          把十秒的動作自動化，省的是一小時裡的一分鐘，效益其實很低。
+          真正的價值在別的地方：<strong>它讓你不用記得</strong>。
+        </p>
+
+        <p>
+          人腦適合思考，不適合記住「每週三要手動備份」這種事。
+          把這些事交給機器，不是為了快，是為了把注意力留給真正需要思考的部分。
+        </p>
+
+        <blockquote>
+          <p>花時間把流程寫好，是為了省下未來更多的專注力。</p>
+        </blockquote>
+
+        <p>
+          所以我的自動化清單一直不長。每次想加一個，我會先問：
+          這件事值得我花時間寫，而且以後不用再想它嗎？
+        </p>
+
+        <p>
+          如果答案是「好像也還好」，那就不做。
+          留下來的每一個，都是真的讓我少想一件事的。
+        </p>
+
+      </div>
+
+      <div class="prev-next">
+        <a href="railway-data-observation.html" class="prev">
+          <span class="dir">← 較新</span>
+          <span class="ttl">鐵道旅行與時刻資料：日常交通觀察的數位實踐</span>
+        </a>
+        <span></span>
+      </div>
+
+      <div class="article-foot">
+        <span class="mono" style="color: var(--ink-faint);">寫於 2026.08.30</span>
+        <a href="../blog.html" class="mono" style="color: var(--accent);">更多文章 →</a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 陳佑 · 手寫 HTML，沒有框架</span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="../index.html" class="footer-link">首頁</a>
+        <a href="../friends.html" class="footer-link">友站</a>
+        <a href="../contact.html" class="footer-link">聯絡</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

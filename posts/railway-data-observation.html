@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鐵道旅行與時刻資料：日常交通觀察的數位實踐 — C. Y.</title>
+  <meta name="description" content="從月台上的一張時刻表，到電腦裡的一份 JSON。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="../paper.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <span class="brand-mark">CY</span>
+        <span class="brand-name">陳佑</span>
+      </a>
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="../index.html" class="nav-link">首頁</a>
+        <a href="../about.html" class="nav-link">關於</a>
+        <a href="../projects.html" class="nav-link">專案</a>
+        <a href="../blog.html" class="nav-link active">文章</a>
+        <a href="../friends.html" class="nav-link">友站</a>
+        <a href="../contact.html" class="nav-link">聯絡</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="article">
+
+      <a href="../blog.html" class="article-back">← 回文章列表</a>
+
+      <header class="article-head">
+        <div class="article-meta">
+          <time datetime="2026-09-14">2026.09.14</time>
+          <span class="sep">/</span>
+          <span>鐵道 · 開放資料</span>
+          <span class="sep">/</span>
+          <span>約 8 分鐘</span>
+        </div>
+        <h1 class="article-title">鐵道旅行與時刻資料：日常交通觀察的數位實踐</h1>
+        <p class="article-lede">
+          從月台上的一張時刻表，到電腦裡的一份 JSON。這篇寫我怎麼把「喜歡搭火車」和「寫程式」這兩件事接在一起。
+        </p>
+      </header>
+
+      <div class="toc">
+        <p class="toc-label">目錄</p>
+        <ol>
+          <li><a href="#start">起點：月台上的那張表</a></li>
+          <li><a href="#format">時刻表的資料長什麼樣子</a></li>
+          <li><a href="#practice">旅行中的數位實踐</a></li>
+          <li><a href="#meaning">為什麼這件事值得做</a></li>
+        </ol>
+      </div>
+
+      <div class="prose">
+
+        <h2 id="start">起點：月台上的那張表</h2>
+
+        <p>
+          花蓮站的月台上有一張很大的時刻表。印刷的，不是螢幕。
+          上面用不同顏色標示車種，密密麻麻排著一整天往台北、往台東的班次。
+        </p>
+
+        <p>
+          有一次我在那裡等車，盯著那張表看了十分鐘，忽然發現一件事：
+          我其實不是在看「下一班車什麼時候來」，而是在看<strong>這條路線一整天的節奏</strong>。
+          早上七點到九點是一段，中午空下來，傍晚又密起來。
+        </p>
+
+        <p>
+          這種「節奏」在手機 App 裡看不到。App 只會告訴你最近的一班，因為它假設你很急。
+          但如果你不趕時間，整張表透露的資訊其實多得多。
+        </p>
+
+        <h2 id="format">時刻表的資料長什麼樣子</h2>
+
+        <p>
+          後來我開始去看交通部釋出的開放資料。以軌道運輸為例，
+          一份「每日時刻表」的資料大概長這樣（簡化過）：
+        </p>
+
+        <pre><code>{
+  "TrainNo": "408",
+  "TrainType": "自強(3000)",
+  "StartingStationID": "7000",
+  "EndingStationID": "0900",
+  "StopTimes": [
+    {
+      "StationID": "7000",
+      "ArrivalTime": "06:30",
+      "DepartureTime": "06:30"
+    },
+    {
+      "StationID": "6000",
+      "ArrivalTime": "07:45",
+      "DepartureTime": "07:47"
+    }
+  ]
+}</code></pre>
+
+        <p>
+          看起來很簡單，但實際處理會遇到幾個問題：
+        </p>
+
+        <ul>
+          <li><strong>時間格式不統一</strong>——有些是 <code>HH:mm</code>，有些是 <code>HH:mm:ss</code>，跨日還要用 <code>24:10</code> 這種寫法。</li>
+          <li><strong>站名與站碼的對應</strong>——同一份資料裡可能同時出現站名、站碼與舊站碼。</li>
+          <li><strong>車種代碼</strong>——自強、莒光、區間的命名在不同資料集裡不一致。</li>
+          <li><strong>臨時列車</strong>——加開的班次不會出現在固定時刻表裡，要另外抓。</li>
+        </ul>
+
+        <p>
+          真正麻煩的從來不是「讀取 JSON」，是「理解這份 JSON 到底在說什麼」。
+          每個欄位的定義都要去翻規格文件，而且文件常常比資料本身還晚更新。
+        </p>
+
+        <blockquote>
+          <p>開放資料的價值不在資料本身，而在有人願意花時間把它整理成能用的樣子。</p>
+        </blockquote>
+
+        <h2 id="practice">旅行中的數位實踐</h2>
+
+        <p>
+          我後來養成一個習慣：出發前把當天的班次抓下來，存成一份離線檔案。
+          原因很實際——有些路段收訊不好，有些時候我只是想快速翻閱，不想一直重新查詢。
+        </p>
+
+        <p>
+          這份離線檔案後來變成一個小工具的基礎。它可以：
+        </p>
+
+        <ul>
+          <li>輸入起訖站，列出當天所有可行組合</li>
+          <li>標出轉乘時間太短的組合（避免趕不上）</li>
+          <li>顯示每個班次的車種與行駛時間</li>
+        </ul>
+
+        <p>
+          寫這個工具花了我大概三個週末。用起來有沒有比較快？老實說沒有。
+          但它讓我真正理解時刻表是怎麼組成的——這件事本身的價值超過工具。
+        </p>
+
+        <h2 id="meaning">為什麼這件事值得做</h2>
+
+        <p>
+          有人問我「你幹嘛不直接查 App」。這問題很好，我認真想過。
+        </p>
+
+        <p>
+          App 給的是答案：<strong>下一班 18:42，第 3 月台</strong>。
+          我想要的是脈絡：<strong>為什麼是 18:42、為什麼中間隔了 47 分鐘、這段時間車去哪裡了</strong>。
+        </p>
+
+        <p>
+          把時刻表拆開來看，會發現很多設計上的選擇。
+          為什麼某個班次停的站比較少？為什麼某段時間完全沒有車？
+          這些問題的答案通常不在程式裡，在排班表的人的考量裡。
+        </p>
+
+        <p>
+          而我寫程式，有一部分就是為了看懂這些考量。
+          程式不只是寫扣，它也是理解這個世界運作方式的一種工具。
+        </p>
+
+        <p>
+          下次你站在月台上，可以試著看一下那張表。
+          不是看下一班車，是看一整天。
+        </p>
+
+      </div>
+
+      <div class="prev-next">
+        <a href="infra-cloudflare-weacamm.html" class="prev">
+          <span class="dir">← 較新</span>
+          <span class="ttl">從零調整 weacamm.org：網域基礎設施與 Cloudflare 的日常微調</span>
+        </a>
+        <a href="lightweight-automation-daily.html" class="next">
+          <span class="dir">較舊 →</span>
+          <span class="ttl">給生活加一點自動化：用輕量工具解決日常瑣事</span>
+        </a>
+      </div>
+
+      <div class="article-foot">
+        <span class="mono" style="color: var(--ink-faint);">寫於 2026.09.14</span>
+        <a href="../blog.html" class="mono" style="color: var(--accent);">更多文章 →</a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 陳佑 · 手寫 HTML，沒有框架</span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="../index.html" class="footer-link">首頁</a>
+        <a href="../friends.html" class="footer-link">友站</a>
+        <a href="../contact.html" class="footer-link">聯絡</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

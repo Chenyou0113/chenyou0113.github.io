@@ -1,243 +1,131 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>友站連結 | C. Y.</title>
-    <meta name="description" content="C.Y. 的朋友與優秀開發者、創作者的友站連結牆。">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>友站 — C. Y.</title>
+  <meta name="description" content="友站連結。想交換連結的話，寫信給我。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="paper.css">
 </head>
 <body>
 
-    <!-- 極光環境光暈與網格背景 -->
-    <div class="aurora-bg">
-        <div class="aurora-blob aurora-blob-1"></div>
-        <div class="aurora-blob aurora-blob-2"></div>
-        <div class="aurora-blob aurora-blob-3"></div>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">C.</span>
+        <span class="brand-name">承祐</span>
+      </a>
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="index.html" class="nav-link">首頁</a>
+        <a href="about.html" class="nav-link">關於</a>
+        <a href="projects.html" class="nav-link">專案</a>
+        <a href="blog.html" class="nav-link">文章</a>
+        <a href="friends.html" class="nav-link active">友站</a>
+        <a href="contact.html" class="nav-link">聯絡</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
     </div>
-    <div class="grid-overlay"></div>
+  </header>
 
-    <!-- 頂部浮動膠囊導覽列 -->
-    <header class="nav-header">
-        <nav class="nav-capsule">
-            <a href="index.html" class="nav-brand">
-                <span class="nav-brand-dot"></span>
-                <span>C. Y.</span>
-            </a>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="index.html" class="nav-link">首頁</a></li>
-                <li><a href="about.html" class="nav-link">關於我</a></li>
-                <li><a href="projects.html" class="nav-link">專案作品</a></li>
-                <li><a href="https://www.weacamm.org/bus-liveboard" target="_blank" rel="noopener noreferrer" class="nav-link">公車看板 ↗</a></li>
-                <li><a href="friends.html" class="nav-link active">友站連結</a></li>
-                <li><a href="contact.html" class="nav-link">聯絡我</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button id="theme-toggle" class="theme-toggle-btn" aria-label="切換主題" title="切換深淺模式">
-                </button>
-                <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="開啟選單">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-        </nav>
-    </header>
+  <main class="page">
 
-    <main class="app-container">
+    <div class="blog-head reveal">
+      <p class="eyebrow">友站</p>
+      <h1 class="blog-title">會去逛的地方</h1>
+      <p class="blog-sub">
+        這裡放我平常會看的網站、朋友的作品，還有幾個值得推薦的技術部落格。
+        目前還在整理，慢慢補。
+      </p>
+    </div>
 
-        <!-- 1. 頁面標題區 -->
-        <section class="reveal">
-            <div class="section-title-wrap" style="text-align: center; margin-bottom: 24px;">
-                <span class="section-subtitle">Community & Friends</span>
-                <h1 class="hero-title" style="font-size: 2.6rem;">同行夥伴與友站</h1>
-                <p class="hero-description" style="margin: 8px auto 0;">
-                    這裡收錄了志同道合的開發者、設計師與創意創作者的個人作品與網站。
-                </p>
-            </div>
-        </section>
+    <!-- 空的狀態：誠實說明 -->
+    <section class="reveal" style="padding: 40px 0 60px; border-top: 1px solid var(--rule);">
+      <div style="max-width: var(--measure);">
+        <p class="mono" style="color: var(--ink-faint); margin: 0 0 20px;">STATUS — 整理中</p>
 
-        <!-- 2. 友站卡片 Bento Grid -->
-        <section class="bento-grid">
+        <p style="color: var(--ink-soft); margin: 0 0 20px;">
+          原本這一頁有六個朋友，但那些名字和連結都是範例資料，不是真的。
+          與其掛著不存在的人，不如先空著。
+        </p>
 
-            <!-- 友站 1 -->
-            <div class="col-4 reveal">
-                <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
-                            <div class="project-icon-box" style="font-size: 1.2rem;">👨‍💻</div>
-                            <div>
-                                <h3 class="project-title" style="margin: 0; font-size: 1.15rem;">Alex Zhang</h3>
-                                <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">全端開發者</span>
-                            </div>
-                        </div>
-                        <p class="project-desc">專注於 React 與 Node.js 全端架構開發，熱衷參與開源社群與系統設計。</p>
-                        <div class="tag-list" style="margin-top: 14px;">
-                            <span class="tag tag-mono">React</span>
-                            <span class="tag tag-mono">Node.js</span>
-                            <span class="tag tag-mono">Python</span>
-                        </div>
-                    </div>
-                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle); display: flex; gap: 12px;">
-                        <a href="#" class="project-link-btn">訪問站點 →</a>
-                    </div>
-                </div>
-            </div>
+        <p style="color: var(--ink-soft); margin: 0 0 20px;">
+          如果你有自己的網站、部落格或作品集，想交換連結，寫信給我：
+        </p>
 
-            <!-- 友站 2 -->
-            <div class="col-4 reveal">
-                <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
-                            <div class="project-icon-box" style="font-size: 1.2rem;">🎨</div>
-                            <div>
-                                <h3 class="project-title" style="margin: 0; font-size: 1.15rem;">Lisa Wang</h3>
-                                <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">UI/UX 設計師</span>
-                            </div>
-                        </div>
-                        <p class="project-desc">致力於創造精緻細膩的用戶界面與品牌識別，兼具美學思維與工程互動理解。</p>
-                        <div class="tag-list" style="margin-top: 14px;">
-                            <span class="tag tag-mono">Figma</span>
-                            <span class="tag tag-mono">Design System</span>
-                            <span class="tag tag-mono">Branding</span>
-                        </div>
-                    </div>
-                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle); display: flex; gap: 12px;">
-                        <a href="#" class="project-link-btn">作品集 →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 友站 3 -->
-            <div class="col-4 reveal">
-                <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
-                            <div class="project-icon-box" style="font-size: 1.2rem;">🤖</div>
-                            <div>
-                                <h3 class="project-title" style="margin: 0; font-size: 1.15rem;">Chen Ming</h3>
-                                <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">數據科學家</span>
-                            </div>
-                        </div>
-                        <p class="project-desc">專注於機器學習模型實踐與數據可視化，致力於將 AI 轉化為實務應用價值。</p>
-                        <div class="tag-list" style="margin-top: 14px;">
-                            <span class="tag tag-mono">Python</span>
-                            <span class="tag tag-mono">TensorFlow</span>
-                            <span class="tag tag-mono">Data AI</span>
-                        </div>
-                    </div>
-                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle); display: flex; gap: 12px;">
-                        <a href="#" class="project-link-btn">技術博客 →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 友站 4 -->
-            <div class="col-4 reveal">
-                <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
-                            <div class="project-icon-box" style="font-size: 1.2rem;">☁️</div>
-                            <div>
-                                <h3 class="project-title" style="margin: 0; font-size: 1.15rem;">Emma Davis</h3>
-                                <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">DevOps 工程師</span>
-                            </div>
-                        </div>
-                        <p class="project-desc">擅長雲端架構、自動化 CI/CD 管道與容器化部署，打造高可用系統。</p>
-                        <div class="tag-list" style="margin-top: 14px;">
-                            <span class="tag tag-mono">Docker</span>
-                            <span class="tag tag-mono">Kubernetes</span>
-                            <span class="tag tag-mono">AWS</span>
-                        </div>
-                    </div>
-                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle); display: flex; gap: 12px;">
-                        <a href="#" class="project-link-btn">訪問站點 →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 友站 5 -->
-            <div class="col-4 reveal">
-                <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
-                            <div class="project-icon-box" style="font-size: 1.2rem;">📱</div>
-                            <div>
-                                <h3 class="project-title" style="margin: 0; font-size: 1.15rem;">James Johnson</h3>
-                                <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">移動端開發者</span>
-                            </div>
-                        </div>
-                        <p class="project-desc">熱愛 Flutter 與原生應用開發，對行動端使用者體驗有著極致的追求。</p>
-                        <div class="tag-list" style="margin-top: 14px;">
-                            <span class="tag tag-mono">Flutter</span>
-                            <span class="tag tag-mono">Dart</span>
-                            <span class="tag tag-mono">iOS / Android</span>
-                        </div>
-                    </div>
-                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle); display: flex; gap: 12px;">
-                        <a href="#" class="project-link-btn">App 展示 →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 友站 6 -->
-            <div class="col-4 reveal">
-                <div class="glass-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
-                            <div class="project-icon-box" style="font-size: 1.2rem;">✍️</div>
-                            <div>
-                                <h3 class="project-title" style="margin: 0; font-size: 1.15rem;">Sarah Chen</h3>
-                                <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">技術寫作者</span>
-                            </div>
-                        </div>
-                        <p class="project-desc">透過淺顯易懂的文字與實戰教學幫助開發者快速上手新技術，熱愛分享。</p>
-                        <div class="tag-list" style="margin-top: 14px;">
-                            <span class="tag tag-mono">Technical Writing</span>
-                            <span class="tag tag-mono">Tutorials</span>
-                        </div>
-                    </div>
-                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--color-border-subtle); display: flex; gap: 12px;">
-                        <a href="#" class="project-link-btn">訪問專欄 →</a>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- 3. 申請加入友站卡片 -->
-        <section class="glass-card reveal" style="text-align: center; padding: 48px 24px;">
-            <div style="max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px;">
-                <span class="section-subtitle">Join the Network</span>
-                <h2 class="section-title">想要交換友鏈或加入友站牆？</h2>
-                <p class="hero-description">如果你也有自己的個人網站、技術部落格或作品集，非常歡迎與我聯繫交換友鏈！</p>
-                <div style="display: flex; gap: 14px; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
-                    <a href="mailto:xiaoyouwu5@gmail.com" class="btn btn-primary">
-                        <span>📧 寄信申請友鏈</span>
-                    </a>
-                    <button class="btn btn-secondary" data-copy="xiaoyouwu5@gmail.com">
-                        <span>複製 Email</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- 頁尾 -->
-    <footer class="site-footer">
-        <div>
-            &copy; 2026 C. Y. · Designed with Modern Editorial & Glassmorphism.
+        <div class="actions" style="margin-top: 0;">
+          <a href="mailto:xiaoyouwu5@gmail.com?subject=友站交換連結" class="btn btn-primary">寄信交換連結</a>
+          <button class="btn btn-secondary" data-copy="xiaoyouwu5@gmail.com">複製信箱</button>
         </div>
-        <div class="footer-links">
-            <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
-            <a href="projects.html" class="footer-link">專案</a>
-            <a href="contact.html" class="footer-link">聯絡</a>
-        </div>
-    </footer>
+      </div>
+    </section>
 
-    <script src="script.js"></script>
+    <!-- 交換規則 -->
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h2 class="section-title">交換條件</h2>
+      </div>
+
+      <div style="max-width: var(--measure);">
+        <ul style="padding-left: 1.3em; color: var(--ink-soft); margin: 0;">
+          <li style="margin-bottom: 12px;">有自己的網站、部落格或作品集，不是在經營純社群帳號。</li>
+          <li style="margin-bottom: 12px;">網站有在更新。多久一次不重要，但不要是兩年前的最後一篇。</li>
+          <li style="margin-bottom: 12px;">內容跟我做的東西有交集最好：交通、開放資料、前端、設計、寫作。</li>
+          <li style="margin-bottom: 12px;">你把我的站放上去，我就把你的放上來。先放後放都行。</li>
+        </ul>
+
+        <p style="color: var(--ink-muted); font-size: 0.92rem; margin: 24px 0 0;">
+          來信附上：網站名稱、網址、一句話說明你在寫什麼。不用長篇自我介紹。
+        </p>
+      </div>
+    </section>
+
+    <!-- 之後會放在這裡 -->
+    <section class="section reveal">
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <h2 class="section-title">已交換</h2>
+        <span class="section-note">0 個</span>
+      </div>
+
+      <p style="color: var(--ink-muted); margin: 0;">
+        還沒有。第一個名額留給你。
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 C. Y.</span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="blog.html" class="footer-link">文章</a>
+        <a href="projects.html" class="footer-link">專案</a>
+        <a href="contact.html" class="footer-link">聯絡</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

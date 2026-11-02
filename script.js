@@ -1,246 +1,282 @@
 /**
- * Portfolio Core JavaScript
- * Features: Dark/Light Mode, Floating Navbar, Scroll Reveal, Project Filters, Copy to Clipboard, Form Feedback
+ * C. Y. — Paper
+ * 主題切換、行動選單、進場動態、標籤篩選、複製、表單
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    initThemeToggle();
-    initMobileNav();
-    initScrollReveal();
-    initActiveNav();
-    initProjectFilters();
-    initCopyButtons();
-    initContactForm();
+  initTheme();
+  initMobileNav();
+  initReveal();
+  initActiveNav();
+  initTagFilter();
+  initCopyButtons();
+  initContactForm();
+  initTocIds();
 });
 
-/* --- 1. 主題切換 (Theme Toggle) --- */
-function initThemeToggle() {
-    const toggleBtn = document.getElementById('theme-toggle');
-    if (!toggleBtn) return;
+/* ---------- 主題 ---------- */
+function initTheme() {
+  const btn = document.getElementById('theme-toggle');
+  const root = document.documentElement;
 
-    // 檢查 LocalStorage（若無儲存，一律預設為淺色模式）
-    const savedTheme = localStorage.getItem('cy_theme');
-    const initialTheme = savedTheme || 'light';
-    
-    document.documentElement.setAttribute('data-theme', initialTheme);
-    updateToggleIcon(initialTheme);
+  const saved = localStorage.getItem('cy_theme');
+  const initial = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  applyTheme(initial);
 
-    // 點擊切換
-    toggleBtn.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('cy_theme', newTheme);
-        updateToggleIcon(newTheme);
-    });
-}
+  if (!btn) return;
 
-function updateToggleIcon(theme) {
-    const toggleBtn = document.getElementById('theme-toggle');
-    if (!toggleBtn) return;
+  btn.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme') || 'light';
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('cy_theme', theme);
+
+    if (!btn) return;
 
     if (theme === 'dark') {
-        // 太陽圖示 (切換回明亮)
-        toggleBtn.innerHTML = `
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-        `;
-        toggleBtn.setAttribute('title', '切換為明亮模式');
-        toggleBtn.setAttribute('aria-label', '切換為明亮模式');
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/></svg>';
+      btn.setAttribute('aria-label', '切換淺色模式');
+      btn.setAttribute('title', '切換淺色模式');
     } else {
-        // 月亮圖示 (切換為深色)
-        toggleBtn.innerHTML = `
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-        `;
-        toggleBtn.setAttribute('title', '切換為深色模式');
-        toggleBtn.setAttribute('aria-label', '切換為深色模式');
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>';
+      btn.setAttribute('aria-label', '切換深色模式');
+      btn.setAttribute('title', '切換深色模式');
     }
+  }
 }
 
-/* --- 2. 手機版選單切換 (Mobile Nav Toggle) --- */
+/* ---------- 行動選單 ---------- */
 function initMobileNav() {
-    const mobileBtn = document.getElementById('mobile-menu-toggle');
-    const navLinks = document.getElementById('nav-links');
-    if (!mobileBtn || !navLinks) return;
+  const btn = document.getElementById('mobile-menu-toggle');
+  const nav = document.getElementById('nav-links');
+  if (!btn || !nav) return;
 
-    mobileBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        navLinks.classList.toggle('open');
-    });
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+  });
 
-    // 點擊空白處自動關閉
-    document.addEventListener('click', (e) => {
-        if (!navLinks.contains(e.target) && !mobileBtn.contains(e.target)) {
-            navLinks.classList.remove('open');
-        }
-    });
-}
-
-/* --- 3. 滾動進場動畫 (Scroll Reveal) --- */
-function initScrollReveal() {
-    const revealElements = document.querySelectorAll('.reveal');
-    if (!revealElements.length) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                // 一旦觸發便取消監聽，節省效能
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -40px 0px'
-    });
-
-    revealElements.forEach(el => observer.observe(el));
-}
-
-/* --- 4. 導覽列當前項目高亮 (Active Nav Highlight) --- */
-function initActiveNav() {
-    const path = window.location.pathname;
-    const page = path.split('/').pop() || 'index.html';
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    navLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        if (href === page || (page === '' && href === 'index.html')) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
-}
-
-/* --- 5. 專案篩選功能 (Project Filter Tabs) --- */
-function initProjectFilters() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const projectCards = document.querySelectorAll('.filterable-project');
-    if (!filterBtns.length || !projectCards.length) return;
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // 切換按鈕 active 狀態
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const filterValue = btn.getAttribute('data-filter');
-
-            projectCards.forEach(card => {
-                const category = card.getAttribute('data-category');
-                if (filterValue === 'all' || category === filterValue) {
-                    card.style.display = 'block';
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, 50);
-                } else {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(10px)';
-                    setTimeout(() => {
-                        card.style.display = 'none';
-                    }, 300);
-                }
-            });
-        });
-    });
-}
-
-/* --- 6. 一鍵複製功能 (Copy to Clipboard) --- */
-function initCopyButtons() {
-    const copyBtns = document.querySelectorAll('[data-copy]');
-    if (!copyBtns.length) return;
-
-    copyBtns.forEach(btn => {
-        btn.addEventListener('click', async () => {
-            const textToCopy = btn.getAttribute('data-copy');
-            try {
-                await navigator.clipboard.writeText(textToCopy);
-                showToast(`已複製：${textToCopy}`);
-            } catch (err) {
-                // Fallback
-                const tempInput = document.createElement('input');
-                tempInput.value = textToCopy;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-                showToast(`已複製：${textToCopy}`);
-            }
-        });
-    });
-}
-
-/* 輕量 Toast 提示框 */
-function showToast(message) {
-    let toast = document.getElementById('app-toast');
-    if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'app-toast';
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--color-surface-glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--color-border-glass);
-            color: var(--color-text-main);
-            padding: 12px 24px;
-            border-radius: var(--radius-pill);
-            box-shadow: var(--shadow-lg);
-            font-size: 0.9rem;
-            font-weight: 600;
-            z-index: 1000;
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
-            opacity: 0;
-            pointer-events: none;
-        `;
-        document.body.appendChild(toast);
+  document.addEventListener('click', (e) => {
+    if (!nav.contains(e.target) && !btn.contains(e.target)) {
+      nav.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
     }
+  });
 
-    toast.textContent = message;
-    toast.style.transform = 'translateX(-50%) translateY(0)';
-    toast.style.opacity = '1';
+  nav.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      nav.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
+/* ---------- 進場動態 ---------- */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!items.length) return;
+
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    items.forEach((el) => el.classList.add('active'));
+    return;
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  items.forEach((el) => io.observe(el));
+}
+
+/* ---------- 導覽高亮 ---------- */
+function initActiveNav() {
+  const page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+
+  document.querySelectorAll('.nav-link').forEach((link) => {
+    const href = (link.getAttribute('href') || '').split('/').pop().toLowerCase();
+    if (href === page) link.classList.add('active');
+  });
+}
+
+/* ---------- 標籤篩選（部落格列表） ---------- */
+function initTagFilter() {
+  const bar = document.getElementById('filter-bar');
+  const list = document.getElementById('post-list');
+  const empty = document.getElementById('empty-state');
+  if (!bar || !list) return;
+
+  const items = Array.from(list.querySelectorAll('.post-item'));
+  if (!items.length) return;
+
+  // 從每篇文章的 data-tags 收集標籤，依出現次數排序
+  const counts = new Map();
+  items.forEach((item) => {
+    (item.dataset.tags || '').split(/\s+/).filter(Boolean).forEach((tag) => {
+      counts.set(tag, (counts.get(tag) || 0) + 1);
+    });
+  });
+
+  if (!counts.size) return;
+
+  const tags = Array.from(counts.entries())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-Hant'))
+    .map(([tag]) => tag);
+
+  bar.innerHTML = '';
+  bar.appendChild(makeBtn('全部', 'all', true));
+  tags.forEach((tag) => bar.appendChild(makeBtn(tag, tag, false)));
+
+  function makeBtn(label, value, active) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'filter-btn' + (active ? ' active' : '');
+    btn.dataset.filter = value;
+    btn.textContent = label;
+    btn.setAttribute('aria-pressed', String(active));
+    btn.addEventListener('click', () => filter(value, btn));
+    return btn;
+  }
+
+  function filter(value, btn) {
+    bar.querySelectorAll('.filter-btn').forEach((b) => {
+      b.classList.remove('active');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
+
+    let shown = 0;
+    items.forEach((item) => {
+      const tagsOfItem = (item.dataset.tags || '').split(/\s+/).filter(Boolean);
+      const match = value === 'all' || tagsOfItem.includes(value);
+      item.hidden = !match;
+      if (match) shown++;
+    });
+
+    if (empty) empty.hidden = shown !== 0;
+  }
+
+  // 支援以網址參數預選標籤，例如 blog.html?tag=TDX
+  const preset = new URLSearchParams(location.search).get('tag');
+  if (preset) {
+    const target = bar.querySelector(`[data-filter="${CSS.escape(preset)}"]`);
+    if (target) target.click();
+  }
+}
+
+/* ---------- 複製 ---------- */
+function initCopyButtons() {
+  document.querySelectorAll('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const text = btn.getAttribute('data-copy');
+      try {
+        await navigator.clipboard.writeText(text);
+        toast('已複製：' + text);
+      } catch {
+        const input = document.createElement('input');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        input.remove();
+        toast('已複製：' + text);
+      }
+    });
+  });
+}
+
+function toast(message) {
+  let el = document.getElementById('app-toast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'app-toast';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.style.cssText = [
+      'position:fixed',
+      'left:50%',
+      'bottom:28px',
+      'transform:translate(-50%,16px)',
+      'background:var(--ink)',
+      'color:var(--paper)',
+      'font-family:var(--serif)',
+      'font-size:13px',
+      'padding:11px 18px',
+      'border:1px solid var(--rule-strong)',
+      'border-radius:2px',
+      'z-index:1000',
+      'opacity:0',
+      'pointer-events:none',
+      'transition:opacity .3s var(--ease),transform .3s var(--ease)'
+    ].join(';');
+    document.body.appendChild(el);
+  }
+
+  el.textContent = message;
+  requestAnimationFrame(() => {
+    el.style.opacity = '1';
+    el.style.transform = 'translate(-50%,0)';
+  });
+
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => {
+    el.style.opacity = '0';
+    el.style.transform = 'translate(-50%,16px)';
+  }, 2600);
+}
+
+/* ---------- 聯絡表單 ---------- */
+function initContactForm() {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('button[type="submit"]');
+    const label = btn ? btn.textContent : '';
+
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = '寄送中…';
+    }
 
     setTimeout(() => {
-        toast.style.transform = 'translateX(-50%) translateY(100px)';
-        toast.style.opacity = '0';
-    }, 2800);
+      toast('訊息已送出（示範模式）');
+      form.reset();
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = label;
+      }
+    }, 700);
+  });
 }
 
-/* --- 7. 聯絡表單互動 (Contact Form) --- */
-function initContactForm() {
-    const contactForm = document.getElementById('contact-form');
-    if (!contactForm) return;
+/* ---------- 目錄錨點與平滑捲動 ---------- */
+function initTocIds() {
+  const toc = document.querySelector('.toc');
+  if (!toc) return;
 
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        
-        submitBtn.disabled = true;
-        submitBtn.textContent = '發送中...';
+  toc.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const id = link.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if (!target) return;
 
-        setTimeout(() => {
-            showToast('訊息已成功模擬送出！我會盡快回覆您 😊');
-            contactForm.reset();
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-        }, 800);
+      e.preventDefault();
+      target.scrollIntoView({
+        behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        block: 'start'
+      });
+      history.replaceState(null, '', '#' + id);
     });
+  });
 }
