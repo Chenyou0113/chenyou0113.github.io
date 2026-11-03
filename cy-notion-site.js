@@ -32,11 +32,20 @@ export default {
 };
 
 /**
- * 邊緣快取封裝 (快取 10 分鐘，兼顧即時性與高載入速度)
+ * 邊緣快取封裝 (預設快取 60 秒；支援 ?refresh=1 強制秒級同步)
  */
 async function handleCached(request, env, ctx, handler) {
+  const url = new URL(request.url);
+  const isForceRefresh = url.searchParams.has("refresh") || url.searchParams.has("purge");
+
+  // 正規化快取鍵 (去除 refresh 參數，讓強制刷新後的內容能覆蓋一般訪客的快取)
+  const cacheKeyUrl = new URL(request.url);
+  cacheKeyUrl.searchParams.delete("refresh");
+  cacheKeyUrl.searchParams.delete("purge");
+  const cacheKey = new Request(cacheKeyUrl.toString(), request);
+
   const cache = caches.default;
-  let response = await cache.match(request);
+  let response = !isForceRefresh ? await cache.match(cacheKey) : null;
   if (response) return response;
 
   try {
@@ -44,8 +53,9 @@ async function handleCached(request, env, ctx, handler) {
 
     if (response && response.status === 200) {
       response = new Response(response.body, response);
-      response.headers.set("Cache-Control", "public, max-age=600, s-maxage=600");
-      ctx.waitUntil(cache.put(request, response.clone()));
+      // 設定快取 60 秒 (1 分鐘)
+      response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
+      ctx.waitUntil(cache.put(cacheKey, response.clone()));
     }
 
     return response;
