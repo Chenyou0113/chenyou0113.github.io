@@ -14,6 +14,7 @@
       var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', t);
     } catch (e) {}
+    document.documentElement.classList.add('js');
   </script>
   <link rel="stylesheet" href="../paper.css">
 </head>
@@ -22,8 +23,8 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="brand">
-        <span class="brand-mark">CY</span>
-        <span class="brand-name">陳佑</span>
+        <span class="brand-mark">C. Y.</span>
+        <span class="brand-name">吳承祐</span>
       </a>
       <nav class="site-nav" id="nav-links" aria-label="主要導覽">
         <a href="../index.html" class="nav-link">首頁</a>
@@ -199,9 +200,9 @@ example.com/assets/*
       </div>
 
       <div class="prev-next">
-        <a href="railway-data-observation.html" class="next">
-          <span class="dir">較舊 →</span>
-          <span class="ttl">鐵道旅行與時刻資料：日常交通觀察的數位實踐</span>
+        <a href="tdx-polling.html" class="prev">
+          <span class="dir">← 較舊</span>
+          <span class="ttl">把 30 秒輪詢改成看得見才抓</span>
         </a>
         <span></span>
       </div>
@@ -216,7 +217,7 @@ example.com/assets/*
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span class="footer-mono">© 2026 陳佑 · 手寫 HTML，沒有框架</span>
+      <span class="footer-mono">© 2026 吳承祐 · 手寫 HTML，沒有框架</span>
       <div class="footer-links">
         <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
         <a href="../index.html" class="footer-link">首頁</a>

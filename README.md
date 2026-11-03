@@ -23,15 +23,16 @@
 ├── blog.html               文章列表（含標籤篩選）
 ├── friends.html            友站
 ├── contact.html            聯絡
-├── bus-liveboard.html      公車動態地圖（獨立工具，樣式內嵌）
 ├── paper.css               全站設計系統（唯一的樣式檔）
 ├── script.js               主題切換、行動選單、篩選、複製、表單
-├── posts.json              文章資料（給首頁與搜尋用）
 └── posts/
     ├── _template.html      文章模板，複製這個開始寫
-    ├── infra-cloudflare.html
-    ├── railway-data.html
-    ├── automation.html
+    ├── infra-cloudflare-weacamm.html
+    ├── tdx-polling.html
+    ├── railway-data-observation.html
+    ├── cctv-proxy.html
+    ├── lightweight-automation-daily.html
+    └── railway-notes.html
 ```
 
 ## 怎麼寫一篇新文章
@@ -58,7 +59,7 @@
 
 標籤篩選會自動從 `data-tags` 生成，不用另外維護。
 
-5. 在 `posts.json` 加一筆（首頁的「值得一讀」與未來搜尋用）
+5. 需要時在 `index.html` 的 `<ul id="home-posts">` 更新首頁「值得一讀」的精選文章（一般放最新 3 篇）
 
 ## 更新「現在」
 

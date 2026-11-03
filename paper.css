@@ -34,17 +34,6 @@
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 600ms;
-
-  /* 相容舊元件的別名（script.js 的 toast、既有 class） */
-  --color-surface-glass: var(--paper-raised);
-  --color-border-glass: var(--rule);
-  --color-border-subtle: var(--rule);
-  --color-text-main: var(--ink);
-  --color-text-muted: var(--ink-muted);
-  --color-primary: var(--accent);
-  --color-primary-rgb: 140, 58, 30;
-  --radius-pill: 2px;
-  --shadow-lg: none;
 }
 
 [data-theme="dark"] {
@@ -66,8 +55,6 @@
   --accent:      #d97b58;
   --accent-ink:  #16140f;
   --accent-wash: #2b1d15;
-
-  --color-primary-rgb: 217, 123, 88;
 }
 
 /* ---------- 2. 重設 ---------- */
@@ -1005,14 +992,18 @@ button:focus-visible {
 
 /* ---------- 16. 進場動態 ---------- */
 .reveal {
-  opacity: 0;
-  transform: translateY(8px);
   transition:
     opacity var(--dur) var(--ease),
     transform var(--dur) var(--ease);
 }
 
-.reveal.active {
+/* 只有在 JS 成功載入後（html.js）才隱藏；若腳本失效或停用，內容仍完整可見 */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+html.js .reveal.active {
   opacity: 1;
   transform: none;
 }

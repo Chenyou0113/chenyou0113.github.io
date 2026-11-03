@@ -4,14 +4,23 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  initTheme();
-  initMobileNav();
-  initReveal();
-  initActiveNav();
-  initTagFilter();
-  initCopyButtons();
-  initContactForm();
-  initTocIds();
+  // 任一初始化失敗都不應阻止其他初始化（例如 storage 被停用時）
+  [
+    initTheme,
+    initMobileNav,
+    initReveal,
+    initActiveNav,
+    initTagFilter,
+    initCopyButtons,
+    initContactForm,
+    initTocIds
+  ].forEach((fn) => {
+    try {
+      fn();
+    } catch (err) {
+      console.error('[init]', err);
+    }
+  });
 });
 
 /* ---------- 主題 ---------- */
@@ -19,9 +28,17 @@ function initTheme() {
   const btn = document.getElementById('theme-toggle');
   const root = document.documentElement;
 
-  const saved = localStorage.getItem('cy_theme');
+  const saved = readTheme();
   const initial = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   applyTheme(initial);
+
+  function readTheme() {
+    try {
+      return localStorage.getItem('cy_theme');
+    } catch (e) {
+      return null;
+    }
+  }
 
   if (!btn) return;
 
@@ -32,7 +49,11 @@ function initTheme() {
 
   function applyTheme(theme) {
     root.setAttribute('data-theme', theme);
-    localStorage.setItem('cy_theme', theme);
+    try {
+      localStorage.setItem('cy_theme', theme);
+    } catch (e) {
+      /* storage 被停用時忽略 */
+    }
 
     if (!btn) return;
 
@@ -241,22 +262,9 @@ function initContactForm() {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const btn = form.querySelector('button[type="submit"]');
-    const label = btn ? btn.textContent : '';
-
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = '寄送中…';
-    }
-
-    setTimeout(() => {
-      toast('訊息已送出（示範模式）');
-      form.reset();
-      if (btn) {
-        btn.disabled = false;
-        btn.textContent = label;
-      }
-    }, 700);
+    // 誠實示範：不假裝寄送，也不顯示假的進度動畫
+    toast('這是前端示範，訊息不會寄出；請改用頁面右側的信箱聯絡我。');
+    form.reset();
   });
 }
 

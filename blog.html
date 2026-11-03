@@ -14,6 +14,7 @@
       var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', t);
     } catch (e) {}
+    document.documentElement.classList.add('js');
   </script>
   <link rel="stylesheet" href="paper.css">
 </head>
@@ -23,7 +24,7 @@
     <div class="header-inner">
       <a href="index.html" class="brand">
         <span class="brand-mark">C. Y.</span>
-        <span class="brand-name">承祐</span>
+        <span class="brand-name">吳承祐</span>
       </a>
 
       <nav class="site-nav" id="nav-links" aria-label="主要導覽">
@@ -79,6 +80,20 @@
         <span class="post-arrow">→</span>
       </li>
 
+      <li class="post-item" data-tags="前端 效能 TDX">
+        <span class="post-date">2026.10.18</span>
+        <div>
+          <h2 class="post-title"><a href="posts/tdx-polling.html">把 30 秒輪詢改成看得見才抓：一次 TDX 看板的省電改版</a></h2>
+          <p class="post-summary">手機放著不動也在燒電，問題出在輪詢策略而不是資料量。</p>
+          <div class="post-tags">
+            <span class="chip">前端</span>
+            <span class="chip">效能</span>
+            <span class="chip">TDX</span>
+          </div>
+        </div>
+        <span class="post-arrow">→</span>
+      </li>
+
       <li class="post-item" data-tags="鐵道 開放資料">
         <span class="post-date">2026.09.14</span>
         <div>
@@ -87,6 +102,20 @@
           <div class="post-tags">
             <span class="chip">鐵道</span>
             <span class="chip">開放資料</span>
+          </div>
+        </div>
+        <span class="post-arrow">→</span>
+      </li>
+
+      <li class="post-item" data-tags="Cloudflare CCTV 架構">
+        <span class="post-date">2026.09.02</span>
+        <div>
+          <h2 class="post-title"><a href="posts/cctv-proxy.html">為什麼我把 CCTV 串流包了一層代理</a></h2>
+          <p class="post-summary">直接嵌政府網站的 MJPEG 串流會遇到三個問題，以及 Cloudflare Workers 怎麼解。</p>
+          <div class="post-tags">
+            <span class="chip">Cloudflare</span>
+            <span class="chip">CCTV</span>
+            <span class="chip">架構</span>
           </div>
         </div>
         <span class="post-arrow">→</span>
@@ -105,6 +134,19 @@
         <span class="post-arrow">→</span>
       </li>
 
+      <li class="post-item" data-tags="鐵道 雜記">
+        <span class="post-date">2026.07.21</span>
+        <div>
+          <h2 class="post-title"><a href="posts/railway-notes.html">搭完縱貫線之後的一些筆記</a></h2>
+          <p class="post-summary">從高雄到基隆，十二個小時，和一些關於時刻表設計的想法。</p>
+          <div class="post-tags">
+            <span class="chip">鐵道</span>
+            <span class="chip">雜記</span>
+          </div>
+        </div>
+        <span class="post-arrow">→</span>
+      </li>
+
     </ul>
 
     <p class="empty-state" id="empty-state" hidden>這個標籤下還沒有文章。</p>
@@ -113,7 +155,7 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span class="footer-mono">© 2026 陳佑 · 手寫 HTML，沒有框架</span>
+      <span class="footer-mono">© 2026 吳承祐 · 手寫 HTML，沒有框架</span>
       <div class="footer-links">
         <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
         <a href="index.html" class="footer-link">首頁</a>

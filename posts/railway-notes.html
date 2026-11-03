@@ -14,6 +14,7 @@
       var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', t);
     } catch (e) {}
+    document.documentElement.classList.add('js');
   </script>
   <link rel="stylesheet" href="../paper.css">
 </head>
@@ -22,8 +23,8 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="brand">
-        <span class="brand-mark">CY</span>
-        <span class="brand-name">陳佑</span>
+        <span class="brand-mark">C. Y.</span>
+        <span class="brand-name">吳承祐</span>
       </a>
       <nav class="site-nav" id="nav-links" aria-label="主要導覽">
         <a href="../index.html" class="nav-link">首頁</a>
@@ -189,11 +190,11 @@
       </div>
 
       <div class="prev-next">
-        <a href="cctv-proxy.html" class="next">
-          <span class="dir">較新 →</span>
-          <span class="ttl">為什麼我把 CCTV 串流包了一層代理</span>
-        </a>
         <span></span>
+        <a href="lightweight-automation-daily.html" class="next">
+          <span class="dir">較新 →</span>
+          <span class="ttl">給生活加一點自動化：用輕量工具解決日常瑣事</span>
+        </a>
       </div>
 
       <div class="article-foot">
@@ -206,7 +207,7 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span class="footer-mono">© 2026 陳佑 · 手寫 HTML，沒有框架</span>
+      <span class="footer-mono">© 2026 吳承祐 · 手寫 HTML，沒有框架</span>
       <div class="footer-links">
         <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
         <a href="../index.html" class="footer-link">首頁</a>

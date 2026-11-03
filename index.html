@@ -14,6 +14,7 @@
       var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', t);
     } catch (e) {}
+    document.documentElement.classList.add('js');
   </script>
   <link rel="stylesheet" href="paper.css">
 </head>
@@ -23,7 +24,7 @@
     <div class="header-inner">
       <a href="index.html" class="brand">
         <span class="brand-mark">C. Y.</span>
-        <span class="brand-name">承祐</span>
+        <span class="brand-name">吳承祐</span>
       </a>
 
       <nav class="site-nav" id="nav-links" aria-label="主要導覽">
@@ -202,18 +203,18 @@
           <span class="post-arrow">→</span>
         </li>
         <li class="post-item">
-          <span class="post-date">2026.09.14</span>
+          <span class="post-date">2026.10.18</span>
           <div>
-            <h3 class="post-title"><a href="posts/railway-data-observation.html">鐵道旅行與時刻資料：日常交通觀察的數位實踐</a></h3>
-            <p class="post-summary">從月台上的一張時刻表，到電腦裡的一份 JSON。</p>
+            <h3 class="post-title"><a href="posts/tdx-polling.html">把 30 秒輪詢改成看得見才抓：一次 TDX 看板的省電改版</a></h3>
+            <p class="post-summary">手機放著不動也在燒電，問題出在輪詢策略而不是資料量。</p>
           </div>
           <span class="post-arrow">→</span>
         </li>
         <li class="post-item">
-          <span class="post-date">2026.08.30</span>
+          <span class="post-date">2026.09.14</span>
           <div>
-            <h3 class="post-title"><a href="posts/lightweight-automation-daily.html">給生活加一點自動化：用輕量工具解決日常瑣事</a></h3>
-            <p class="post-summary">不求龐大系統，只用最精簡的腳本，把重複的事交給機器。</p>
+            <h3 class="post-title"><a href="posts/railway-data-observation.html">鐵道旅行與時刻資料：日常交通觀察的數位實踐</a></h3>
+            <p class="post-summary">從月台上的一張時刻表，到電腦裡的一份 JSON。</p>
           </div>
           <span class="post-arrow">→</span>
         </li>
@@ -282,7 +283,7 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span class="footer-mono">© 2026 C.Y. </span>
+      <span class="footer-mono">© 2026 吳承祐 · 手寫 HTML，沒有框架</span>
       <div class="footer-links">
         <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
         <a href="blog.html" class="footer-link">文章</a>
