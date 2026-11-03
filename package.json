@@ -1,0 +1,15 @@
+{
+  "name": "cy-notion-site",
+  "version": "1.0.0",
+  "description": "C. Y. 個人網站 - Cloudflare Workers + Static Assets + Notion API",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.84.0"
+  },
+  "private": true
+}
+

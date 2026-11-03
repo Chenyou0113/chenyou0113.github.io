@@ -1,0 +1,6 @@
+# 本地開發環境變數 (請將此檔案複製為 .dev.vars 並填入實際 Token)
+# 警告：切勿將包含真實金鑰的 .dev.vars 提交至 GitHub！
+
+NOTION_TOKEN=secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+NOTION_DATABASE_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
