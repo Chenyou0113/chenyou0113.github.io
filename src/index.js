@@ -5,16 +5,20 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // 1. 如果是文章列表路由 (/blog 或 /blog.html)
-    if (path === "/blog" || path === "/blog.html") {
-      return await handleCached(request, env, ctx, () => handleIndex(env));
+    // 1. 首頁路由 (/ 或 /index.html)：動態注入「值得一讀」最新 3 篇文章
+    if (path === "/" || path === "/index.html") {
+      return await handleCached(request, env, ctx, () => handleHome(request, env));
     }
 
-    // 2. 如果是文章內頁路由 (/posts/...)
+    // 2. 文章列表路由 (/blog 或 /blog.html)：動態注入完整 Notion 文章列表
+    if (path === "/blog" || path === "/blog.html") {
+      return await handleCached(request, env, ctx, () => handleBlog(request, env));
+    }
+
+    // 3. 文章內頁路由 (/posts/...)：動態渲染 Notion 文章內容
     if (path.startsWith("/posts/")) {
       const slug = path.replace("/posts/", "").replace(/\.html$/, "").replace(/\/$/, "");
       
-      // 先向 Notion API 請求動態文章
       const postResponse = await handleCached(request, env, ctx, () => handlePost(slug, env));
       
       // 若 Notion 找到文章，直接回傳
@@ -22,11 +26,11 @@ export default {
         return postResponse;
       }
 
-      // 若 Notion 無此文章，平滑 fallback 至 public/posts/ 內的本機靜態檔案
+      // 若 Notion 無此文章，平滑 fallback 至本機 posts/ 內的靜態檔案
       return env.ASSETS.fetch(request);
     }
 
-    // 3. 其他所有路徑（首頁 /、關於 /about.html、專案、CSS、JS 等），直接由 Cloudflare 邊緣靜態資產提供
+    // 4. 其他所有靜態資源 (CSS, JS, about.html, projects.html 等)，由 Cloudflare 邊緣秒開
     return env.ASSETS.fetch(request);
   }
 };
@@ -38,7 +42,7 @@ async function handleCached(request, env, ctx, handler) {
   const url = new URL(request.url);
   const isForceRefresh = url.searchParams.has("refresh") || url.searchParams.has("purge");
 
-  // 正規化快取鍵 (去除 refresh 參數，讓強制刷新後的內容能覆蓋一般訪客的快取)
+  // 快取鍵規範化 (去除 refresh/purge 參數，強制刷新後能同步覆蓋一般訪客的快取)
   const cacheKeyUrl = new URL(request.url);
   cacheKeyUrl.searchParams.delete("refresh");
   cacheKeyUrl.searchParams.delete("purge");
@@ -53,7 +57,7 @@ async function handleCached(request, env, ctx, handler) {
 
     if (response && response.status === 200) {
       response = new Response(response.body, response);
-      // 設定快取 60 秒 (1 分鐘)
+      // 邊緣快取 60 秒 (1 分鐘)
       response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
       ctx.waitUntil(cache.put(cacheKey, response.clone()));
     }
@@ -68,79 +72,140 @@ async function handleCached(request, env, ctx, handler) {
 }
 
 /**
- * 1. 抓取文章列表 (動態由 Notion 資料庫產生)
+ * 1. 首頁動態注入 (讀取原生 index.html，將 #home-posts 替換為 Notion 最新 3 篇)
  */
-async function handleIndex(env) {
+async function handleHome(request, env) {
+  const indexUrl = new URL("/index.html", request.url);
+  const assetRes = await env.ASSETS.fetch(new Request(indexUrl, request));
+  if (!assetRes.ok) return assetRes;
+  let html = await assetRes.text();
+
   if (!env.NOTION_TOKEN || !env.NOTION_DATABASE_ID) {
-    return new Response("Notion 環境變數未設定 (NOTION_TOKEN 或 NOTION_DATABASE_ID)", {
-      status: 500,
-      headers: { "Content-Type": "text/plain; charset=utf-8" }
-    });
+    return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
   }
 
-  const queryUrl = `https://api.notion.com/v1/databases/${env.NOTION_DATABASE_ID}/query`;
-  const res = await fetch(queryUrl, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${env.NOTION_TOKEN}`,
-      "Notion-Version": NOTION_VERSION,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      filter: { property: "Published", checkbox: { equals: true } },
-      sorts: [{ property: "Date", direction: "descending" }]
-    })
-  });
-
-  if (!res.ok) {
-    const errorText = await res.text();
-    return new Response(`Notion API 錯誤: ${errorText}`, {
-      status: res.status,
-      headers: { "Content-Type": "text/plain; charset=utf-8" }
+  try {
+    const queryUrl = `https://api.notion.com/v1/databases/${env.NOTION_DATABASE_ID}/query`;
+    const res = await fetch(queryUrl, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${env.NOTION_TOKEN}`,
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        filter: { property: "Published", checkbox: { equals: true } },
+        sorts: [{ property: "Date", direction: "descending" }],
+        page_size: 3
+      })
     });
+
+    if (res.ok) {
+      const data = await res.json();
+      const posts = (data.results || []).map(page => {
+        const p = page.properties;
+        return {
+          title: p.Title?.title?.[0]?.plain_text || "無標題",
+          slug: p.Slug?.rich_text?.[0]?.plain_text || page.id,
+          date: p.Date?.date?.start || "",
+          summary: p.Summary?.rich_text?.[0]?.plain_text || ""
+        };
+      });
+
+      if (posts.length > 0) {
+        const homePostsHtml = posts.map(p => `
+        <li class="post-item">
+          <span class="post-date">${p.date.replace(/-/g, ".")}</span>
+          <div>
+            <h3 class="post-title"><a href="/posts/${p.slug}">${escapeHtml(p.title)}</a></h3>
+            <p class="post-summary">${escapeHtml(p.summary)}</p>
+          </div>
+          <span class="post-arrow">→</span>
+        </li>`).join("");
+
+        html = html.replace(
+          /<ul class="post-list" id="home-posts">([\s\S]*?)<\/ul>/,
+          `<ul class="post-list" id="home-posts">${homePostsHtml}\n      </ul>`
+        );
+      }
+    }
+  } catch (err) {
+    // 發生例外時優雅降級，直接回傳原靜態內容
   }
 
-  const data = await res.json();
-  const posts = (data.results || []).map(page => {
-    const p = page.properties;
-    return {
-      id: page.id,
-      title: p.Title?.title?.[0]?.plain_text || "無標題",
-      slug: p.Slug?.rich_text?.[0]?.plain_text || page.id,
-      date: p.Date?.date?.start || "",
-      summary: p.Summary?.rich_text?.[0]?.plain_text || ""
-    };
-  });
-
-  const listItems = posts.map(p => `
-    <li class="post-item">
-      <span class="post-date">${p.date.replace(/-/g, ".")}</span>
-      <div>
-        <h2 class="post-title"><a href="/posts/${p.slug}">${escapeHtml(p.title)}</a></h2>
-        <p class="post-summary">${escapeHtml(p.summary)}</p>
-      </div>
-      <span class="post-arrow">→</span>
-    </li>
-  `).join("");
-
-  const bodyHtml = `
-    <div class="blog-head reveal">
-      <p class="eyebrow">文章</p>
-      <h1 class="blog-title">寫下來的東西</h1>
-      <p class="blog-sub">由 Notion 即時同步的文章列表。</p>
-    </div>
-    <ul class="post-list reveal" id="post-list">
-      ${listItems.length ? listItems : '<p class="empty-state">目前沒有已發布的文章。</p>'}
-    </ul>
-  `;
-
-  return new Response(renderLayout("文章 — C. Y.", bodyHtml, "blog"), {
-    headers: { "Content-Type": "text/html; charset=utf-8" }
-  });
+  return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
 }
 
 /**
- * 2. 抓取單篇文章與 Blocks 轉換
+ * 2. 文章列表動態注入 (讀取原生 blog.html，將 #post-list 替換為 Notion 文章)
+ */
+async function handleBlog(request, env) {
+  const blogUrl = new URL("/blog.html", request.url);
+  const assetRes = await env.ASSETS.fetch(new Request(blogUrl, request));
+  let html = assetRes.ok ? await assetRes.text() : null;
+
+  if (!env.NOTION_TOKEN || !env.NOTION_DATABASE_ID) {
+    if (html) return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+    return new Response("Notion 環境變數未設定", { status: 500 });
+  }
+
+  try {
+    const queryUrl = `https://api.notion.com/v1/databases/${env.NOTION_DATABASE_ID}/query`;
+    const res = await fetch(queryUrl, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${env.NOTION_TOKEN}`,
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        filter: { property: "Published", checkbox: { equals: true } },
+        sorts: [{ property: "Date", direction: "descending" }]
+      })
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      const posts = (data.results || []).map(page => {
+        const p = page.properties;
+        const tags = (p.Tags?.multi_select || []).map(t => t.name).join(" ");
+        return {
+          title: p.Title?.title?.[0]?.plain_text || "無標題",
+          slug: p.Slug?.rich_text?.[0]?.plain_text || page.id,
+          date: p.Date?.date?.start || "",
+          summary: p.Summary?.rich_text?.[0]?.plain_text || "",
+          tags: tags,
+          tagChips: (p.Tags?.multi_select || []).map(t => `<span class="chip">${escapeHtml(t.name)}</span>`).join("")
+        };
+      });
+
+      const listItems = posts.map(p => `
+      <li class="post-item"${p.tags ? ` data-tags="${escapeHtml(p.tags)}"` : ""}>
+        <span class="post-date">${p.date.replace(/-/g, ".")}</span>
+        <div>
+          <h2 class="post-title"><a href="/posts/${p.slug}">${escapeHtml(p.title)}</a></h2>
+          <p class="post-summary">${escapeHtml(p.summary)}</p>
+          ${p.tagChips ? `<div class="post-tags">${p.tagChips}</div>` : ""}
+        </div>
+        <span class="post-arrow">→</span>
+      </li>`).join("");
+
+      if (html) {
+        html = html.replace(
+          /<ul class="post-list reveal" id="post-list">([\s\S]*?)<\/ul>/,
+          `<ul class="post-list reveal" id="post-list">${listItems ? listItems : '<p class="empty-state">目前沒有已發布的文章。</p>'}\n    </ul>`
+        );
+        return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+      }
+    }
+  } catch (err) {}
+
+  if (html) return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+  return new Response("Blog 載入失敗", { status: 500 });
+}
+
+/**
+ * 3. 單篇動態文章抓取與排版
  */
 async function handlePost(slug, env) {
   if (!env.NOTION_TOKEN || !env.NOTION_DATABASE_ID) {
@@ -241,7 +306,7 @@ async function handlePost(slug, env) {
 }
 
 /**
- * 3. Notion Block 轉 HTML
+ * 4. Notion Block 轉 HTML
  */
 function parseBlocksToHtml(blocks) {
   let html = "";
@@ -316,7 +381,7 @@ function renderRichText(textArray) {
 }
 
 /**
- * 4. 套用你網站風格的外框
+ * 5. 文章外框模板
  */
 function renderLayout(title, content, activeNav = "") {
   return `<!DOCTYPE html>
