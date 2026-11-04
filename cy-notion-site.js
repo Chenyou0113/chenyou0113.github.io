@@ -55,11 +55,14 @@ async function handleCached(request, env, ctx, handler) {
   try {
     response = await handler();
 
+    // 只有在成功處理且沒有嚴重 Notion 報錯時才寫入快取
     if (response && response.status === 200) {
-      response = new Response(response.body, response);
-      // 邊緣快取 60 秒 (1 分鐘)
-      response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
-      ctx.waitUntil(cache.put(cacheKey, response.clone()));
+      const isDebugError = response.headers.get("X-Debug-Status")?.includes("Error");
+      if (!isDebugError) {
+        response = new Response(response.body, response);
+        response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
+        ctx.waitUntil(cache.put(cacheKey, response.clone()));
+      }
     }
 
     return response;
@@ -80,8 +83,11 @@ async function handleHome(request, env) {
   if (!assetRes.ok) return assetRes;
   let html = await assetRes.text();
 
+  let debugMsg = "OK: Worker executed";
+
   if (!env.NOTION_TOKEN || !env.NOTION_DATABASE_ID) {
-    return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+    debugMsg = "Missing Env: NOTION_TOKEN or NOTION_DATABASE_ID is not configured in Cloudflare!";
+    return makeDebugResponse(html, debugMsg);
   }
 
   try {
@@ -100,12 +106,15 @@ async function handleHome(request, env) {
       })
     });
 
-    if (res.ok) {
+    if (!res.ok) {
+      const errText = await res.text();
+      debugMsg = `Notion API Error (${res.status}): ${errText}`;
+    } else {
       const data = await res.json();
       const posts = (data.results || []).map(page => {
         const p = page.properties;
         return {
-          title: p.Title?.title?.[0]?.plain_text || "無標題",
+          title: p.Title?.title?.[0]?.plain_text || p.Name?.title?.[0]?.plain_text || "無標題",
           slug: p.Slug?.rich_text?.[0]?.plain_text || page.id,
           date: p.Date?.date?.start || "",
           summary: p.Summary?.rich_text?.[0]?.plain_text || ""
@@ -127,13 +136,16 @@ async function handleHome(request, env) {
           /<ul class="post-list" id="home-posts">([\s\S]*?)<\/ul>/,
           `<ul class="post-list" id="home-posts">${homePostsHtml}\n      </ul>`
         );
+        debugMsg = `OK: Injected ${posts.length} posts from Notion`;
+      } else {
+        debugMsg = "OK: Connected to Notion, but found 0 published posts (Check if 'Published' checkbox is ticked)";
       }
     }
   } catch (err) {
-    // 發生例外時優雅降級，直接回傳原靜態內容
+    debugMsg = `Fetch Exception: ${err.message}`;
   }
 
-  return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+  return makeDebugResponse(html, debugMsg);
 }
 
 /**
@@ -144,9 +156,12 @@ async function handleBlog(request, env) {
   const assetRes = await env.ASSETS.fetch(new Request(blogUrl, request));
   let html = assetRes.ok ? await assetRes.text() : null;
 
+  let debugMsg = "OK: Worker executed";
+
   if (!env.NOTION_TOKEN || !env.NOTION_DATABASE_ID) {
-    if (html) return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
-    return new Response("Notion 環境變數未設定", { status: 500 });
+    debugMsg = "Missing Env: NOTION_TOKEN or NOTION_DATABASE_ID is not configured in Cloudflare!";
+    if (html) return makeDebugResponse(html, debugMsg);
+    return new Response(debugMsg, { status: 500 });
   }
 
   try {
@@ -164,13 +179,16 @@ async function handleBlog(request, env) {
       })
     });
 
-    if (res.ok) {
+    if (!res.ok) {
+      const errText = await res.text();
+      debugMsg = `Notion API Error (${res.status}): ${errText}`;
+    } else {
       const data = await res.json();
       const posts = (data.results || []).map(page => {
         const p = page.properties;
         const tags = (p.Tags?.multi_select || []).map(t => t.name).join(" ");
         return {
-          title: p.Title?.title?.[0]?.plain_text || "無標題",
+          title: p.Title?.title?.[0]?.plain_text || p.Name?.title?.[0]?.plain_text || "無標題",
           slug: p.Slug?.rich_text?.[0]?.plain_text || page.id,
           date: p.Date?.date?.start || "",
           summary: p.Summary?.rich_text?.[0]?.plain_text || "",
@@ -195,13 +213,28 @@ async function handleBlog(request, env) {
           /<ul class="post-list reveal" id="post-list">([\s\S]*?)<\/ul>/,
           `<ul class="post-list reveal" id="post-list">${listItems ? listItems : '<p class="empty-state">目前沒有已發布的文章。</p>'}\n    </ul>`
         );
-        return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+        debugMsg = `OK: Injected ${posts.length} posts from Notion into Blog`;
       }
     }
-  } catch (err) {}
+  } catch (err) {
+    debugMsg = `Fetch Exception: ${err.message}`;
+  }
 
-  if (html) return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
-  return new Response("Blog 載入失敗", { status: 500 });
+  if (html) return makeDebugResponse(html, debugMsg);
+  return new Response(debugMsg, { status: 500 });
+}
+
+/**
+ * 輔助函式：附帶 Debug 訊息的 HTML 回應
+ */
+function makeDebugResponse(html, debugMsg) {
+  const annotatedHtml = html + `\n<!-- DEBUG_INFO: ${debugMsg} -->`;
+  return new Response(annotatedHtml, {
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "X-Debug-Status": debugMsg
+    }
+  });
 }
 
 /**
@@ -256,7 +289,7 @@ async function handlePost(slug, env) {
   }
 
   const props = page.properties || {};
-  const title = props.Title?.title?.[0]?.plain_text || "無標題";
+  const title = props.Title?.title?.[0]?.plain_text || props.Name?.title?.[0]?.plain_text || "無標題";
   const date = props.Date?.date?.start || "";
   const summary = props.Summary?.rich_text?.[0]?.plain_text || "";
 
