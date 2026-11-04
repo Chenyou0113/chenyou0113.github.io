@@ -1,2 +1,6 @@
 @echo off
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0sync.ps1"
+chcp 65001 >nul
+cd /d "%~dp0"
+node sync.js
+echo.
+pause

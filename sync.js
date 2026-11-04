@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import child_process from 'node:child_process';
 
 const NOTION_VERSION = "2022-06-28";
 
@@ -100,6 +101,39 @@ async function main() {
   console.log(`- posts/ (共產生 ${posts.length} 個文章 HTML 檔案)`);
   console.log("- posts/images/ (Notion 圖片已離線化下載，永久不失效且無 AWS 憑證洩漏警報)");
   console.log("\n現在你可以直接預覽，或執行 git commit & git push 推上 GitHub Pages！");
+
+  // 5. 自動檢查 Git 變更並推送到 GitHub 與 Cloudflare
+  const skipGit = process.argv.includes('--no-git');
+  if (!skipGit) {
+    console.log("\n========================================================");
+    console.log("📦 正在自動打包並推送至 GitHub 與 Cloudflare...");
+    console.log("========================================================\n");
+    try {
+      const status = child_process.execSync('git status --porcelain', { encoding: 'utf-8' });
+      if (status.trim()) {
+        child_process.execSync('git add .', { stdio: 'inherit' });
+        const nowStr = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei', hour12: false });
+        child_process.execSync(`git commit -m "自動同步 Notion 文章 (${nowStr})"`, { stdio: 'inherit' });
+        child_process.execSync('git push', { stdio: 'inherit' });
+        console.log("\n🚀 GitHub Pages 推送成功！");
+      } else {
+        console.log("ℹ️ 本地文章已是最新，無需 Git commit。");
+      }
+
+      try {
+        console.log("\n☁️ 正在同步部署至 Cloudflare Workers...");
+        child_process.execSync('npx wrangler deploy', { stdio: 'inherit' });
+      } catch (e) {
+        console.warn("⚠️ Cloudflare 部署略過:", e.message);
+      }
+
+      console.log("\n========================================================");
+      console.log("🎉 大功告成！Notion 文章已成功同步並推送到網站上線！");
+      console.log("========================================================\n");
+    } catch (gitErr) {
+      console.error("\n❌ 自動推送時發生錯誤:", gitErr.message);
+    }
+  }
 }
 
 // 遞迴抓取所有 Notion Blocks
