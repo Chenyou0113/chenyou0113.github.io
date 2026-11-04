@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+﻿import fs from 'node:fs';
 import path from 'node:path';
 
 const NOTION_VERSION = "2022-06-28";
@@ -202,8 +202,7 @@ function generateArticleHtml(title, date, summary, contentHtml, tags) {
     <div class="header-inner">
       <a href="../index.html" class="brand">
         <span class="brand-mark">C. Y.</span>
-        <span class="brand-name">吳承祐</span>
-      </a>
+        </a>
       <nav class="site-nav" id="nav-links" aria-label="主要導覽">
         <a href="../index.html" class="nav-link">首頁</a>
         <a href="../about.html" class="nav-link">關於</a>
@@ -253,7 +252,7 @@ ${contentHtml}
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span class="footer-mono">© 2026 吳承祐 · 手寫 HTML，沒有框架</span>
+      <span class="footer-mono">© 2026 C. Y. · 手寫 HTML，沒有框架</span>
       <div class="footer-links">
         <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
         <a href="../index.html" class="footer-link">首頁</a>

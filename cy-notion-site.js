@@ -1,4 +1,4 @@
-const NOTION_VERSION = "2022-06-28";
+﻿const NOTION_VERSION = "2022-06-28";
 
 export default {
   async fetch(request, env, ctx) {
@@ -460,8 +460,7 @@ function renderLayout(title, content, activeNav = "") {
     <div class="header-inner">
       <a href="/" class="brand">
         <span class="brand-mark">C. Y.</span>
-        <span class="brand-name">吳承祐</span>
-      </a>
+        </a>
 
       <nav class="site-nav" id="nav-links" aria-label="主要導覽">
         <a href="/" class="nav-link">首頁</a>
@@ -491,7 +490,7 @@ function renderLayout(title, content, activeNav = "") {
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span class="footer-mono">© 2026 吳承祐 · 手寫 HTML，沒有框架</span>
+      <span class="footer-mono">© 2026 C. Y. · 手寫 HTML，沒有框架</span>
       <div class="footer-links">
         <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
         <a href="/" class="footer-link">首頁</a>

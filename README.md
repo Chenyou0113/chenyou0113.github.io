@@ -1,6 +1,6 @@
-# C. Y. — 個人網站
+﻿# C. Y. — 個人網站
 
-吳承祐（C. Y.）的個人網站：網域、交通開放資料，還有一些日常雜記。
+C. Y.的個人網站：網域、交通開放資料，還有一些日常雜記。
 
 全站是**手寫的 HTML / CSS / JavaScript**——沒有框架、沒有打包、沒有建置流程。把檔案丟上 GitHub Pages 就能直接跑，也可以用瀏覽器打開單一頁面預覽。
 
@@ -204,7 +204,7 @@ git push origin main
 
 ## 授權與聯絡
 
-- 內容與程式碼為吳承祐所有，轉載請先聯絡。
+- 內容與程式碼為 C. Y. 所有，轉載請先聯絡。
 - 電子郵件：xiaoyouwu5@gmail.com
 - GitHub：<https://github.com/Chenyou0113>
 - 網站：<https://www.weacamm.org/>
