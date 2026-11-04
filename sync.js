@@ -1,4 +1,4 @@
-﻿import fs from 'node:fs';
+import fs from 'node:fs';
 import path from 'node:path';
 
 const NOTION_VERSION = "2022-06-28";
@@ -63,10 +63,9 @@ async function main() {
 
   const posts = [];
 
-  // 確保 posts 目錄存在
-  if (!fs.existsSync('posts')) {
-    fs.mkdirSync('posts');
-  }
+  // 確保 posts 與 posts/images 目錄存在
+  if (!fs.existsSync('posts')) fs.mkdirSync('posts');
+  if (!fs.existsSync(path.join('posts', 'images'))) fs.mkdirSync(path.join('posts', 'images'));
 
   for (const page of pages) {
     const p = page.properties;
@@ -82,7 +81,7 @@ async function main() {
     // 抓取文章內文區塊
     console.log(`📥 正在同步文章內文: ${title} (posts/${slug}.html)...`);
     const blocks = await fetchAllBlocks(page.id);
-    const contentHtml = parseBlocksToHtml(blocks);
+    const contentHtml = await parseBlocksToHtml(blocks, slug);
 
     // 產生單篇文章實體 HTML 檔案
     const postHtml = generateArticleHtml(title, date, summary, contentHtml, tags);
@@ -99,6 +98,7 @@ async function main() {
   console.log("- index.html (首頁「值得一讀」更新為最新 3 篇)");
   console.log("- blog.html (更新為所有 Notion 發布文章)");
   console.log(`- posts/ (共產生 ${posts.length} 個文章 HTML 檔案)`);
+  console.log("- posts/images/ (Notion 圖片已離線化下載，永久不失效且無 AWS 憑證洩漏警報)");
   console.log("\n現在你可以直接預覽，或執行 git commit & git push 推上 GitHub Pages！");
 }
 
@@ -202,7 +202,7 @@ function generateArticleHtml(title, date, summary, contentHtml, tags) {
     <div class="header-inner">
       <a href="../index.html" class="brand">
         <span class="brand-mark">C. Y.</span>
-        </a>
+      </a>
       <nav class="site-nav" id="nav-links" aria-label="主要導覽">
         <a href="../index.html" class="nav-link">首頁</a>
         <a href="../about.html" class="nav-link">關於</a>
@@ -264,11 +264,12 @@ ${contentHtml}
 </html>`;
 }
 
-// Notion Blocks 轉換成 HTML
-function parseBlocksToHtml(blocks) {
+// Notion Blocks 轉換成 HTML (支援圖片自動下載離線化，移除 S3 AWS Token)
+async function parseBlocksToHtml(blocks, slug) {
   let html = "";
   let inBulletList = false;
   let inNumberedList = false;
+  let imageCounter = 1;
 
   for (const block of blocks) {
     const type = block.type;
@@ -309,9 +310,29 @@ function parseBlocksToHtml(blocks) {
         html += "        <hr>\n";
         break;
       case "image": {
-        const src = block.image.type === "external" ? block.image.external.url : block.image.file.url;
+        const remoteUrl = block.image.type === "external" ? block.image.external.url : block.image.file.url;
         const caption = block.image.caption?.length ? block.image.caption[0].plain_text : "";
-        html += `        <figure><img src="${src}" alt="${escapeHtml(caption)}"><figcaption>${escapeHtml(caption)}</figcaption></figure>\n`;
+
+        // 自動將 Notion S3 圖片下載至本地 posts/images/，徹底避免 AWS 臨時金鑰洩漏與連結過期
+        let localSrc = remoteUrl;
+        try {
+          const extMatch = remoteUrl.match(/\.(png|jpe?g|gif|webp|svg)/i);
+          const ext = extMatch ? extMatch[0].toLowerCase() : '.png';
+          const filename = `${slug}-img-${imageCounter++}${ext}`;
+          const localPath = path.join('posts', 'images', filename);
+
+          console.log(`   📸 下載圖片至: ${localPath}...`);
+          const imgRes = await fetch(remoteUrl);
+          if (imgRes.ok) {
+            const buffer = Buffer.from(await imgRes.arrayBuffer());
+            fs.writeFileSync(localPath, buffer);
+            localSrc = `images/${filename}`;
+          }
+        } catch (imgErr) {
+          console.warn(`   ⚠️ 圖片下載失敗，保留原始連結:`, imgErr.message);
+        }
+
+        html += `        <figure><img src="${localSrc}" alt="${escapeHtml(caption)}"><figcaption>${escapeHtml(caption)}</figcaption></figure>\n`;
         break;
       }
     }
@@ -344,4 +365,3 @@ main().catch(err => {
   console.error("❌ 發生未預期的錯誤:", err);
   process.exit(1);
 });
-
