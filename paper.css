@@ -655,7 +655,7 @@ button:focus-visible {
 
 /* ---------- 13. 文章頁 ---------- */
 .article {
-  max-width: var(--measure);
+  max-width: min(840px, 100%);
   margin: 0 auto;
   padding: clamp(56px, 9vw, 96px) 0 0;
 }
