@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的第一篇測試文章 — C. Y.</title>
+  <meta name="description" content="這是我的 Notion 部落格測試內文！">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+    document.documentElement.classList.add('js');
+  </script>
+  <link rel="stylesheet" href="../paper.css">
+  <script src="../script.js" defer></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <span class="brand-mark">C. Y.</span>
+        <span class="brand-name">吳承祐</span>
+      </a>
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="../index.html" class="nav-link">首頁</a>
+        <a href="../about.html" class="nav-link">關於</a>
+        <a href="../projects.html" class="nav-link">專案</a>
+        <a href="../blog.html" class="nav-link active">文章</a>
+        <a href="../friends.html" class="nav-link">友站</a>
+        <a href="../contact.html" class="nav-link">聯絡</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="article">
+
+      <a href="../blog.html" class="article-back">← 回文章列表</a>
+
+      <header class="article-head">
+        <div class="article-meta">
+          <time datetime="2026-11-04">2026.11.04</time>
+          
+        </div>
+        <h1 class="article-title">我的第一篇測試文章</h1>
+        <p class="article-lede">這是我的 Notion 部落格測試內文！</p>
+      </header>
+
+      <div class="prose">
+        <p>這是我的 Notion 部落格測試內文！</p>
+
+      </div>
+
+      <div class="article-foot" style="margin-top: 3rem;">
+        <span class="mono" style="color: var(--ink-faint);">寫於 2026.11.04</span>
+        <a href="../blog.html" class="mono" style="color: var(--accent);">更多文章 →</a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 吳承祐 · 手寫 HTML，沒有框架</span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="../index.html" class="footer-link">首頁</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -30,7 +30,7 @@ export default {
       return env.ASSETS.fetch(request);
     }
 
-    // 4. 其他所有靜態資源 (CSS, JS, about.html, projects.html 等)，由 Cloudflare 邊緣秒開
+    // 4. 其他所有靜態資源 (CSS, JS, about, projects 等)，由 Cloudflare 邊緣秒開
     return env.ASSETS.fetch(request);
   }
 };
@@ -55,7 +55,7 @@ async function handleCached(request, env, ctx, handler) {
   try {
     response = await handler();
 
-    // 只有在成功處理且沒有嚴重 Notion 報錯時才寫入快取
+    // 只有在成功且無錯誤時才快取
     if (response && response.status === 200) {
       const isDebugError = response.headers.get("X-Debug-Status")?.includes("Error");
       if (!isDebugError) {
@@ -75,14 +75,29 @@ async function handleCached(request, env, ctx, handler) {
 }
 
 /**
+ * 安全取得靜態資產 HTML (自動處理 Cloudflare Pretty URL 重導向)
+ */
+async function fetchAssetHtml(env, request, cleanPath) {
+  const targetUrl = new URL(cleanPath, request.url);
+  let res = await env.ASSETS.fetch(new Request(targetUrl, request));
+  
+  // 若遇上 307/308 重導向，自動追隨到目標路徑抓取真實 HTML
+  if (res.status >= 300 && res.status < 400) {
+    const location = res.headers.get("Location");
+    if (location) {
+      const redirectUrl = new URL(location, request.url);
+      res = await env.ASSETS.fetch(new Request(redirectUrl, request));
+    }
+  }
+
+  return res.ok ? await res.text() : null;
+}
+
+/**
  * 1. 首頁動態注入 (讀取原生 index.html，將 #home-posts 替換為 Notion 最新 3 篇)
  */
 async function handleHome(request, env) {
-  const indexUrl = new URL("/index.html", request.url);
-  const assetRes = await env.ASSETS.fetch(new Request(indexUrl, request));
-  if (!assetRes.ok) return assetRes;
-  let html = await assetRes.text();
-
+  let html = await fetchAssetHtml(env, request, "/");
   let debugMsg = "OK: Worker executed";
 
   if (!env.NOTION_TOKEN || !env.NOTION_DATABASE_ID) {
@@ -121,7 +136,7 @@ async function handleHome(request, env) {
         };
       });
 
-      if (posts.length > 0) {
+      if (posts.length > 0 && html) {
         const homePostsHtml = posts.map(p => `
         <li class="post-item">
           <span class="post-date">${p.date.replace(/-/g, ".")}</span>
@@ -152,10 +167,7 @@ async function handleHome(request, env) {
  * 2. 文章列表動態注入 (讀取原生 blog.html，將 #post-list 替換為 Notion 文章)
  */
 async function handleBlog(request, env) {
-  const blogUrl = new URL("/blog.html", request.url);
-  const assetRes = await env.ASSETS.fetch(new Request(blogUrl, request));
-  let html = assetRes.ok ? await assetRes.text() : null;
-
+  let html = await fetchAssetHtml(env, request, "/blog");
   let debugMsg = "OK: Worker executed";
 
   if (!env.NOTION_TOKEN || !env.NOTION_DATABASE_ID) {
@@ -228,6 +240,12 @@ async function handleBlog(request, env) {
  * 輔助函式：附帶 Debug 訊息的 HTML 回應
  */
 function makeDebugResponse(html, debugMsg) {
+  if (!html) {
+    return new Response(`Error: Unable to load HTML template (${debugMsg})`, {
+      status: 500,
+      headers: { "Content-Type": "text/plain; charset=utf-8" }
+    });
+  }
   const annotatedHtml = html + `\n<!-- DEBUG_INFO: ${debugMsg} -->`;
   return new Response(annotatedHtml, {
     headers: {
@@ -447,11 +465,11 @@ function renderLayout(title, content, activeNav = "") {
 
       <nav class="site-nav" id="nav-links" aria-label="主要導覽">
         <a href="/" class="nav-link">首頁</a>
-        <a href="/about.html" class="nav-link">關於</a>
-        <a href="/projects.html" class="nav-link">專案</a>
+        <a href="/about" class="nav-link">關於</a>
+        <a href="/projects" class="nav-link">專案</a>
         <a href="/blog" class="nav-link ${activeNav === 'blog' || activeNav === 'post' ? 'active' : ''}">文章</a>
-        <a href="/friends.html" class="nav-link">友站</a>
-        <a href="/contact.html" class="nav-link">聯絡</a>
+        <a href="/friends" class="nav-link">友站</a>
+        <a href="/contact" class="nav-link">聯絡</a>
       </nav>
 
       <div class="header-actions">
