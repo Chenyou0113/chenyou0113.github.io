@@ -154,6 +154,14 @@ async function fetchAllBlocks(blockId) {
     blocks.push(...(data.results || []));
     cursor = data.has_more ? data.next_cursor : undefined;
   } while (cursor);
+
+  // 遞迴讀取含有子區塊的結構 (例如 column_list, column, callout, toggle, quote)
+  for (const block of blocks) {
+    if (block.has_children && ['column_list', 'column', 'callout', 'toggle', 'quote'].includes(block.type)) {
+      block.children = await fetchAllBlocks(block.id);
+    }
+  }
+
   return blocks;
 }
 
@@ -307,13 +315,13 @@ async function parseBlocksToHtml(blocks, slug) {
 
   for (const block of blocks) {
     const type = block.type;
-    if (type !== "bulleted_list_item" && inBulletList) { html += "</ul>\n"; inBulletList = false; }
-    if (type !== "numbered_list_item" && inNumberedList) { html += "</ol>\n"; inNumberedList = false; }
+    if (type !== "bulleted_list_item" && inBulletList) { html += "        </ul>\n"; inBulletList = false; }
+    if (type !== "numbered_list_item" && inNumberedList) { html += "        </ol>\n"; inNumberedList = false; }
 
     switch (type) {
       case "paragraph": {
         const text = renderRichText(block.paragraph.rich_text);
-        if (text.trim()) html += `        <p>${text}</p>\n`;
+        if (text.trim()) html += `        <p>${autoLink(text)}</p>\n`;
         break;
       }
       case "heading_1":
@@ -325,15 +333,21 @@ async function parseBlocksToHtml(blocks, slug) {
         break;
       case "bulleted_list_item":
         if (!inBulletList) { html += "        <ul>\n"; inBulletList = true; }
-        html += `          <li>${renderRichText(block.bulleted_list_item.rich_text)}</li>\n`;
+        html += `          <li>${autoLink(renderRichText(block.bulleted_list_item.rich_text))}</li>\n`;
         break;
       case "numbered_list_item":
         if (!inNumberedList) { html += "        <ol>\n"; inNumberedList = true; }
-        html += `          <li>${renderRichText(block.numbered_list_item.rich_text)}</li>\n`;
+        html += `          <li>${autoLink(renderRichText(block.numbered_list_item.rich_text))}</li>\n`;
         break;
-      case "quote":
-        html += `        <blockquote><p>${renderRichText(block.quote.rich_text)}</p></blockquote>\n`;
+      case "quote": {
+        const text = renderRichText(block.quote.rich_text);
+        let extra = "";
+        if (block.children && block.children.length) {
+          extra = await parseBlocksToHtml(block.children, slug);
+        }
+        html += `        <blockquote><p>${autoLink(text)}</p>${extra}</blockquote>\n`;
         break;
+      }
       case "code": {
         const lang = block.code.language || "text";
         const codeText = escapeHtml(block.code.rich_text.map(t => t.plain_text).join(""));
@@ -343,11 +357,71 @@ async function parseBlocksToHtml(blocks, slug) {
       case "divider":
         html += "        <hr>\n";
         break;
+      case "bookmark": {
+        const url = block.bookmark.url;
+        const caption = block.bookmark.caption?.length ? renderRichText(block.bookmark.caption) : "";
+        html += `        <div class="bookmark-card">
+          <a href="${escapeHtml(url)}" class="bookmark-link" target="_blank" rel="noopener">
+            <span class="bookmark-title">${caption || escapeHtml(url)}</span>
+            <span class="bookmark-url">${escapeHtml(url)}</span>
+          </a>
+        </div>\n`;
+        break;
+      }
+      case "link_preview": {
+        const url = block.link_preview.url;
+        html += `        <div class="bookmark-card">
+          <a href="${escapeHtml(url)}" class="bookmark-link" target="_blank" rel="noopener">
+            <span class="bookmark-title">${escapeHtml(url)}</span>
+            <span class="bookmark-url">${escapeHtml(url)}</span>
+          </a>
+        </div>\n`;
+        break;
+      }
+      case "embed": {
+        const url = block.embed.url;
+        if (url && (url.includes("youtube.com") || url.includes("youtu.be"))) {
+          const videoId = url.match(/(?:youtu\.be\/|v=|\/embed\/)([\w-]{11})/)?.[1];
+          if (videoId) {
+            html += `        <div class="embed-video"><iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>\n`;
+            break;
+          }
+        }
+        html += `        <div class="bookmark-card">
+          <a href="${escapeHtml(url)}" class="bookmark-link" target="_blank" rel="noopener">
+            <span class="bookmark-title">${escapeHtml(url)}</span>
+            <span class="bookmark-url">${escapeHtml(url)}</span>
+          </a>
+        </div>\n`;
+        break;
+      }
+      case "callout": {
+        const icon = block.callout.icon?.emoji || "💡";
+        const text = renderRichText(block.callout.rich_text);
+        let extra = "";
+        if (block.children && block.children.length) {
+          extra = await parseBlocksToHtml(block.children, slug);
+        }
+        html += `        <div class="callout"><span class="callout-icon">${icon}</span><div class="callout-content"><p>${autoLink(text)}</p>${extra}</div></div>\n`;
+        break;
+      }
+      case "column_list": {
+        if (block.children && block.children.length) {
+          html += `        <div class="columns-grid">\n`;
+          for (const col of block.children) {
+            if (col.children && col.children.length) {
+              const colHtml = await parseBlocksToHtml(col.children, slug);
+              html += `          <div class="column">\n${colHtml}          </div>\n`;
+            }
+          }
+          html += `        </div>\n`;
+        }
+        break;
+      }
       case "image": {
         const remoteUrl = block.image.type === "external" ? block.image.external.url : block.image.file.url;
         const caption = block.image.caption?.length ? block.image.caption[0].plain_text : "";
 
-        // 自動將 Notion S3 圖片下載至本地 posts/images/，徹底避免 AWS 臨時金鑰洩漏與連結過期
         let localSrc = remoteUrl;
         try {
           const extMatch = remoteUrl.match(/\.(png|jpe?g|gif|webp|svg)/i);
@@ -385,9 +459,21 @@ function renderRichText(textArray) {
     if (ann.italic) text = `<em>${text}</em>`;
     if (ann.code) text = `<code>${text}</code>`;
     if (ann.strikethrough) text = `<s>${text}</s>`;
-    if (item.href) text = `<a href="${item.href}" target="_blank" rel="noopener">${text}</a>`;
+    
+    // 支援直接 href 或 text.link.url
+    const href = item.href || item.text?.link?.url;
+    if (href) {
+      text = `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${text}</a>`;
+    }
     return text;
   }).join("");
+}
+
+// 自動將段落中未加標籤的純網址轉為可點擊超連結
+function autoLink(text) {
+  if (!text) return "";
+  // 匹配未在 HTML tag 屬性內的 http/https 網址
+  return text.replace(/(?<!href=["']|src=["']|>)(https?:\/\/[^\s<"']+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
 
 function escapeHtml(str) {

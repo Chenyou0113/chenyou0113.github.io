@@ -1178,3 +1178,70 @@ html.js .reveal.active {
     border-top: 1px solid var(--rule);
   }
 }
+
+/* ---------- 13.1 Notion 書籤與連結卡片 ---------- */
+.bookmark-card {
+  margin: 1.8em 0;
+}
+.bookmark-link {
+  display: block;
+  padding: 16px 20px;
+  background: var(--paper-sunk);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: border-color 180ms var(--ease), background 180ms var(--ease), transform 180ms var(--ease);
+}
+.bookmark-link:hover {
+  border-color: var(--accent);
+  background: var(--paper-wash);
+  transform: translateY(-1px);
+}
+.bookmark-title {
+  display: block;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.bookmark-url {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.callout {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 20px;
+  background: var(--paper-sunk);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  margin: 1.8em 0;
+}
+.callout-icon { font-size: 1.2rem; line-height: 1.4; flex-shrink: 0; }
+.callout-content { flex: 1; font-size: 0.96rem; line-height: 1.7; }
+.callout-content p { margin: 0; }
+.embed-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 2em 0;
+}
+.embed-video iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 4px;
+}
+.columns-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin: 1.8em 0;
+}
