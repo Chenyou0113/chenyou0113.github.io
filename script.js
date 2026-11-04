@@ -180,6 +180,7 @@ function initTagFilter() {
       const tagsOfItem = (item.dataset.tags || '').split(/\s+/).filter(Boolean);
       const match = value === 'all' || tagsOfItem.includes(value);
       item.hidden = !match;
+      item.style.display = match ? "" : "none";
       if (match) shown++;
     });
 
