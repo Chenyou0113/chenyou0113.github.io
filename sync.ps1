@@ -1,24 +1,24 @@
+﻿$OutputEncoding = [System.Text.Encoding]::UTF8
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$Host.UI.RawUI.WindowTitle = "Notion 部落格一鍵自動同步與發布工具"
+$Host.UI.RawUI.WindowTitle = "Notion 部落格一鍵自動同步工具"
 
+Clear-Host
 Write-Host "========================================================" -ForegroundColor Cyan
 Write-Host "   🚀 正在向 Notion 抓取最新文章並更新本地 HTML..." -ForegroundColor Cyan
 Write-Host "========================================================`n" -ForegroundColor Cyan
 
-# 切換到腳本所在目錄
 Set-Location -Path $PSScriptRoot
 
-# 執行同步腳本
 node sync.js
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "`n========================================================" -ForegroundColor Yellow
-    Write-Host "   📦 正在自動打包並推送至 GitHub..." -ForegroundColor Yellow
+    Write-Host "   📦 正在自動打包並推送至 GitHub Pages..." -ForegroundColor Yellow
     Write-Host "========================================================`n" -ForegroundColor Yellow
 
     git add .
-    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    git commit -m "自動同步 Notion 文章 ($timestamp)"
+    $now = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    git commit -m "自動同步 Notion 文章 ($now)"
     git push
 
     Write-Host "`n========================================================" -ForegroundColor Green
@@ -28,5 +28,5 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "`n❌ 同步失敗，請檢查 Notion 設定或網路連線。" -ForegroundColor Red
 }
 
-Write-Host "視窗將在 5 秒後自動關閉，或直接按 Enter 鍵退出..." -ForegroundColor Gray
-$null = Read-Host
+Write-Host "按 Enter 鍵關閉視窗..." -ForegroundColor Gray
+Read-Host
