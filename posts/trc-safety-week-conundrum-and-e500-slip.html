@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>保安週還是「保安粥」？從 214 次甩鍋爭議到花東爬坡滑走的系統真相 — C. Y.</title>
+  <meta name="description" content="文章批評臺鐵保安週流於形式，並以214次編組資訊漏傳、事故月報照抄制式對策，以及E500機車在濕滑坡道打滑為例，指出管理層常將系統與工程問題歸咎於第一線。作者主張整合資訊流程、改善設備與防滑控制，並以工程防呆取代口號式宣導。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+    document.documentElement.classList.add('js');
+  </script>
+  <link rel="stylesheet" href="../paper.css">
+  <script src="../script.js" defer></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <span class="brand-mark">C. Y.</span>
+      </a>
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="../index.html" class="nav-link">首頁</a>
+        <a href="../about.html" class="nav-link">關於</a>
+        <a href="../projects.html" class="nav-link">專案</a>
+        <a href="../blog.html" class="nav-link active">文章</a>
+        <a href="../friends.html" class="nav-link">友站</a>
+        <a href="../contact.html" class="nav-link">聯絡</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="article">
+
+      <a href="../blog.html" class="article-back">← 回文章列表</a>
+
+      <header class="article-head">
+        <div class="article-meta">
+          <time datetime="2026-11-04">2026.11.04</time>
+          <span class="sep">/</span><span>鐵道 基礎設施 架構 雜記</span>
+        </div>
+        <h1 class="article-title">保安週還是「保安粥」？從 214 次甩鍋爭議到花東爬坡滑走的系統真相</h1>
+        <p class="article-lede">文章批評臺鐵保安週流於形式，並以214次編組資訊漏傳、事故月報照抄制式對策，以及E500機車在濕滑坡道打滑為例，指出管理層常將系統與工程問題歸咎於第一線。作者主張整合資訊流程、改善設備與防滑控制，並以工程防呆取代口號式宣導。</p>
+      </header>
+
+      <div class="prose">
+        <h2>每年十一月，準時端上桌的例行「保安粥」</h2>
+        <p>每年十一月的第一週，臺鐵總會依慣例啟動「保安週」。隨之而來的是標準的公關範本：高層主管套上亮黃色反光背心，在機務段、號誌樓與調車場之間密集穿梭，聽取簡報、抽查作業、慰勉同仁，最後對外發布一篇充滿「落實 SOP」、「確認、再確認、再三確認」的新聞稿。</p>
+        <figure><img src="images/trc-safety-week-conundrum-and-e500-slip-img-1.png" alt="臺鐵公司在2026年保安周第2天發的新聞稿。資料來源："><figcaption>臺鐵公司在2026年保安周第2天發的新聞稿。資料來源：</figcaption></figure>
+        <p>然而在鐵道圈與第一線同仁眼裡，這場大拜拜，長年被戲稱為「保安粥」。它不是實質體檢安全管理系統（SMS）的契機，而是一場由形式主義、迎檢壓力與公文辭令熬煮出來的大雜燴。更諷刺的是，越是敲鑼打鼓宣傳保安的這幾天，運轉現場的異常與事故密度往往不減反增。</p>
+        <p>安全從來不是靠長官巡視「宣示」出來的。如果一間鐵路公司的安全哲學，在公司化之後依然停留在「把系統性漏洞歸咎於人為疏失、靠口號要求基層專心」，那再多的視察也只是一場演給外界看的自我安慰。</p>
+        <h2>214 次的真相：一封漏發的電報，與替行政漏洞擦屁股的第一線</h2>
+        <p>日前臺北機務段發生的 214 次新自強號延誤事件，正是這種官僚思維的照妖鏡。官方新聞稿輕描淡寫地將事故定調為「因拿錯鑰匙、開錯車，導致列車延誤」，總經理更藉此要求同仁落實「再三確認」。這段話在字面上直接把矛頭指向第一線司機員，彷彿整起事件只是單純的乘務員恍神。</p>
+        <figure><img src="images/trc-safety-week-conundrum-and-e500-slip-img-2.png" alt="214次新自強號發現開錯編組貼文。資料來源："><figcaption>214次新自強號發現開錯編組貼文。資料來源：</figcaption></figure>
+        <p>但還原現場通報，事實真相卻令人啼笑皆非：</p>
+        <ol>
+          <li><strong>電報漏發</strong>：前一晚調度端下達「更換編組」命令，電報只發給行控號誌樓，卻漏發給負責排班與保管鑰匙的臺北機務段。</li>
+          <li><strong>依令出勤</strong>：臺北機務段派班室在毫不知情的情況下，清晨依舊將原編組的鑰匙交給司機員；司機員核對手上的派遣工單，走到指定股道上車、插鑰匙啟動，每一步都精確符合規定。</li>
+          <li><strong>極限救火</strong>：直到開車前 20 分鐘，號誌樓與整備車長才驚覺車輛不對。</li>
+        </ol>
+        <p>在佔地廣闊的樹林調車場，要將一列 12 節長編組的 EMU3000 降弓、斷電、鎖門，徒步移防到另一條股道，再重新解鎖、升弓、啟動 TCMS、建立氣壓並完成全套煞車貫通點檢，司機員與現場同仁頂著巨大誤點壓力嚴格走完防護程序，最終僅晚 20 分鐘慢分出庫。</p>
+        <p>第一線人員非但沒有錯，反而是以專業操守替上游斷裂的資訊鏈善後。到了高層的新聞稿裡，這場行政系統的低級失誤，卻被包裝成第一線「拿錯鑰匙」、需要被長官耳提面命「再三確認」。這種將數位整合失敗轉嫁為個人道德操守的公關修辭，正是組織最深沉的病灶。</p>
+        <h2>翻開事故月報：歷史迴力鏢與「萬能複製貼上」</h2>
+        <p>這種管理慣性並非偶發。翻開 114 年 11 月份的行車事故與異常月報表，這套語言邏輯在字裡行間表露無遺：</p>
+        <blockquote><p>114 年 11 月 5 日，七堵調車場錯咬事故</p>        <p>「調車班於值勤作業時，未明確界定同仁應『確認、再確認、再三確認』之執行項目，致現場人員未重複確認連結器肘開狀態即進行聯掛，造成作業異常。」</p>
+</blockquote>
+        <figure><img src="images/trc-safety-week-conundrum-and-e500-slip-img-3.png" alt=""><figcaption></figcaption></figure>
+        <p>原來今年新聞稿裡的口號，早在去年的檢討報告裡就被原封不動地背誦過一次。</p>
+        <p>整份月報表更充斥著公文系統的防禦性敷衍：</p>
+        <ul>
+          <li><strong>萬能罐頭對策</strong>：從正線死傷、平交道搶越，到冬山民眾在鐵路旁行走、竹東民眾躺在軌道邊，改善對策全數複製貼上「加強宣導禁止民眾入侵鐵路沿線淨空區域，並請民眾愛惜生命」。最荒謬的莫過於南澳站一輛小貨車在平交道黃網線違停倒車，審核層層蓋章的改善對策居然也是「請民眾愛惜生命」。</li>
+        </ul>
+        <figure><img src="images/trc-safety-week-conundrum-and-e500-slip-img-4.png" alt=""><figcaption></figcaption></figure>
+        <ul>
+          <li><strong>基礎保養的崩解</strong>：在號稱考核最嚴格的保安週首日，七堵站一天之內兩組轉轍器連續故障，查修原因全都是「螺絲未完全鎖緊」；而海線竹南至清水因變電站跳電導致大範圍電車線斷電，對策寫的竟是「於異常氣候期間加強應變」。</li>
+        </ul>
+        <p>當實體防護（圍籬、月台門）無法落地，管理層便用道德宣導當作法律免責的防火牆；當設備維保鬆動，對策欄裡便只剩下「加強應變」的虛無文字。</p>
+        <h2>當旗艦新車在長大坡道上窒息：牡丹坡與花東縱谷的物理現實</h2>
+        <p>如果說行政斷鏈是軟體崩潰，那新世代車輛在線上的運轉窘境，則是工程調校水土不服的體現。</p>
+        <p>由全新旗艦電力機車 E500 牽引的 602 次莒光號，頻繁在臺東線傳出坡道告急：</p>
+        <ul>
+          <li>10 月 25 日清晨，602 次莒光號在豐田因軌面條件不良爬不上坡，請求花蓮派車支援；同日傍晚，653 次莒光號在以坡度 16.7‰ 惡名昭彰的宜蘭線「牡丹坡」再度卡關。</li>
+          <li>往前一年，11 月 21 日清晨，同一班 602 次行經吉安～志學間（14.8‰ 上坡），動輪劇烈空轉，車速從 36 km/h 一路暴跌至 17 km/h 瀕臨定竿，一路硬撐至光復站加掛輔機。</li>
+        </ul>
+        <p>面對高達數千千瓦出力、配備現代化 VVVF 變頻牽引與電腦黏著控制的全新機車，官方月報表給出的改善對策，竟然再度把矛頭指向駕駛端：「持續加強乘務人員在遇到車輛動輪空轉時的駕駛模式與故障應急處理訓練」。</p>
+        <h2>花東縱谷看似平原，實際上卻是火車的隱形修羅場：</h2>
+        <pre><code class="language-plain text">【縱谷北段海拔縱剖面】
+花蓮 (9m) ──&gt; 吉安 (24m) ──[14.8‰ 衝積扇階地]──&gt; 干城 (76m) ──&gt; 志學 (48m)
+壽豐 (35m) ──&gt; 豐田 (50m) ──[溪口河底隧道引坡]──&gt; 林榮新光軌面 (~131m) ──&gt; 南平 (113m)</code></pre>
+        <ol>
+          <li><strong>沖積扇的鋸齒階地</strong>：吉安往志學並非平路，而是鐵路橫切木瓜溪沖積扇頂部的高聳階地（干城一帶標高達 76 公尺），短距離內硬生生拔高 52 公尺，形成 14.8‰ 的長大上坡。</li>
+          <li><strong>溪口河底隧道的「V 型陷阱」</strong>：豐田往南平改走地下化雙軌溪口隧道穿過壽豐溪底，看似鑽進地底，但大環境海拔一路攀升，列車必須在長年潮濕、滲水的地下隧道引道中逆向爬坡衝出地面。</li>
+          <li><strong>清晨薄膜與動能剝奪</strong>：清晨 6 點半到 7 點半，縱谷強烈輻射冷卻凝結的厚重晨露，混合了軌面粉塵與兩側雜草碎屑（同月份月報亦記載北埔～景美因草屑沾黏致車輪滑走），形成極度滑溜的低摩擦水膜。加上列車剛從吉安或豐田低速開出，在毫無衝坡動能的劣勢下正面撞上大陡坡。</li>
+        </ol>
+        <p>在這種極限工況下，Stadler 原廠過於保守敏感的防空轉演算法，一旦偵測到轉速差便自動砍減馬達出力；動力一砍，車速雪崩，車速越慢又越需要扭力，動輪隨之再度打滑——整列車就這樣被電腦軟體活活悶死在坡道上。</p>
+        <p>這分明是<strong>車輛撒砂控制、防空轉邏輯與臺灣濕滑環境的軟硬體磨合缺陷</strong>，月報表卻能若無其事地寫成是司機員「駕駛模式要加強」。</p>
+        <h2>結語：我們需要的是工程防呆，不是叫人確認的心靈雞湯</h2>
+        <p>從「拿錯鑰匙」的甩鍋公關稿，到「加強宣導愛惜生命」的萬能公文，再到「司機要練防打滑」的卸責檢討，臺鐵的安全管理體系始終圍繞著同一套核心邏輯：<strong>拒絕承認系統與工程的不足，將所有問題簡化為第一線的道德與技術瑕疵。</strong></p>
+        <p>現代鐵道安全的核心在於「防呆（Poka-yoke）」與「容錯」。</p>
+        <ul>
+          <li>換編組不該依賴人工發電報，而該是一鍵連動號誌、機務派班平板與電子鑰匙櫃的整合系統。</li>
+          <li>新車爬不上坡，該做的是調閱 TCMS 運轉數據、檢查砂箱噴嘴並要求原廠重寫黏著力控制演算法，而不是逼司機員用肉身感知去對抗物理法則。</li>
+          <li>軌道防外物入侵，該做的是蓋滿圍籬、裝設智慧影像預警與月台門，而不是年復一年在報表裡複製貼上毫無意義的心靈宣導。</li>
+        </ul>
+        <p>只要管理層依然只想靠每年一度的「保安週」下鄉巡禮、把基層當成體制缺陷的防火牆，那麼這鍋保安粥就算再煮上一百年，也煮不出旅客與第一線同仁真正需要的行車安全。</p>
+
+      </div>
+
+      <div class="article-foot" style="margin-top: 3rem;">
+        <span class="mono" style="color: var(--ink-faint);">寫於 2026.11.04</span>
+        <a href="../blog.html" class="mono" style="color: var(--accent);">更多文章 →</a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 C. Y. · 手寫 HTML，沒有框架</span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="../index.html" class="footer-link">首頁</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
