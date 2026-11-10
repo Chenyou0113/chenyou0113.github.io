@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>臺 11 線的 200 站長征：大巴、TTS與被政策遺忘的偏鄉物理學 — C. Y.</title>
+  <meta name="description" content="從 1145 的 126 站到 8119 的 212 站，橫向對比水里線的平原盆地與嘉義客運阿里山線的極限垂直落差，在東海岸海風與高鹽霧的修羅場中，看長途客運如何在報站演算法、柴油大巴與天龍國電巴政策的撕裂下維持運轉。">
+  <meta name="theme-color" content="#f7f4ee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    try {
+      var t = localStorage.getItem('cy_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+    document.documentElement.classList.add('js');
+  </script>
+  <link rel="stylesheet" href="../paper.css">
+  <script src="../script.js" defer></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="brand">
+        <span class="brand-mark">C. Y.</span>
+      </a>
+      <nav class="site-nav" id="nav-links" aria-label="主要導覽">
+        <a href="../index.html" class="nav-link">首頁</a>
+        <a href="../about.html" class="nav-link">關於</a>
+        <a href="../projects.html" class="nav-link">專案</a>
+        <a href="../blog.html" class="nav-link active">文章</a>
+        <a href="../friends.html" class="nav-link">友站</a>
+        <a href="../contact.html" class="nav-link">聯絡</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="切換深色模式" title="切換深色模式"></button>
+        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="開啟選單" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="17" x2="21" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="article">
+
+      <a href="../blog.html" class="article-back">← 回文章列表</a>
+
+      <header class="article-head">
+        <div class="article-meta">
+          <time datetime="2026-11-10">2026.11.10</time>
+          <span class="sep">/</span><span>基礎設施 雜記 開放資料</span>
+        </div>
+        <h1 class="article-title">臺 11 線的 200 站長征：大巴、TTS與被政策遺忘的偏鄉物理學</h1>
+        <p class="article-lede">從 1145 的 126 站到 8119 的 212 站，橫向對比水里線的平原盆地與嘉義客運阿里山線的極限垂直落差，在東海岸海風與高鹽霧的修羅場中，看長途客運如何在報站演算法、柴油大巴與天龍國電巴政策的撕裂下維持運轉。</p>
+      </header>
+
+      <div class="prose">
+        <h2>200 站的公路地質拓印</h2>
+        <p>攤開興東客運 8119 的停靠站表，212 個站點從清晨六點半一路排到快中午十一點。這不是大眾運輸的排點表，而是一份沿著海岸山脈刻畫了半世紀的生活地質拓印。</p>
+        <p>從富岡、小野柳、水往上流，一路往北數到膽墁、奇卡旦、八嗡嗡，再翻越水璉與跳浪。每一個以「橋」為名的站點，背後都對應著一條從海岸山脈切入太平洋的溪澗；每一個以「哨」或「倉庫」命名的招呼站，都在訴說那個物資與訊息全靠客運接駁的年代。</p>
+        <p>在講求速度與轉乘節點的現代交通網絡裡，這種單程 180 公里、表定耗時四個半小時的「神獸級路線」，荒謬得像個活化石。每天就這麼固定一班，既是首班，也是末班。</p>
+        <h2>演算法在海風裡的崩潰</h2>
+        <p>在市區運作順暢的智慧交通邏輯，放到臺11線上基本是一場災難。</p>
+        <p>以動態系統最依賴的地理圍欄（Geofencing）來說，在雙向兩線道且緊貼峭壁的海岸公路上，單純的經緯度半徑判定破綻百出。半徑設得太小，車輛以 60 公里巡航時容易穿牆漏抓；半徑設得稍大，在連續髮夾彎爬坡時，下層車道就會提早觸發山頂站點的虛擬圓圈。更不用說跳浪隧道群與深切海崖帶來的 GPS 遮蔽與多路徑反射。</p>
+        <p>真正讓預估到站時間（ETA）徹底失真的，是「無人招呼站」帶來的巨大離散值。120 公里的路程，若司機連續略過三十個無人上下車的招呼站，抵達時間能比靜態排表提前二十分鐘；但只要在長濱或豐濱遇上幾位行動較緩的長輩刷卡投幣，時間又會瞬間倒吐回去。站牌上跳動的數字，多數時候只是給候車者的一種精神補償。</p>
+        <blockquote><p>在高鹽霧與強烈日照下，硬體同樣面臨嚴酷篩選。戶外全彩 LCD 為了抗衡陽光直射必須將背光拉滿，高發熱伴隨強迫對流，海鹽很快便侵蝕排線造成黑屏；相對而言，低功耗且能做到全密封的電子紙（EPD）反而更適合這種極端環境。</p></blockquote>
+        <h2>偏鄉路網的三種極限：水里盆地、阿里山垂降與東海岸長征</h2>
+        <p>同樣冠以「偏鄉客運」之名，將臺11線與西部的指標性路線對比，更能看清不同的地理幾何如何塑造截然不同的車輛損耗型態。</p>
+        <h3>1. 內陸節點型（員林－水里）：有限折損與高周轉</h3>
+        <p>員林客運 6702 屬於典型的「平原生活圈－山腳聚落」放射線。單程僅需約 1.5 小時，車輛沿途雖有緩坡，但行駛於封閉陸域，一日可安排多趟循環往返，車輛與司機的周轉率均在可控範圍內，面對的純粹是客源縮減與傳統機件自然老化的營運問題。</p>
+        <h3>2. 極限垂降型（嘉義－阿里山）：熱能與動能的物理博弈</h3>
+        <p>行駛臺18線的阿里山線，則是另一種極端的「垂直爬升挑戰」：</p>
+        <ul>
+          <li><strong>散熱水箱與渦輪的極限抗壓</strong>：巴士必須在約 2.5 小時內，從接近海平面的嘉義市區一路攻上海拔 2,200 公尺的阿里山森林遊樂區，連續爬坡段坡度常達 6% 至 8%。在低速高負載長爬坡下，車輛迎風撞風散熱效能低，柴油引擎冷卻液溫度（Water Temp）常態性頂在 95°C～100°C 臨界點，液壓冷卻風扇必須全時高速運轉，機油黏度衰退與水箱水垢沉積速度極快。</li>
+          <li><strong>煞車熱衰退的極限考驗</strong>：返程長達 50 公里的連續重力下坡，更是底盤的修羅場。大巴若僅靠腳煞車氣壓煞車，煞車鼓幾分鐘內就會因數百度高溫產生熱衰退甚至燒熔來令片；車輛必須全時依賴排氣煞車（Exhaust Brake）與油壓減速器（Retarder）吸收動能，變速箱油溫與傳動軸承受著極端的高熱應力。</li>
+        </ul>
+        <h3>3. 無限縱深型（臺11線）：海風鹽霧與單向行軍的死局</h3>
+        <p>相較於阿里山線將熱負荷推到頂點，8119 則是將「里程縱深」與「化學腐蝕」推向極致：</p>
+        <ul>
+          <li>臺11線沒有兩千公尺的高山，但 180 公里的路程直接吃掉司機單趟法定駕車極限，使車輛完全失去當日多趟運行的周轉彈性。</li>
+          <li>阿里山雖陡，但高山空氣乾燥純淨；臺11線的大巴則是整年 365 天「泡在太平洋導電鹽霧」裡巡航。散熱水箱散熱鰭片（Radiator Fins）往往不是被泥沙堵塞，而是被鹽分快速氧化脆化成粉末狀；底盤各處氣閥、電氣配線插頭與輪拱鋼樑在強海風吹拂下，鏽蝕速率是內陸車輛的兩倍以上。</li>
+        </ul>
+        <p>在西部，路線面臨的是坡度抗阻或客源枯竭；但在東海岸，客運業者面對的是一場跨越近兩百公里、大自然無情鹽蝕與單向運轉成本的無解消耗戰。</p>
+        <h2>冰冷 TTS 與柴油低鳴的催眠曲</h2>
+        <p>在這類動輒上百站的路線上，語音報站改用電腦合成（TTS）而不是真人錄音，純粹是預算與維護現實下的必然妥協。</p>
+        <p>若要依《大眾運輸工具播音語言平等保障法》錄製國、臺、客、原民語，兩百多個站點乘上下行與到離站提示，單一路線就要生成上千個音檔。偏鄉站名隨聚落發展更迭頻繁，一旦遇到增站或改名，TTS 只要在後台更新文字字典便能即時編譯派送，遠比重新租借錄音室找原配音員切合實際。</p>
+        <p>當車輛離開花蓮市區，車廂內的感官體驗便退化成極致的極簡主義。車載機（OBU）在車機判定進站後發出毫無起伏的機械合成聲，隨後立刻被車尾重型柴油引擎定速運轉的低頻嗡鳴淹沒。</p>
+        <p>沒有都會區的推擠與喧鬧，窗外是反覆拍打海崖的白浪。這種單調的規律感，反而構成了一種特殊的公路白噪音。</p>
+        <h2>殺雞用牛刀的車隊算盤</h2>
+        <p>另一個常被提及的現象，是統聯等業者在花蓮偏鄉路線上，極少配置 Toyota Coaster 這類二十人座中型巴士，反而清一色派出十二公尺的高速大客車。</p>
+        <p>這並非排場，而是精打細算後的車隊管理結果：</p>
+        <ul>
+          <li><strong>邊際折舊成本</strong>：主力客運業者的採購體系皆以甲類大巴為主，零組件與保養線高度標準化。將西部國道退役、折舊攤提完畢的大巴調撥至東部，其購車資本支出遠低於購入全新中巴。</li>
+          <li><strong>運能彈性容錯</strong>：大車可隨時抽調支援縱谷端點的通學尖峰或鐵道中斷時的代駁，但中巴無法逆向應付爆量需求。</li>
+          <li><strong>乘坐質量的副產物</strong>：氣壓避震（Air Suspension）與高背沙發椅，原本是為了國道長途旅客設計，下放到路面起伏、補丁甚多的省道上，反而過濾了碎震，成了這趟漫長旅途裡最舒適的意外收穫。</li>
+        </ul>
+        <h2>政策口號與地理現實的邊界</h2>
+        <p>在辦公室簡報裡高談「2030 客運全面電動化」，放到臺11線的現實面前顯得格外蒼白。</p>
+        <p>一輛十六噸重的純電大巴，在夏季開著雙壓縮機空調，面對水璉到芭崎動輒數百公尺的高差爬坡，大電流放電下的電量衰減呈幾何級數放大。更致命的是場站基礎設施——在成功、長濱這類偏鄉端點，要向台電申請百瓩（kW）級別的特高壓饋線設置快充樁，工程成本與土地取得幾乎是無法跨越的障礙。</p>
+        <p>純電巴的高壓線路與 BMS 感測系統，在太平洋高濕度、高導電鹽霧的吹拂下，絕緣阻抗稍有異常便會觸發斷電保護。在雙向單線、外側即懸崖的長途路廊上，這類防護邏輯隨時可能直接演變成嚴重的交通受阻事件。</p>
+        <p>1145 與 8119 這種路線，在商業損益表上永遠不可能打平。它靠著政府虧損補貼（PSO）與 TPASS 清分金流在維繫偏鄉基本的醫療與通學路徑。</p>
+        <p>看著柴油大巴在芭崎彎道上排氣加速，很清楚能感受到：在這種與大自然直球對決的長途路廊裡，維持基本民行的底線，終究得建立在對地形、機械耐受度與物理現實的敬畏之上，而不是停留在簡報裡的綠能空想。</p>
+
+      </div>
+
+      <div class="article-foot" style="margin-top: 3rem;">
+        <span class="mono" style="color: var(--ink-faint);">寫於 2026.11.10</span>
+        <a href="../blog.html" class="mono" style="color: var(--accent);">更多文章 →</a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-mono">© 2026 C. Y. · 手寫 HTML，沒有框架</span>
+      <div class="footer-links">
+        <a href="https://github.com/Chenyou0113" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="../index.html" class="footer-link">首頁</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
